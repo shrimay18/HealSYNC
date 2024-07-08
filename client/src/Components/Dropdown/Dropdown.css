@@ -1,0 +1,9 @@
+select {
+    height: 4vh;
+    border-radius: 1vh;
+    padding: 0 1vh;
+    font-size: 1.5vh;
+    color:rgb(21,80,111);
+    background-color: rgb(83,170,196);
+}
+
