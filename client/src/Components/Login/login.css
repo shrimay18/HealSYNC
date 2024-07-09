@@ -36,7 +36,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 92vh;
+    height: 99vh;
     width: 100vw;
     background-color: #b1f1ff;
 
@@ -47,7 +47,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 70vh;
+    height: 75vh;
     width: 30vw;
     z-index: 1;
     box-shadow: 0 0 1vh rgba(0,0,0,1.1);
@@ -131,7 +131,7 @@ button{
     color:white;
     border-radius: 10px;
     width:10vw;
-    height: 3vh;
+    height: 2vh;
 }
 
 .register{

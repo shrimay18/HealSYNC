@@ -34,7 +34,7 @@ const PhoneNumberInput = () => {
   return (
     <div className="phone-number">
       <PhoneInput
-        country={'us'}
+        country={'in'}
         value={phone}
         onChange={phone => setPhone(phone)}
         inputProps={{

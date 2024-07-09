@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './PDFUpload.css';
 
 const PDFUpload = () => {
     const [file, setFile] = useState(null);
@@ -28,9 +28,9 @@ const PDFUpload = () => {
     return (
         <div>
         <label>Upload PDF</label>
-        <form>
-            <input type="file" onChange={handleFileChange} />
-            <button type="submit">Upload</button>
+        <form id="pdfform">
+            <input type="file" id="pdf" onChange={handleFileChange} />
+            <button type="submit" id="pdfbutton">Upload</button>
         </form>
         <p>{message}</p>
         </div>

@@ -1,19 +1,41 @@
 .custom-file-upload {
-    display: inline-block;
-    padding: 6px 12px;
+    display: flex;
+    /* padding: 6px 12px; */
     cursor: pointer;
     background-color: #008cba;
-    color: white;
-    border-radius: 1vh;
+    color: rgb(97, 135, 180);
+    /* border-radius: 1vh; */
+    justify-content: center;
+    align-items: center;
 }
 
 .custom-file-upload:hover {
     background-color: #005f5f;
 }
-
-input[type="file"] {
-    display: none;
+#pdf{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:15vw;
+    height: 3vh;
 }
+#pdfbutton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:7vw;
+    height: 3vh;
+    /* background-color: #008cba; */
+    /* color: rgb(97, 135, 180); */
+    cursor: pointer;
+
+}
+/* input[type="file"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width:0.1vw;
+} */
 
 p {
     font-size: 1.5vh;

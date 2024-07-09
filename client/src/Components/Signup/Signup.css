@@ -47,6 +47,13 @@
     margin: 1vh;
 } */
 
+/* #pdf{
+    display:flex;
+    width:20vw;
+    height:2.5vh;
+    align-items: center;
+    justify-content: center;  
+} */
 .SignUp {
     display: flex;
     flex-direction: column;
@@ -86,6 +93,10 @@
     margin-top: 5vh;
     overflow: scroll;
 }
+::-webkit-scrollbar {
+    width: 2px;
+    /* background-color:rgb(83,170,196); */
+}
 
 input{
     background-color:rgb(83,170,196);
@@ -93,6 +104,9 @@ input{
 }
 input::placeholder{
     color:rgb(21,80,111);
+}
+#dr{
+    width:2vw;
 }
 .signup-block h1 {
     font-size: 3vh;
@@ -108,14 +122,19 @@ input::placeholder{
 .row {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /* justify-content: space-around; */
     margin-bottom: 2vh;
+    /* flex-wrap: wrap; */
+    width:100%;
 }
 
 .column {
     display: flex;
     flex-direction: column;
+    /* justify-content: space-between; */
+    /* align-items: center; */
     width: 48%;
+    flex-wrap: wrap;
 }
 
 label {
@@ -130,7 +149,15 @@ input, select {
     padding: 0 1vh;
     font-size: 1.5vh;
 }
-
+#age{
+    width:4vw;
+}
+#city{
+    width:10vw;
+}
+#dob{
+    width:10vw;
+}
 button {
     height: 5vh;
     border-radius: 1vh;
@@ -150,11 +177,13 @@ button:hover {
 
 .terms {
     display: flex;
-    align-items: center;
-    margin-top: 2vh;
+    /* align-items: center; */
+    justify-content: space-around;
+    /* margin-top: 2vh; */
     font-size: 1.2vh;
+    width:40vw;
 }
 
 .terms input {
-    margin-right: 1vh;
+    /* margin-right: 1vh; */
 }

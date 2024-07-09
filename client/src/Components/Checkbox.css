@@ -1,0 +1,9 @@
+#checkbox{
+    display: inline-block;
+    width:0.8vw;
+}
+
+#checkboxcontainer{
+    display:flex;
+    align-items: center;
+}
