@@ -28,3 +28,15 @@
     padding: 0 1vh;
     font-size: 1.5vh;
 }
+
+@media (max-width: 768px) {
+    .phone-input {
+        font-size: 1.2vh;
+        height: 3vh;
+    }
+
+    .country-code select {
+        font-size: 1.2vh;
+        height: 3vh;
+    }
+}
