@@ -24,6 +24,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
+import GSignup from './Pages/Signup/GAuthSignUp';
 
 const App = () => {
     return (
@@ -31,6 +32,7 @@ const App = () => {
           <Routes>
               <Route exact path="/" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/google-signup" element={<GSignup />} />
           </Routes>
         </Router>
     );

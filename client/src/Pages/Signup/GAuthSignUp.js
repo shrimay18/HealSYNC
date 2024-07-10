@@ -7,8 +7,7 @@ import './Signup.css';
 import Checkbox from '../../Components/Checkbox/Checkbox';
 
 const Signup = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+
     const [message, setMessage] = useState('');
     const [name, setName] = useState('');
     const [gender, setGender] = useState(''); // Initialize with default value if any
@@ -20,17 +19,11 @@ const Signup = () => {
     const [degree, setDegree] = useState(''); // Initialize with default value if any
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [RegNo, setRegNo] = useState('');
     const [isChecked, setIsChecked] = useState(false);
-    const [file, setFile] = useState(null);
-
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
-    };
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
     };
 
     const states = [
@@ -72,37 +65,26 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log("Submitting form:", { username, password }); // Log form submission data
-        // Check if password and confirm password are the same
-        if (password !== confirmPassword) {
-            setMessage('Entered password does not match');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('name', name);
-        formData.append('username', username);
-        formData.append('password', password);
-        formData.append('confirmPassword', confirmPassword);
-        formData.append('gender', gender);
-        formData.append('dateOfBirth', dob);
-        formData.append('age', age);
-        formData.append('state', state);
-        formData.append('city', city);
-        formData.append('pincode', pincode);
-        formData.append('email', email);
-        formData.append('phone', phone);
-        formData.append('Degree', degree);
-        formData.append('RegistrationNumber', RegNo);
-        console.log("Submitting form:", formData);
         try {
-            const response = await axios.post('http://localhost:3000/signup', formData, {
+            const response = await axios.post('http://localhost:3000/signup', {
+                name: name,
+                gender: gender,
+                dateOfBirth: dob,
+                age: age,
+                state: state,
+                city: city,
+                pincode: pincode,
+                email: email,
+                phone: phone,
+                Degree: degree,
+                RegistrationNumber: RegNo,
+                Pdf: 'pdf'
+            }, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             });
             setMessage(response.data);
-
         } catch (error) {
             if (error.response) {
                 setMessage(error.response.data);
@@ -133,38 +115,6 @@ const Signup = () => {
                                     required={true}
                                 />
                             </div>
-                        </div>
-                        <div className="column">
-                            <label>Username:</label>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Enter your Username"
-                                required={true}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="column">
-                            <label>Password:</label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter your Password"
-                                required={true}
-                            />
-                        </div>
-                        <div className="column">
-                            <label>Confirm Password:</label>
-                            <input
-                                type="password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder="Confirm your Password"
-                                required={true}
-                            />
                         </div>
                     </div>
                     <div className="row">
@@ -276,8 +226,7 @@ const Signup = () => {
                     </div>
                     <div className="row">
                         <div className="column">
-                            <label>Upload Degree:</label>
-                            <input type="file" onChange={handleFileChange} />
+                            <PDFUpload />
                         </div>
                     </div>
                     <div>
@@ -291,7 +240,6 @@ const Signup = () => {
                     <button type="submit">Signup</button>
                 </form>
             </div>
-            <p>{message}</p>
         </div>
     );
 };

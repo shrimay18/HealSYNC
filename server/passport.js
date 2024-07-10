@@ -18,6 +18,7 @@ passport.use(
                     return done(null, user);
                 }
 
+
                 user = new User({
                     // googleId: profile.id,
                     name: profile.displayName,
@@ -27,7 +28,7 @@ passport.use(
                 });
 
                 // await user.save();
-                // done(null, user);
+                done(null, user);
             } catch (err) {
                 done(err, null);
             }
@@ -39,10 +40,10 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) => {
-        done(err, user);
-    });
+passport.deserializeUser((user, done) => {
+
+    done(null, user);
+
 });
 
 module.exports = passport;
