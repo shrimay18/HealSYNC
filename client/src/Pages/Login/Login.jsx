@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./login.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Navbar from "../../Components/Navbar/Navbar"
 
 
 function Login() {
@@ -44,10 +45,10 @@ function Login() {
 
     return (
         <div className="login">
-            <div className="loginheader">
+            {/* <div className="loginheader">
                 <p>HealSYNC</p>
-            </div>
-            {/* <Navbar /> */}
+            </div> */}
+            <Navbar />
 
             <div className="loginBody">
                 <div className="loginblock">
