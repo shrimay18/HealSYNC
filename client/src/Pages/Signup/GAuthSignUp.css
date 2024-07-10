@@ -125,7 +125,8 @@ input::placeholder{
     /* justify-content: space-around; */
     margin-bottom: 2vh;
     /* flex-wrap: wrap; */
-    width:100%;
+    /* width:100%; */
+    /* width:30vw; */
 }
 
 .column {
