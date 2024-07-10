@@ -1,0 +1,42 @@
+/* PhoneNumberInput.css */
+
+.phone-input-container {
+    display: flex;
+    align-items: center;
+}
+
+.phone-input {
+    background-color: rgb(83, 170, 196) !important;
+    color: rgb(21, 80, 111) !important;
+    height: 4vh;
+    border-radius: 1vh;
+    border: 1px solid #ccc;
+    padding: 0 1vh;
+    font-size: 1.5vh;
+}
+
+.country-code {
+    margin-right: 1vh;
+}
+
+.country-code select {
+    background-color: rgb(83, 170, 196);
+    color: rgb(21, 80, 111);
+    height: 4vh;
+    border-radius: 1vh;
+    border: 1px solid #ccc;
+    padding: 0 1vh;
+    font-size: 1.5vh;
+}
+
+@media (max-width: 768px) {
+    .phone-input {
+        font-size: 1.2vh;
+        height: 3vh;
+    }
+
+    .country-code select {
+        font-size: 1.2vh;
+        height: 3vh;
+    }
+}

@@ -22,8 +22,8 @@
 // Client/src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './Components/Login/Login';
-import Signup from './Components/Signup/Signup';
+import Login from './Pages/Login/Login';
+import Signup from './Pages/Signup/Signup';
 
 const App = () => {
     return (

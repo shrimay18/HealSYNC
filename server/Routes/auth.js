@@ -15,9 +15,8 @@ router.get("/login/success", (req, res) => {
 
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-
 router.get(
-    '/google/callback', 
+    '/google/callback',
     passport.authenticate('google', {
         successRedirect: process.env.CLIENT_URL,
         failureRedirect: "/login/failed",

@@ -1,38 +1,48 @@
-const googleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const User = require('./Models/Users'); // Adjust the path to your User model
 
-
-// const callback = (accessToken, refreshToken, profile, done) => {
-//     // Handle the user profile and authentication logic
-//     // For example, you could find or create a user in your database here
-//     // Assuming you have a User model:
-//     // User.findOrCreate({ googleId: profile.id }, (err, user) => {
-//     //     return done(err, user);
-//     // });
-
-//     // For this example, we'll just pass the profile as the user
-//     done(null, profile);
-// };
 passport.use(
-    new googleStrategy(
+    new GoogleStrategy(
         {
             clientID: process.env.CLIENT_ID,
             clientSecret: process.env.CLIENT_SECRET,
             callbackURL: '/auth/google/callback',
             scope: ['profile', 'email'],
         },
-       function (accessToken, refreshToken, profile, done) {
-           done(null, profile);
-       }
-));
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                let user = await User.findOne({ email: profile.emails[0].value });
+
+                if (user) {
+                    return done(null, user);
+                }
+
+                user = new User({
+                    // googleId: profile.id,
+                    name: profile.displayName,
+                    email: profile.emails[0].value,
+
+                    // other fields can be initialized as needed
+                });
+
+                // await user.save();
+                // done(null, user);
+            } catch (err) {
+                done(err, null);
+            }
+        }
+    )
+);
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
-    done(null, user);
+passport.deserializeUser((id, done) => {
+    User.findById(id, (err, user) => {
+        done(err, user);
+    });
 });
 
 module.exports = passport;
-   
