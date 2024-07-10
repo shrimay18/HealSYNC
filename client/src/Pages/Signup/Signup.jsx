@@ -78,6 +78,10 @@ const Signup = () => {
             setMessage('Entered password does not match');
             return;
         }
+        if(age <= 18){
+            setMessage('You are not a Valid Doctor!!!!');
+            return;
+        }
         const formData = new FormData();
         formData.append('file', file);
         formData.append('name', name);
