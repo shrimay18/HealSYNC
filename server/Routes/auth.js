@@ -17,8 +17,15 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: "/login/failed" }),
+    passport.authenticate('google', { failureRedirect: "/login/failed",  successRedirect: "/login/success"}),
     (req, res) => {
+        console.log('Session before:', req.session); // Log the session before updating
+        req.session.googleUser = {
+            name: req.user.name,
+            email: req.user.email
+        };
+        console.log('Session after:', req.session); // Log the session after updating
+        // ...
         if (req.authInfo.redirectHome) {
             res.redirect('/dashboard'); // redirect to home page if the user exists
         } else {
@@ -26,5 +33,15 @@ router.get(
         }
     }
 );
+passport.serializeUser(function(user, cb) {
+    process.nextTick(function() {
+        cb(null, { id: user.id, username: user.username, email:user.email, name: user.name});
+    });
+});
 
+passport.deserializeUser(function(user, cb) {
+    process.nextTick(function() {
+        return cb(null, user);
+    });
+});
 module.exports = router;

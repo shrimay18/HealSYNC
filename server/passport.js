@@ -24,6 +24,7 @@ passport.use(
                 user = new User({
                     name: profile.displayName,
                     email: profile.emails[0].value,
+
                     // other fields can be initialized as needed
                 });
 
@@ -36,14 +37,18 @@ passport.use(
         }
     )
 );
-
-passport.serializeUser((user, done) => {
-    done(null, user.id);
+passport.serializeUser(function(user, cb) {
+    process.nextTick(function() {
+        cb(null, { passport: { id: user.id, username: user.username, email:user.email, name: user.name}});
+    });
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (data, done) => {
     try {
-        const user = await User.findById(id);
+        const user = await User.findById(data.passport.id);
+        if (user) {
+            user.passport = data.passport; // Attach session data to user
+        }
         done(null, user);
     } catch (err) {
         done(err, null);

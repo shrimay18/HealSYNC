@@ -2,15 +2,18 @@ const UserModel = require('../models/Users');
 // const User = require("../passport")
 
 exports.createUser = async (req, res) => {
-    console.log("Received file:", req.body); // Log file details
-   const googleUser = req.user;
-   if (googleUser) {
-        req.body.name = googleUser.name;
-        req.body.email = googleUser.email;
+    console.log("Received file:", req); // Log file details
+    const googleUser = req.session.passport;
+    console.dir(googleUser, {depth: null})
+    if (googleUser) {
+         req.body.name = googleUser.name;
+         req.body.email = googleUser.email;
     }
 
     const data = {
-        name: req.body.name,
+       name: googleUser.name,
+        email: googleUser.email,
+       sessionId: req.session.id,
         username: req.body.username,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
@@ -20,7 +23,6 @@ exports.createUser = async (req, res) => {
         state: req.body.state,
         city: req.body.city,
         pincode: req.body.pincode,
-        email: req.body.email,
         phone: req.body.phone,
         Degree: req.body.Degree,
         RegistrationNumber: req.body.RegistrationNumber,
@@ -33,10 +35,12 @@ exports.createUser = async (req, res) => {
         const checkingForUsername = await UserModel.findOne({ username: data.username });
         const checkingForEmail = await UserModel.findOne({ email: data.email });
 
+
+
         console.log("Existing user (username):", checkingForUsername);
         console.log("Existing user (email):", checkingForEmail);
 
-        if (checkingForEmail || checkingForUsername) {
+        if (checkingForEmail ) {
             res.status(409).send('User already exists'); // Conflict status code for existing user
         } else {
             console.log("Inserting user:", data);

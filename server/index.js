@@ -31,6 +31,7 @@ mongoose.connect(process.env.MONGO_URL)
         console.log(err);
     });
 
+
 app.use(
     expressSession({
         secret: "cyberwolve",
@@ -50,3 +51,11 @@ app.use("/auth", authRoutes);
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+app.get("/", (req, res) => {
+    console.log("Hello World");
+    console.log(req.session);
+    console.log(req.session.id);
+    req.session.visited = true;
+    res.send("Hello World");
+})
