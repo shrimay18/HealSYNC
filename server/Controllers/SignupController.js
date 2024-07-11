@@ -1,7 +1,13 @@
 const UserModel = require('../models/Users');
+// const User = require("../passport")
 
 exports.createUser = async (req, res) => {
     console.log("Received file:", req.body); // Log file details
+   const googleUser = req.user;
+   if (googleUser) {
+        req.body.name = googleUser.name;
+        req.body.email = googleUser.email;
+    }
 
     const data = {
         name: req.body.name,

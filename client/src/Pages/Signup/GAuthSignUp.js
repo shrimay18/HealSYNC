@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Dropdown from '../../Components/Dropdown/Dropdown';
 import PhoneNumber from '../../Components/PhoneNumberInput/PhoneNumber';
-import PDFUpload from '../../Components/PDFUpload/PdfUpload';
-import './Signup.css';
+import './GAuthSignUp.css';
 import Checkbox from '../../Components/Checkbox/Checkbox';
+
+
 
 const Signup = () => {
 
@@ -21,6 +22,11 @@ const Signup = () => {
     const [phone, setPhone] = useState('');
     const [RegNo, setRegNo] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const [file, setFile] = useState(null);
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
@@ -63,28 +69,30 @@ const Signup = () => {
         }
     }, [dob]);
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('name', name);
+        formData.append('gender', gender);
+        formData.append('dateOfBirth', dob);
+        formData.append('age', age);
+        formData.append('state', state);
+        formData.append('city', city);
+        formData.append('pincode', pincode);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('Degree', degree);
+        formData.append('RegistrationNumber', RegNo);
         try {
-            const response = await axios.post('http://localhost:3000/signup', {
-                name: name,
-                gender: gender,
-                dateOfBirth: dob,
-                age: age,
-                state: state,
-                city: city,
-                pincode: pincode,
-                email: email,
-                phone: phone,
-                Degree: degree,
-                RegistrationNumber: RegNo,
-                Pdf: 'pdf'
-            }, {
+            const response = await axios.post('http://localhost:3000/signup', formData, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'multipart/form-data'
                 }
             });
             setMessage(response.data);
+
         } catch (error) {
             if (error.response) {
                 setMessage(error.response.data);
@@ -100,20 +108,13 @@ const Signup = () => {
                 <p>HealSYNC</p>
             </div>
             <div className="signup-block">
-                <h1>Sign Up</h1>
+                <h1>Profile</h1>
                 <form className='signup-block-form' onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="column">
                             <label>Name:</label>
                             <div className="row">
                                 <input type="text" id="dr" placeholder='Dr' readOnly />
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    placeholder="Enter your Name"
-                                    required={true}
-                                />
                             </div>
                         </div>
                     </div>
@@ -186,16 +187,6 @@ const Signup = () => {
                     </div>
                     <div className="row">
                         <div className="column">
-                            <label>Email:</label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Enter your email address"
-                                required={true}
-                            />
-                        </div>
-                        <div className="column">
                             <label>Contact Number:</label>
                             <PhoneNumber
                                 state={phone}
@@ -226,7 +217,8 @@ const Signup = () => {
                     </div>
                     <div className="row">
                         <div className="column">
-                            <PDFUpload />
+                            <label>Upload your certificate:</label>
+                            <input type={'file'} onChange={handleFileChange} />
                         </div>
                     </div>
                     <div>
@@ -240,6 +232,7 @@ const Signup = () => {
                     <button type="submit">Signup</button>
                 </form>
             </div>
+            <p>{message}</p>
         </div>
     );
 };

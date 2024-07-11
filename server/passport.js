@@ -12,25 +12,26 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
+                console.log('Google Profile:', profile); // Log the profile to debug
+
                 let user = await User.findOne({ email: profile.emails[0].value });
 
                 if (user) {
-                    return done(null, user);
+                    return done(null, user, { redirectHome: true });
                 }
 
-
+                console.log('New User:', profile.displayName, profile.emails[0].value); // Log new user details
                 user = new User({
-                    // googleId: profile.id,
                     name: profile.displayName,
                     email: profile.emails[0].value,
-
                     // other fields can be initialized as needed
                 });
 
-                // await user.save();
-                done(null, user);
+                await user.save();
+                console.log('User saved:', user); // Log the saved user
+                return done(null, user, { redirectHome: false });
             } catch (err) {
-                done(err, null);
+                return done(err, null);
             }
         }
     )
@@ -40,10 +41,13 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
-
-    done(null, user);
-
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
 });
 
 module.exports = passport;
