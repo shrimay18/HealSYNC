@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const signUpController = require('../controllers/SignUpController');
+const signUpController = require('../Controllers/SignupController');
 const multer = require('multer');
 const Upload = multer({ dest: 'uploads/' });
 
