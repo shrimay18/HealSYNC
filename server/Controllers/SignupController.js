@@ -1,19 +1,26 @@
 const UserModel = require('../models/Users');
 // const User = require("../passport")
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 
 exports.createUser = async (req, res) => {
-    console.log("Received file:", req); // Log file details
-    const googleUser = req.session.passport;
-    console.dir(googleUser, {depth: null})
-    if (googleUser) {
-         req.body.name = googleUser.name;
-         req.body.email = googleUser.email;
-    }
+    const myPlaintextPassword = req.body.password;
+    const myPlaintextPassword1 = req.body.confirmPassword;
+     // Log file details
+    req.body.password = await bcrypt.hash(myPlaintextPassword, saltRounds);
+
+
+    req.body.confirmPassword = await bcrypt.hash(myPlaintextPassword1, saltRounds);
+
+
+
+
 
     const data = {
-       name: googleUser.name,
-        email: googleUser.email,
-       sessionId: req.session.id,
+        name: req.body.name,
+        email: req.body.email,
+        sessionId: req.session.id,
         username: req.body.username,
         password: req.body.password,
         confirmPassword: req.body.confirmPassword,
@@ -45,7 +52,7 @@ exports.createUser = async (req, res) => {
         } else {
             console.log("Inserting user:", data);
             await UserModel.insertMany([data]);
-            res.status(201).send('User created'); // Created status code for successful insertion
+            res.json({success: true, redirectUrl: "http://localhost:3001/"})
         }
     } catch (err) {
         console.error("Error during signup:", err);

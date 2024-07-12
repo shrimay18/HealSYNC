@@ -17,31 +17,37 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
     '/google/callback',
-    passport.authenticate('google', { failureRedirect: "/login/failed",  successRedirect: "/login/success"}),
+
+
+    passport.authenticate('google', { failureRedirect: "/login/failed"}),
     (req, res) => {
-        console.log('Session before:', req.session); // Log the session before updating
+        console.log('Printing req: ', req);
         req.session.googleUser = {
             name: req.user.name,
             email: req.user.email
         };
-        console.log('Session after:', req.session); // Log the session after updating
+
+        console.log('Printing req After: ', req);
+
         // ...
+
         if (req.authInfo.redirectHome) {
-            res.redirect('/dashboard'); // redirect to home page if the user exists
+            res.redirect(process.env.CLIENT_URL2); // redirect to home page if the user exists
         } else {
             res.redirect(process.env.CLIENT_URL); // redirect to client URL if the user is new
         }
     }
-);
-passport.serializeUser(function(user, cb) {
-    process.nextTick(function() {
-        cb(null, { id: user.id, username: user.username, email:user.email, name: user.name});
-    });
-});
 
-passport.deserializeUser(function(user, cb) {
-    process.nextTick(function() {
-        return cb(null, user);
-    });
-});
+);
+// passport.serializeUser(function(user, cb) {
+//     process.nextTick(function() {
+//         cb(null, { id: user.id, username: user.username, email:user.email, name: user.name});
+//     });
+// });
+//
+// passport.deserializeUser(function(user, cb) {
+//     process.nextTick(function() {
+//         return cb(null, user);
+//     });
+// });
 module.exports = router;

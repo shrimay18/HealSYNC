@@ -105,7 +105,10 @@ const Signup = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            setMessage(response.data);
+            if(response.data.success){
+                window.location.href = response.data.redirectUrl;
+            }
+
 
         } catch (error) {
             if (error.response) {

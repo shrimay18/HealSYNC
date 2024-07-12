@@ -12,7 +12,7 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                console.log('Google Profile:', profile); // Log the profile to debug
+                // console.log('Google Profile:', profile); // Log the profile to debug
 
                 let user = await User.findOne({ email: profile.emails[0].value });
 
@@ -20,7 +20,7 @@ passport.use(
                     return done(null, user, { redirectHome: true });
                 }
 
-                console.log('New User:', profile.displayName, profile.emails[0].value); // Log new user details
+                console.log('New User:',profile.id, profile.displayName, profile.emails[0].value); // Log new user details
                 user = new User({
                     name: profile.displayName,
                     email: profile.emails[0].value,
@@ -30,29 +30,21 @@ passport.use(
 
                 await user.save();
                 console.log('User saved:', user); // Log the saved user
-                return done(null, user, { redirectHome: false });
+                return done(null, profile, { redirectHome: false });
             } catch (err) {
                 return done(err, null);
             }
         }
     )
 );
-passport.serializeUser(function(user, cb) {
-    process.nextTick(function() {
-        cb(null, { passport: { id: user.id, username: user.username, email:user.email, name: user.name}});
-    });
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
 });
 
-passport.deserializeUser(async (data, done) => {
-    try {
-        const user = await User.findById(data.passport.id);
-        if (user) {
-            user.passport = data.passport; // Attach session data to user
-        }
-        done(null, user);
-    } catch (err) {
+passport.deserializeUser(async (id, done) => {
+
         done(err, null);
-    }
+
 });
 
 module.exports = passport;
