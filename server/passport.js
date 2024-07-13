@@ -19,7 +19,6 @@ passport.use(
                 if (user) {
                     return done(null, user, { redirectHome: true });
                 }
-
                 console.log('New User:',profile.id, profile.displayName, profile.emails[0].value); // Log new user details
                 user = new User({
                     name: profile.displayName,
