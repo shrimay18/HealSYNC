@@ -26,8 +26,8 @@ exports.getUser = async (req, res) => {
 
         if (valid) {
             const token = jwt.sign({userId: loginUser._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
-            res.send({success: true, token: token});
-            // res.json({success: true, token:token})
+            // res.send({success: true, token: token});
+            res.json({success: true, token:token, redirectUrl: process.env.CLIENT_URL2})
 
         } else {
             res.status(401).send('No user found');
@@ -41,7 +41,7 @@ exports.getUser = async (req, res) => {
 exports.getCurrentUser = async (req, res) => {
     try {
         const user = await UserModel.findById(req.body.userId);
-        res.send({success: true, data: user});
+        res.send({success: true, data: user, message: "Authorized User"});
     }
     catch(err) {
         res.send({success: false, message: 'Not Authorized'});

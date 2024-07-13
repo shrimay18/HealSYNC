@@ -25,6 +25,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import GSignup from './Pages/Signup/GAuthSignUp';
+import ProtectedRoute from './Components/ProtectedRoutes/ProtectedRoute';
 
 const App = () => {
     return (
@@ -33,6 +34,7 @@ const App = () => {
               <Route exact path="/" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/google-signup" element={<GSignup />} />
+              {/*<ProtectedRoute path="/dashboard" element={<ProtectedRoute />} />*/}
           </Routes>
         </Router>
     );
