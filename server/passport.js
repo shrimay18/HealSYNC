@@ -24,11 +24,11 @@ passport.use(
                 user = new User({
                     name: profile.displayName,
                     email: profile.emails[0].value,
-
-                    // other fields can be initialized as needed
                 });
 
-                await user.save();
+
+
+                // await user.save();
                 console.log('User saved:', user); // Log the saved user
                 return done(null, profile, { redirectHome: false });
             } catch (err) {
@@ -38,13 +38,10 @@ passport.use(
     )
 );
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user);
 });
-
+//
 passport.deserializeUser(async (id, done) => {
-
-        done(err, null);
-
+    done(null, id);
 });
-
 module.exports = passport;

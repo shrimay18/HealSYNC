@@ -7,7 +7,13 @@ router.get("/login/failed", (req, res) => {
 
 router.get("/login/success", (req, res) => {
     if (req.user) {
-        res.status(200).send("Login success");
+        res.status(200).send({
+            message: "Login success",
+            email: req.user.email,
+            name: req.user.name,
+            id: req.user.id,
+            redirectHome: req.authInfo.redirectHome
+        });
     } else {
         res.status(403).send("Not Authorized");
     }
@@ -17,37 +23,41 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
     '/google/callback',
-
-
-    passport.authenticate('google', { failureRedirect: "/login/failed"}),
+    passport.authenticate('google', { failureRedirect: "/login/failed" }),
     (req, res) => {
-        console.log('Printing req: ', req);
-        req.session.googleUser = {
-            name: req.user.name,
-            email: req.user.email
-        };
+        if (req.user) {
+            console.log("success redirect");
+            console.log('Printing req: ', req);
+            req.session.googleUser = {
+                name: req.user.name,
+                email: req.user.email
+            };
 
-        console.log('Printing req After: ', req);
+            console.log('Printing req After: ', req);
 
-        // ...
-
-        if (req.authInfo.redirectHome) {
-            res.redirect(process.env.CLIENT_URL2); // redirect to home page if the user exists
+            if (req.authInfo.redirectHome) {
+                res.redirect(process.env.CLIENT_URL2); // redirect to home page if the user exists
+            } else {
+                res.redirect(process.env.CLIENT_URL); // redirect to client URL if the user is new
+            }
         } else {
-            res.redirect(process.env.CLIENT_URL); // redirect to client URL if the user is new
+            res.redirect("/login/failed");
         }
     }
-
 );
-// passport.serializeUser(function(user, cb) {
-//     process.nextTick(function() {
-//         cb(null, { id: user.id, username: user.username, email:user.email, name: user.name});
-//     });
-// });
-//
-// passport.deserializeUser(function(user, cb) {
-//     process.nextTick(function() {
-//         return cb(null, user);
-//     });
-// });
+
+// Passport serializeUser and deserializeUser
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (err) {
+        done(err, null);
+    }
+});
+
 module.exports = router;

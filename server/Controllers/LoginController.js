@@ -4,10 +4,8 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
 exports.getUser = async (req, res) => {
-    console.log("Received request:", req);
     try {
 
-        console.log("Received request:", req.body);
         const data = {
             username: req.body.username,
             password: req.body.password
@@ -28,8 +26,8 @@ exports.getUser = async (req, res) => {
 
         if (valid) {
             const token = jwt.sign({userId: loginUser._id}, process.env.JWT_SECRET, {expiresIn: '1d'});
-            // res.send({success: true, token: token});
-            res.json({success: true, token:token})
+            res.send({success: true, token: token});
+            // res.json({success: true, token:token})
 
         } else {
             res.status(401).send('No user found');
