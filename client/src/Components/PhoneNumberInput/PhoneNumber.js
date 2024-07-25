@@ -24,6 +24,7 @@ const PhoneNumberInput = ({state, setState}) => {
         containerClass="phone-input-container"
         inputClass="phone-input"
         buttonClass="country-code"
+        required={true}
       />
     </div>
   );
