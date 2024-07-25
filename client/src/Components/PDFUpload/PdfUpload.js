@@ -20,10 +20,11 @@ const PDFUpload = () => {
 
         const formData = new FormData();
         formData.append('file', file);
+
         console.log("Form data: ", formData);
 
         try {
-            const response = await axios.post('http://localhost:3000/upload', formData, {
+            const response = await axios.post('http://localhost:3000/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -40,7 +41,7 @@ const PDFUpload = () => {
         <div>
         <label>Upload PDF</label>
         <form id="pdfform" onSubmit={handleSubmit}>
-            <input type="file" id="pdf" onChange={handleFileChange} />
+            <input type="file" id="pdf" onChange={handleFileChange} required={true}/>
         </form>
         </div>
     );

@@ -1,0 +1,78 @@
+.dashboard{
+    background-color: rgb(177,241,255);
+    width:100vw;
+    height: 100vh;
+    /* display: flex; */
+}
+.loginheader{
+    display: flex;
+    align-items: center;
+    background-color: #d4f5ff;
+    position: relative;
+    height:8vh;
+    width:100vw;
+    z-index: 2;
+    box-shadow: 0 0 1vh rgba(0,0,0,1.1);
+}
+.loginheader p{
+    font-size: 2.5vh;
+    font-weight: bold;
+    color: #000;
+    margin-left: 2vw;
+}
+.dashboardBlocks{
+    display: flex;
+}
+.leftBlock{
+    background-color: #D4F5FF;
+    width:75vw;
+    height:80vh;
+    margin:1.5%;
+    border-radius: 20px;
+    /* display: flex; */
+}
+.leftBlockTop{
+    display: flex;;
+}
+
+.addHospital, .sortHospital{
+    width:8vw;
+    height:3.5vh;
+    background-color: rgb(178,237,255);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:1.5%;
+}
+.rightUpBlock{
+    background-color: #D4F5FF;
+    width:22vw;
+    height:39vh;
+    margin:1.5%;
+    border-radius: 20px;
+}
+.rightDownBlock{
+    background-color: #D4F5FF;
+    width:22vw;
+    height:39vh;
+    margin:1.5%;
+    border-radius: 20px;
+    display: flex;
+
+}
+.rightBlocks{
+    display: flex;
+    flex-direction: column;
+    margin:1.5%;
+    /* justify-content: center; */
+}
+.Notification{
+    font-size: 3.5vh;
+    margin:4%;
+    font-weight: bold;
+}
+.linkAdd{
+    text-decoration: none;
+    color:#000;
+}

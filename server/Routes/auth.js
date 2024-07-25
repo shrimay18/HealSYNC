@@ -17,10 +17,14 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
     '/google/callback',
-    passport.authenticate('google', {
-        successRedirect: process.env.CLIENT_URL,
-        failureRedirect: "/login/failed",
-    })
+    passport.authenticate('google', { failureRedirect: "/login/failed" }),
+    (req, res) => {
+        if (req.authInfo.redirectHome) {
+            res.redirect('/dashboard'); // redirect to home page if the user exists
+        } else {
+            res.redirect(process.env.CLIENT_URL); // redirect to client URL if the user is new
+        }
+    }
 );
 
 module.exports = router;

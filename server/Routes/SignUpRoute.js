@@ -1,19 +1,26 @@
 const router = require('express').Router();
-const signUpController = require('../controllers/SignUpController');
+const signUpController = require('../Controllers/SignupController');
 const multer = require('multer');
-const Upload = multer({ dest: 'uploads/' });
+const fs = require('fs');
+const path = require('path');
+const dir = path.join(__dirname, '..', 'uploads');
+
+if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, './uploads/');
+        cb(null, dir); // Use the absolute path of the uploads directory
     },
     filename: function(req, file, cb) {
-        cb(null, file.originalname);
+        const date = new Date().toISOString().replace(/:/g, '-');
+        cb(null, date + file.originalname);
     }
 });
+
 const upload = multer({ storage: storage });
 
-
-router.post('/', Upload.single("file"), signUpController.createUser);
+router.post('/', upload.single("file"), signUpController.createUser);
 
 module.exports = router;
