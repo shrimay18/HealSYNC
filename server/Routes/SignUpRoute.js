@@ -1,5 +1,8 @@
 const router = require('express').Router();
-const signUpController = require('../Controllers/SignupController');
+const signUpController = require('../controllers/SignUpController');
+const GsignUpController = require('../controllers/GSignUpController');
+
+
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
@@ -22,5 +25,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/', upload.single("file"), signUpController.createUser);
+router.post('/Gsignup', upload.single("file"), GsignUpController.createUser);
 
 module.exports = router;
