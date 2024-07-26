@@ -22,7 +22,7 @@ function ProtectedRoute ({children}){
     };
 
     useEffect(() => {
-        if(locakStorage.getItem('token')){
+        if(localStorage.getItem('token')){
             getValidUser();
         }
         else{
