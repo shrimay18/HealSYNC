@@ -1,0 +1,32 @@
+.loginheader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5rem; /* Use rem units for padding */
+    background-color: #d3f3fa; /* light blue background */
+    width: 100%; /* Make the header full width */
+}
+
+.loginheader p {
+    margin: 0;
+    font-size: 1.5rem; /* Use rem units for font size */
+    font-weight: bold;
+    color: #000; 
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.profile p {
+    margin-left: 0.5rem; 
+    font-size: 1.125rem; 
+    font-weight: normal;
+    color: #000; 
+}
+
+.profile svg {
+    font-size: 1.5rem; 
+}

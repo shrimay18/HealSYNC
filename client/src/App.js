@@ -26,6 +26,9 @@ import Login from './Pages/Login/Login';
 import Signup from './Pages/Signup/Signup';
 import GSignup from './Pages/Signup/GAuthSignUp';
 import ProtectedRoute from './Components/ProtectedRoutes/ProtectedRoute';
+import Dashboard from './Pages/Dashboard/Dashboard';
+import AddHospital from './Pages/AddHospital/AddHospital';
+
 
 const App = () => {
     return (
@@ -35,6 +38,8 @@ const App = () => {
               <Route path="/signup" element={<Signup />} />
               <Route path="/google-signup" element={<GSignup />} />
               {/*<ProtectedRoute path="/dashboard" element={<ProtectedRoute />} />*/}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/add-hospital" element={<AddHospital />} />
           </Routes>
         </Router>
     );

@@ -1,0 +1,35 @@
+.search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: transparent; /* Light blue background */
+    border-radius: 20px;
+    padding: 5px 10px;
+    width: 70%;
+  }
+  
+  .search-bar .search-icon {
+    color: #666;
+    margin-right: 10px;
+  }
+  
+  /* .search-bar{
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 80vw;
+    font-size: 16px;
+    color: #666;
+  } */
+  
+  .search-input{
+    background-color: rgb(178,237,255);
+    width:50vw;
+    height:4vh;
+    border-radius: 20px;
+    border:none;
+  }
+  .search-bar .search-input::placeholder {
+    color: #666;
+  }
+  

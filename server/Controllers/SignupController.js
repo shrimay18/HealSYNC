@@ -1,7 +1,12 @@
-const UserModel = require('../models/Users');
+
+const UserModel = require('../Models/Users');
+const multer = require('multer');
+
+// const UserModel = require('../models/Users');
 // const User = require("../passport")
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+
 
 
 exports.createUser = async (req, res) => {
