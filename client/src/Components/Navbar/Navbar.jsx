@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Navbar.css'; 
+import './navbar.css';
 
 const Navbar = () => {
     const [user, setUser] = useState(null);
