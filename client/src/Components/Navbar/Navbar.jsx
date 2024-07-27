@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 const Navbar = ({ name = "Guest", showDropdown = false }) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
-
+    console.log("HII");
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
     }
