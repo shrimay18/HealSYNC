@@ -70,7 +70,7 @@ exports.addHospital = async (req, res) => {
         const existingHospital = await hospital.findOne({ HospitalRegNo: data.hospitalRegNo });
         if(existingHospital){
             res.status(409).send('Hospital already exists');
-            return ;
+            return;
         }
 
         var hospitalAdded = await hospital.create({
