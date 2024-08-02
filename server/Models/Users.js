@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
+
 
 const UserSchema = new mongoose.Schema({
     sessionId: {
@@ -59,7 +61,13 @@ const UserSchema = new mongoose.Schema({
     Pdf: {
         type: String,
 
-    }
+    },
+    Hospitals:[
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Hospitals'
+        }
+    ]
 });
 
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
