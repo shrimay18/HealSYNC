@@ -1,36 +1,73 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import Navbar from "../../Components/Navbar/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import SearchBar from '../../Components/SearchBar/Searchbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-//i dont want it to be solid , i want the icon to be outlined
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
-//import filter icon
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Card from "../../Components/Card/Card";
 
 function Dashboard() {
-    const handleSearch = (query) => {
-        console.log('Search query:', query);
-        // Implement your search logic here
+    const [user, setUser] = useState(null);
+    const [hospitals, setHospitals] = useState([]);
+    const [filteredHospitals, setFilteredHospitals] = useState([]);
+
+    const get_user = async () => {
+        const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
+            headers: {
+                ContentType: 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        setUser(response.data.data.name);
     };
 
-    // const [hospitals, setHospitals] = useState([]);
+    const getHospitals = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/dashboard/', {
+                headers: {
+                    ContentType: 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log("Received Hospitals : " , response.data[0].Hospitals);
+            setHospitals(response.data[0].Hospitals); // Store fetched hospitals in state
+            setFilteredHospitals(response.data[0].Hospitals);
+        } catch (error) {
+            console.error('Error fetching hospitals:', error);
+        }
+    };
 
-    // const addHospital = (hospital) => {
-    //     setHospitals([...hospitals, hospital]);
-    // };
+    useEffect(() => {
+        get_user();
+        getHospitals();
+    }, []);
+
+    const handleSearch = (query) => {
+        const filtered = hospitals.filter((hospital) => {
+            return hospital.HospitalName.toLowerCase().includes(query.toLowerCase());
+        });
+        setFilteredHospitals(filtered);
+    };
+
+    const sortHospital = () => {
+        const sorted = [...filteredHospitals].sort((a, b) => {
+            return a.HospitalName.localeCompare(b.HospitalName);
+        });
+        setFilteredHospitals(sorted);
+    };
+
+    const removeHospitalFromState = (hospitalId) => {
+        const updatedHospitals = hospitals.filter(hospital => hospital._id !== hospitalId);
+        setHospitals(updatedHospitals);
+        setFilteredHospitals(updatedHospitals);
+    };
 
     return (
         <div className="dashboard">
-            <div className="loginheader">
-                <p>HealSYNC</p>
-            </div>
+            <Navbar name={user} showDropdown={true} />
             <div className="dashboardBlocks">
                 <div className="leftBlock">
                     <div className="leftBlockTop">
@@ -38,11 +75,21 @@ function Dashboard() {
                         <div className="addHospital">
                             <Link to="/add-hospital" className="linkAdd">Add <FontAwesomeIcon icon={faPlusSquare} className="plusRectangle-icon" /></Link>
                         </div>
-                        <div className="sortHospital">
+                        <div className="sortHospital" onClick={sortHospital}>
                             Sort <FontAwesomeIcon icon={faFilter} className="Sort-icon" />
                         </div>
                     </div>
-                    <Card title="Hospital 1" description="Description 1" />
+                    <div className="Hospitals">
+                        {filteredHospitals.map((hospital) => (
+                            <Card
+                                key={hospital._id}
+                                title={hospital.HospitalName}
+                                description={hospital.Speciality}
+                                id={hospital._id}
+                                onDelete={() => removeHospitalFromState(hospital._id)}
+                            />
+                        ))}
+                    </div>
                 </div>
                 <div className="rightBlocks">
                     <div className="rightUpBlock">

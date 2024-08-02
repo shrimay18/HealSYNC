@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const HospitalSchema = new mongoose.Schema({
-    sessionId: {
-        type: String,
-    },
     HospitalName: {
         type: String,
 
@@ -22,14 +20,6 @@ const HospitalSchema = new mongoose.Schema({
 
     },
     Landmark: {
-        type: String,
-
-    },
-    state: {
-        type: String,
-
-    },
-    city: {
         type: String,
 
     },
