@@ -1,0 +1,64 @@
+*{
+    margin:0px;
+    padding:0px;
+    box-sizing:border-box;
+}
+.addPatient{
+    background-color: rgb(177,241,255);
+}
+.addPatientBlock{
+    display: flex;
+}
+.addPatientForm{
+    background-color: rgb(212,245,255);
+    height:85vh;
+    margin:2rem;
+    width:65vw;
+    border-radius: 20px;
+    overflow: scroll;
+}
+.addPatientHeaderForm{
+    display: flex;
+    justify-content: center;
+    font-size:2.3rem;
+    font-weight:700;
+    margin:2rem;
+}
+.patientPersonalInfo{
+    display: flex;
+    margin:2rem;
+    font-size:2rem;
+    font-weight: 500;
+    width: 90%;
+    /* text-decoration: underline; */
+    border-bottom:3px solid black;
+}
+.columnAdd{
+    margin:2rem;
+}
+.single{
+    width:49vw;
+}
+.columnAdd p{
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+.rowAdd{
+    display: flex;
+    width:40vw;
+}
+.component{
+    margin-bottom: 0.4rem;
+}
+.triple{
+    width:15vw;
+}
+.patientMedicalHistory{
+    display: flex;
+    margin:2rem;
+    font-size:2rem;
+    font-weight: 500;
+    width: 90%;
+    /* text-decoration: underline; */
+    border-bottom:3px solid black;
+}

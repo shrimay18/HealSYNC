@@ -1,0 +1,65 @@
+.notesComponent {
+   display: flex;
+   flex-direction: column;
+  }
+  
+  
+  .addNote {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+  }
+  .inputNotes{
+    width:50vw;
+    background-color: rgb(178,237,255);
+    border-style: none;
+    border-radius: 10px;
+    margin-left: 0.5rem;
+  }
+  .noteList{
+    display: flex;
+    flex-direction: column;
+  }
+  .noteOnClick {
+    width:50vw;
+    height: 4vh;
+    background-color: rgb(178,237,255);
+    border-style: none;
+    border-radius: 10px;
+    margin-left: 1.3rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    padding:0.5rem;
+  }
+  
+  .addNote {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #007bb6;
+    margin-right: 10px;
+  } */
+  
+  .addNoteButton {
+    background-color: #003c5f; /* Dark blue button */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    width:12vw;
+    justify-content: center;
+    font-size:1rem;
+    height:3vh;
+  }
+  
+  

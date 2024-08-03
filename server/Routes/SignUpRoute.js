@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const signUpController = require('../controllers/SignUpController');
+const signUpController = require('../controllers/SignupController');
 const GsignUpController = require('../controllers/GSignUpController');
 
 
