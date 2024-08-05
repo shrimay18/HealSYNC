@@ -6,6 +6,8 @@ import PhoneNumber from '../../Components/PhoneNumberInput/PhoneNumber';
 import PDFUpload from '../../Components/PDFUpload/PdfUpload';
 import './Signup.css';
 import Checkbox from '../../Components/Checkbox/Checkbox';
+import Navbar from '../../Components/Navbar/Navbar';
+import Input from '../../Components/Input/Input';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -93,13 +95,12 @@ const Signup = () => {
 
     return (
         <div className="SignUp">
-            <div className="signupheader">
-                <p>HealSYNC</p>
-            </div>
+            <Navbar />
             <div className="signup-block">
                 <h1>Sign Up</h1>
                 <form className='signup-block-form' onSubmit={handleSubmit}>
                     <div className="row">
+
                         <div className="column">
                             <label>Name:</label>
                             <div className="row">
@@ -112,106 +113,101 @@ const Signup = () => {
                                 />
                             </div>
                         </div>
-                        <div className="column">
-                            <label>Username:</label>
-                            <input
-                                type="text"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                placeholder="Enter your Username"
-                            />
-                        </div>
+
+                        {/*Username*/}
+                        <Input 
+                            label="Username:"
+                            type="text"
+                            value={username}
+                            setValue={setUsername}
+                        />
                     </div>
                     <div className="row">
-                        <div className="column">
-                            <label>Password:</label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Enter your Password"
-                            />
-                        </div>
-                        <div className="column">
-                            <label>Confirm Password:</label>
-                            <input
-                                type="password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                placeholder="Confirm your Password"
-                            />
-                        </div>
+
+                        {/*Password*/}
+                        <Input 
+                            label="Password:"
+                            type="password"
+                            value={password}
+                            setValue={setPassword}
+                        />
+
+                        {/*Confirm Password*/}
+                        <Input 
+                            label="Confirm Password:"
+                            type="password"
+                            value={confirmPassword}
+                            setValue={setConfirmPassword}
+                        />
                     </div>
+
+
                     <div className="row">
+                        {/*Gender*/}
                         <div className="column">
-                            <label>Gender:</label>
                             <Dropdown 
+                                label='Gender: '
                                 options={genders}
                                 selected={gender}
                                 setSelected={setGender}
                             />
                         </div>
-                        <div className="column">
-                            <label>Date of Birth:</label>
-                            <input
-                                type="date"
-                                value={dob}
-                                onChange={(e) => setDob(e.target.value)}
-                                id="dob"
-                            />
-                        </div>
-                        <div className="column">
-                            <label>Age:</label>
-                            <input
-                                type="number"
-                                min="18"
-                                max="100"
-                                value={age}
-                                onChange={(e) => setAge(e.target.value)}
-                                placeholder="Age"
-                                id="age"
-                            />
-                        </div>
+
+                        {/*Date Of Birth*/}
+                        <Input 
+                            label="Date of Birth:"
+                            type="date"
+                            value={dob}
+                            setValue={setDob}
+                        />
+
+                        {/*Age*/}
+                        <Input
+                            label="Age:"
+                            type="number"
+                            value={age}
+                            setValue={setAge}
+                            min={18}
+                            max={100}
+                        />
                     </div>
                     <div className="row">
+                        {/*State*/}
                         <div className="column">
-                            <label>State:</label>
                             <Dropdown 
+                                label='State: '
                                 options={states}
                                 selected={state}
                                 setSelected={setState}
                             />
                         </div>
-                        <div className="column" >
-                            <label>City:</label>
-                            <input
-                                type="text"
-                                value={city}
-                                onChange={(e) => setCity(e.target.value)}
-                                placeholder="City"
-                                id="city"
-                            />
-                        </div>
-                        <div className="column">
-                            <label>Pincode:</label>
-                            <input
-                                type="number"
-                                value={pincode}
-                                onChange={(e) => setPincode(e.target.value)}
-                                placeholder="Pincode"
-                            />
-                        </div>
+
+                        {/*City*/}
+                        <Input 
+                            label="City:"
+                            type="text"
+                            value={city}
+                            setValue={setCity}
+                        />
+
+                        {/*Pincode*/}
+                        <Input 
+                            label="Pincode:"
+                            type="number"
+                            value={pincode}
+                            setValue={setPincode}
+                        />
                     </div>
                     <div className="row">
-                        <div className="column">
-                            <label>Email:</label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Enter your email address"
-                            />
-                        </div>
+                        {/*Email*/}
+                        <Input
+                            label="Email:"
+                            type="email"
+                            value={email}
+                            setValue={setEmail}
+                        />
+
+                        {/*Contact Number*/}
                         <div className="column">
                             <label>Contact Number:</label>
                             <PhoneNumber
@@ -220,7 +216,10 @@ const Signup = () => {
                             />
                         </div>
                     </div>
+
+
                     <div className="row">
+                            {/*Degree*/}
                             <div className="column">
                                 <label>Degree:</label>
                                 <Dropdown 
@@ -229,17 +228,18 @@ const Signup = () => {
                                     setSelected={setDegree}
                                 />
                             </div>
-                            <div className="column">
-                                <label>Registration No:</label>
-                                <input
-                                    type="text"
-                                    value={RegNo}
-                                    onChange={(e) => setRegNo(e.target.value)}
-                                    placeholder="Enter your Registration No"
-                                />
-                            </div>
+
+                            {/*Registration Number*/}
+                            <Input 
+                                label="Registration Number:"
+                                type="text"
+                                value={RegNo}
+                                setValue={setRegNo}
+                            />
                         
                     </div>
+
+                    {/*PDF Upload*/}
                     <div className="row">
                         <div className="column">
                             <PDFUpload />
@@ -249,6 +249,9 @@ const Signup = () => {
                         <input type="checkbox" required />
                         <p>By clicking Signup, you agree to our Terms and Conditions</p>
                     </div> */}
+
+
+                    {/*Terms and Condition*/}
                     <div>
                         <Checkbox
                             label="Accept Terms and Conditions"
@@ -256,6 +259,8 @@ const Signup = () => {
                             onChange={handleCheckboxChange}
                         />
                     </div>
+
+                    {/*Submission*/}
                     <button type="submit">Signup</button>
                 </form>
             </div>

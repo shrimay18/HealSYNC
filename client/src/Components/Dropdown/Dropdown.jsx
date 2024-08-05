@@ -4,18 +4,21 @@ import './Dropdown.css';
 
 
 
-const Dropdown = ({ options, selected, setSelected }) => {
+const Dropdown = (props) => {
 
     return (
         <div className="dropdown">
+            <label>
+                {props.label}
+            </label>
             <select
-                value={selected}
+                value={props.selected}
                 onChange={(e) => {
-                    setSelected(e.target.value);
+                    props.setSelected(e.target.value);
                     console.log(e.target.value);
                 }}
             >
-                {options.map((option) => (
+                {props.options.map((option) => (
                     <option key={option} value={option}>
                         {option}
                     </option>
