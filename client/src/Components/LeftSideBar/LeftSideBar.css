@@ -1,0 +1,34 @@
+.infoLeftBar{
+    display:flex;
+    flex-direction:column;
+    width:20vw;
+    height:85vh;
+    margin:2rem;
+    border-radius: 20px;
+    background-color: rgb(212,245,255);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+}
+.hospitalNameHeader{
+    font-size: 2.5rem;
+    display: flex;
+    justify-content: center;
+    font-weight:400;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+.infoIcon{
+    display:flex;
+    flex-direction:row;
+    align-items: center;
+    height:3rem;
+    margin-left: 1rem;
+}
+.infoIcon p{
+    margin-left: 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+.iconSolid{
+    width: 2rem;
+    height: 1.3rem;
+}

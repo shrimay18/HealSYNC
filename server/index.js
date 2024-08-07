@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./Routes/auth");
 const SignUpRoutes = require("./Routes/SignUpRoute");
 const LoginRoutes = require("./Routes/LoginRoute");
+const dashBoardRoutes = require("./Routes/DashBoardRoute");
 
 const port = process.env.PORT || 3000;
 
@@ -31,6 +32,7 @@ mongoose.connect(process.env.MONGO_URL)
         console.log(err);
     });
 
+
 app.use(
     expressSession({
         secret: "cyberwolve",
@@ -46,7 +48,16 @@ app.use(passport.session());
 app.use("/signup", SignUpRoutes);
 app.use("/login", LoginRoutes);
 app.use("/auth", authRoutes);
+app.use("/dashboard", dashBoardRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+app.get("/", (req, res) => {
+    console.log("Hello World");
+    console.log(req.session);
+    console.log(req.session.id);
+    req.session.visited = true;
+    res.send("Hello World");
+})

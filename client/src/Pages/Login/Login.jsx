@@ -9,8 +9,8 @@ function Login() {
     const googleAuth = async (e) => {
         e.preventDefault();
         window.open(
-            `${process.env.REACT_APP_API_URL}/auth/google/callback`,
-            "_self" // <- This is what makes it open in a new window.
+            `${process.env.REACT_APP_API_URL}/auth/google`,
+            "_self"
         )
     };
 
@@ -29,10 +29,19 @@ function Login() {
                 },
                 { 
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'authorization': 'Bearer ' + localStorage.getItem('token')
                     }
                 }
             );
+            console.log("Response hemkesh jwt:", response.data); // Log the response data
+            if (response.data.success){
+                localStorage.setItem('token', response.data.token);
+                window.location.href = response.data.redirectUrl;
+            }
+            else{
+                setMessage('Invalid credentials');
+            }
             setMessage(response.data);
         } catch (error) {
             if (error.response) {
