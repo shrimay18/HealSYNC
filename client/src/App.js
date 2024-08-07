@@ -30,7 +30,8 @@ import Dashboard from './Pages/Dashboard/Dashboard';
 import AddHospital from './Pages/AddHospital/AddHospital';
 import HospitalInfo from './Pages/HospitalInfo/HospitalInfo';
 import AddPatient from './Pages/AddPatient/AddPatient';
-
+import PatientPastHistory from './Pages/PatientPastHistory/PatientPastHistory';
+import Appointment from './Pages/Appointment/Appointment';
 const App = () => {
     return (
         <Router>
@@ -43,6 +44,8 @@ const App = () => {
               <Route path="/add-hospital" element={<AddHospital />} />
               <Route path="/hospitalInfo" element={<HospitalInfo />} />
               <Route path="/addPatient" element={<AddPatient />} />
+              <Route path="/patientPastHistory" element={<PatientPastHistory />} />
+              <Route path="/appointment" element={<Appointment />} />
           </Routes>
         </Router>
     );
