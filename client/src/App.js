@@ -48,10 +48,38 @@ const App = () => {
         <Route exact path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/google-signup" element={<GSignup />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/add-hospital" element={<ProtectedRoute><AddHospital /></ProtectedRoute>} />
-        <Route path="/hospitalInfo" element={<ProtectedRoute><HospitalInfo /></ProtectedRoute>} />
-        <Route path="/addPatient" element={<ProtectedRoute><AddPatient /></ProtectedRoute>} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-hospital"
+          element={
+            <ProtectedRoute>
+              <AddHospital />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hospitalInfo"
+          element={
+            <ProtectedRoute>
+              <HospitalInfo />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/addPatient"
+          element={
+            <ProtectedRoute>
+              <AddPatient />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );
