@@ -1,0 +1,50 @@
+*{
+    margin:0px;
+    padding:0px;
+    box-sizing:border-box;
+}
+.patientPastHistory{
+    width:100vw;
+    height: 100vh;
+    background-color: rgb(177,241,255);
+}
+.patientPastHistoryBlock{
+    display:flex;
+}
+.patientPastHistoryCenterBlock{
+    background-color: rgb(212,245,255);
+    height:85vh;
+    margin:2rem;
+    width:65vw;
+    border-radius: 20px;
+    overflow: scroll;
+}
+.patientPastHistoryCenterBlock{
+    display:flex;
+}
+.newAppointmentButton{
+    display: flex;
+    margin:2rem;
+    justify-content: space-evenly;
+    height:2.5rem;
+    width: 15rem;
+    align-items: center;
+    background-color: rgb(178,237,255);
+    border-radius: 20px;
+}
+.newAppointmentButton p{
+    font-size:1rem;
+    display: flex;
+    align-items: center;
+    margin:1rem;
+}
+.patientPastHistoryHeader{
+    display:flex;
+    width:100%;
+    justify-content: space-between;
+}
+.fpn{
+    font-size:1.5rem;
+    font-weight:700;
+    margin:2rem;
+}

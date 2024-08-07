@@ -62,3 +62,13 @@
     /* text-decoration: underline; */
     border-bottom:3px solid black;
 }
+.addPatientButton{
+    width:10vw;
+    margin:2rem;
+    
+}
+.buttonHolderAddPatient{
+    display: flex;
+    justify-content: end;
+    /* margin:2rem; */
+}

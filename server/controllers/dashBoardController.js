@@ -1,5 +1,5 @@
-const hospital = require('../Models/Hospitals');
-const User = require('../Models/Users');
+const hospital = require('../models/Hospitals');
+const User = require('../models/Users');
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 

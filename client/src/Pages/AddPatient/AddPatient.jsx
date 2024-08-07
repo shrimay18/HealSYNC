@@ -126,6 +126,9 @@ import PhoneNumber from '../../Components/PhoneNumberInput/PhoneNumber';
                             <input type='text' className='single AllergiesInput' placeholder='Enter allergies' />
                         </div>
                     </div>
+                    <div className='buttonHolderAddPatient'>
+                        <button className='addPatientButton'>Add Patient</button>
+                    </div>
                 </div>
                 <div className="rightBlocks">
                     <div className="rightUpBlock">
