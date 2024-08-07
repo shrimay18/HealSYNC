@@ -6,10 +6,9 @@ module.exports = (req, res, next) => {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.body.userId = verified.userId;
         next();
-    }
-    catch(err) {
+    } catch (err) {
         return res.status(401).json({
             message: 'Auth failed'
         });
     }
-}
+};

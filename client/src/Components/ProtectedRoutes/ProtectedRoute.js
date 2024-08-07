@@ -6,21 +6,21 @@
 //     const [user, setUser] = useState(null);
 //     const navigate = useNavigate();
 
-//     const getValidUser = async () => {
-//         try {
-//             const response = await axios.get("https://localhost3000/login/get-current-user", {
-//                 headers: {
-//                     Authorization: `Bearer ${localStorage.getItem('token')}`
-//                 }
-//             });
-//             setUser(response.data);
-//             navigate("/dashboard"); // Redirect to login page upon successful login
-//         }
-//         catch(err){
-//             setUser(null);
-//             console.error("Error getting user:", err);
-//         }
-//     };
+    // const getValidUser = async () => {
+    //     try {
+    //         const response = await axios.get("https://localhost3000/login/get-current-user", {
+    //             headers: {
+    //                 Authorization: `Bearer ${localStorage.getItem('token')}`
+    //             }
+    //         });
+    //         setUser(response.data);
+    //         navigate("/dashboard"); // Redirect to login page upon successful login
+    //     }
+    //     catch(err){
+    //         setUser(null);
+    //         console.error("Error getting user:", err);
+    //     }
+    // };
 
 //     useEffect(() => {
 //         if(localStorage.getItem('token')){
