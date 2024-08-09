@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./Pages/Login/Login";
@@ -10,6 +8,8 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import AddHospital from "./Pages/AddHospital/AddHospital";
 import HospitalInfo from "./Pages/HospitalInfo/HospitalInfo";
 import AddPatient from "./Pages/AddPatient/AddPatient";
+import patientPastHistory from "./Pages/PatientPastHistory/PatientPastHistory";
+import Appointment from "./Pages/Appointment/Appointment";
 
 const App = () => {
   return (
@@ -47,6 +47,22 @@ const App = () => {
           element={
             <ProtectedRoute>
               <AddPatient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/patientPastHistory"
+          element={
+            <ProtectedRoute>
+              <patientPastHistory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/appointment"
+          element={
+            <ProtectedRoute>
+              <Appointment />
             </ProtectedRoute>
           }
         />
