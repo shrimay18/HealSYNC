@@ -19,11 +19,7 @@ function Card({ title, description, id, onDelete, onClick }) {
 
     return (
         <div className="card" onClick={() => onClick(id)}>
-<<<<<<< HEAD
-            <div className='cardHeading'>{title}</div>
-=======
             <div className='cardHeading' >{title}</div>
->>>>>>> origin/master
             <div className='cardDescription'>{description}</div>
             <div className='cardButton'>
                 <button className='changeData editCard'>Edit</button>
