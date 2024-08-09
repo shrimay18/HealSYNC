@@ -1,6 +1,6 @@
-const hospital = require('../models/hospital');
+const hospital = require('../models/Hospitals');
 const patientHistory = require('../models/patientHistory');
-const patient = require('../models/patient');
+const patient = require('../models/Patients');
 
 exports.addPatientHistory = async (req, res) => {
     try {
