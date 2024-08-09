@@ -9,6 +9,8 @@ const authRoutes = require("./Routes/auth");
 const SignUpRoutes = require("./Routes/SignUpRoute");
 const LoginRoutes = require("./Routes/LoginRoute");
 const dashBoardRoutes = require("./Routes/DashBoardRoute");
+const hospitalDashRoutes = require("./Routes/hospitalDashRoute");
+const patientPastHistoryRoutes = require("./Routes/patientHistoryRoutes");
 
 const port = process.env.PORT || 3000;
 
@@ -49,6 +51,8 @@ app.use("/signup", SignUpRoutes);
 app.use("/login", LoginRoutes);
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashBoardRoutes);
+app.use("/hospital", hospitalDashRoutes);
+app.use("/patientHistory", patientPastHistoryRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

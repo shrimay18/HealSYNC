@@ -17,11 +17,6 @@ exports.createUser = async (req, res) => {
 
 
     req.body.confirmPassword = await bcrypt.hash(myPlaintextPassword1, saltRounds);
-
-
-
-
-
     const data = {
         name: req.body.name,
         email: req.body.email,
