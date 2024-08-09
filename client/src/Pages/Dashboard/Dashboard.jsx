@@ -1,7 +1,8 @@
+// Dashboard.js
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import Navbar from "../../Components/Navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import SearchBar from '../../Components/SearchBar/Searchbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,6 +16,7 @@ function Dashboard() {
     const [user, setUser] = useState(null);
     const [hospitals, setHospitals] = useState([]);
     const [filteredHospitals, setFilteredHospitals] = useState([]);
+    const navigate = useNavigate();
 
     const get_user = async () => {
         const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
@@ -34,7 +36,6 @@ function Dashboard() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            console.log("Received Hospitals : " , response.data[0].Hospitals);
             setHospitals(response.data[0].Hospitals); // Store fetched hospitals in state
             setFilteredHospitals(response.data[0].Hospitals);
         } catch (error) {
@@ -66,10 +67,11 @@ function Dashboard() {
         setHospitals(updatedHospitals);
         setFilteredHospitals(updatedHospitals);
     };
-    const goToHospitalInfo = (hospitalId) => {
-        localStorage.setItem('hospitalId', hospitalId);
-        Navigate('/hospitalInfo');
-    };
+
+    const goToHospital = (hospitalId) => {
+        localStorage.setItem('currentHospitalId', hospitalId);
+        navigate('/hospitalInfo');
+    }
 
     return (
         <div className="dashboard">
@@ -93,7 +95,7 @@ function Dashboard() {
                                 description={hospital.Speciality}
                                 id={hospital._id}
                                 onDelete={() => removeHospitalFromState(hospital._id)}
-                                onClick={(id) => goToHospitalInfo(hospital._id)}
+                                onClick={() => goToHospital(hospital._id)}
                             />
                         ))}
                     </div>
