@@ -34,7 +34,8 @@ const HospitalSchema = new mongoose.Schema({
     Speciality: {
         type: String,
 
-    }
+    },
+    patients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Patients' }]
 });
 
 const Hospital = mongoose.models.Hospitals || mongoose.model('Hospitals', HospitalSchema);
