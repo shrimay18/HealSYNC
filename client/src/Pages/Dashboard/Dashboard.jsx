@@ -8,8 +8,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Card from "../../Components/Card/Card";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+    const Navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [hospitals, setHospitals] = useState([]);
     const [filteredHospitals, setFilteredHospitals] = useState([]);
@@ -64,6 +66,10 @@ function Dashboard() {
         setHospitals(updatedHospitals);
         setFilteredHospitals(updatedHospitals);
     };
+    const goToHospitalInfo = (hospitalId) => {
+        localStorage.setItem('hospitalId', hospitalId);
+        Navigate('/hospitalInfo');
+    };
 
     return (
         <div className="dashboard">
@@ -87,6 +93,7 @@ function Dashboard() {
                                 description={hospital.Speciality}
                                 id={hospital._id}
                                 onDelete={() => removeHospitalFromState(hospital._id)}
+                                onClick={(id) => goToHospitalInfo(hospital._id)}
                             />
                         ))}
                     </div>

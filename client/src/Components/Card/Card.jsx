@@ -2,7 +2,7 @@ import React from 'react';
 import './Card.css';
 import axios from 'axios';
 
-function Card({ title, description, id, onDelete }) {
+function Card({ title, description, id, onDelete, onClick }) {
     const deleteAHospital = async () => {
         try {
             await axios.delete(`http://localhost:3000/dashboard/delete-hospital/${id}`, {
@@ -18,7 +18,7 @@ function Card({ title, description, id, onDelete }) {
     };
 
     return (
-        <div className="card">
+        <div className="card" onClick={() => onClick(id)}>
             <div className='cardHeading'>{title}</div>
             <div className='cardDescription'>{description}</div>
             <div className='cardButton'>
