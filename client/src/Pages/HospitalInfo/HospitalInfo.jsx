@@ -13,6 +13,8 @@ import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 
 const HospitalInfo = () => {
     const [user, setUser] = useState(null);
+    const [hospitalName, setHospitalName] = useState(null);
+
     const get_user = async () => {
         const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
             headers: {
@@ -22,14 +24,29 @@ const HospitalInfo = () => {
         });
         setUser(response.data.data.name);
     };
+
+    const get_hospital_name = async () => {
+        const response = await axios.get('http://localhost:3000/hospital/', {
+            headers: {
+                ContentType: 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
+            }
+        });
+        console.log("Hospital Details:", response.data);
+        setHospitalName(response.data.HospitalName);
+    }
+
     useEffect(() => {
         get_user();
+        get_hospital_name()
     }, []);
+
+
     return(
         <div className="hospitalInfo">
              <Navbar name={user} showDropdown={true} />
              <div className='hospitalInfoBlock'>
-                <LeftSideBar />
+                <LeftSideBar hosName={hospitalName}/>
                 {/* <div className='infoLeftBar'>
                     <div className="hospitalNameHeader">Hospital</div>
                     <div className='infoIcon homeComponent'>
@@ -104,11 +121,5 @@ const HospitalInfo = () => {
         </div>
     );
 }
-    
-
-
-
-
-
 
 export default HospitalInfo;

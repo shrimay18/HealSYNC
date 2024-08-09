@@ -12,63 +12,21 @@ import patientPastHistory from "./Pages/PatientPastHistory/PatientPastHistory";
 import Appointment from "./Pages/Appointment/Appointment";
 
 const App = () => {
-  return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/google-signup" element={<GSignup />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/add-hospital"
-          element={
-            <ProtectedRoute>
-              <AddHospital />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/hospitalInfo"
-          element={
-            <ProtectedRoute>
-              <HospitalInfo />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/addPatient"
-          element={
-            <ProtectedRoute>
-              <AddPatient />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/patientPastHistory"
-          element={
-            <ProtectedRoute>
-              <patientPastHistory />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/appointment"
-          element={
-            <ProtectedRoute>
-              <Appointment />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+          <Routes>
+              <Route exact path="/" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/google-signup" element={<GSignup />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/add-hospital" element={<ProtectedRoute><AddHospital /></ProtectedRoute>} />
+              <Route path="/hospitalInfo" element={<ProtectedRoute><HospitalInfo /></ProtectedRoute>} />
+              <Route path="/addPatient" element={<ProtectedRoute><AddPatient /></ProtectedRoute>} />
+              <Route path="/patientPastHistory" element={<ProtectedRoute><patientPastHistory /></ProtectedRoute>} />
+              <Route path="/appointment" element={<ProtectedRoute><Appointment /></ProtectedRoute>} />
+          </Routes>
+        </Router>
+    );
 };
 
 export default App;
