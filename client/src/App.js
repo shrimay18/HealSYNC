@@ -39,7 +39,6 @@ const App = () => {
               <Route exact path="/" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/google-signup" element={<GSignup />} />
-              {/*<ProtectedRoute path="/dashboard" element={<ProtectedRoute />} />*/}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/add-hospital" element={<AddHospital />} />
               <Route path="/hospitalInfo" element={<HospitalInfo />} />
