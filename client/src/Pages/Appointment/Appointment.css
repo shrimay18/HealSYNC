@@ -66,3 +66,16 @@
     /* justify-content: center; */
     /* align-items: center; */
 }
+.followUp{
+    width:21vw;
+}
+.saveButtonAppointment{
+    /* position:relative; */
+    right:0%;
+    width:10vw;
+    margin:3rem;
+}
+.buttonHolderAppointment{
+    display: flex;
+    justify-content: end;
+}
