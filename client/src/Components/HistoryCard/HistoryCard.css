@@ -1,0 +1,82 @@
+.historycard {
+    background-color: #e6f2ff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+.card-body {
+    margin-bottom: 15px;
+}
+
+.card-body h5 {
+    margin: 10px 0;
+    font-size: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.card-date, .card-complaint, .card-diagnosis, .card-doctor {
+    color: #555;
+    word-break: break-word;
+}
+
+.title {
+    font-weight: bolder;
+    margin-right: 5px;
+    color: #333;
+}
+
+
+.card-footer {
+    text-align: right;
+}
+
+.card-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.card-button:hover {
+    background-color: #0056b3;
+}
+
+@media screen and (max-width: 480px) {
+    .historycard {
+        padding: 10px;
+        margin: 10px auto;
+    }
+
+    .card-body h5 {
+        font-size: 12px;
+    }
+
+    .card-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .historycard {
+        max-width: 90%;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .historycard {
+        max-width: 400px;
+    }
+}
