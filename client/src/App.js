@@ -8,24 +8,73 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import AddHospital from "./Pages/AddHospital/AddHospital";
 import HospitalInfo from "./Pages/HospitalInfo/HospitalInfo";
 import AddPatient from "./Pages/AddPatient/AddPatient";
-import patientPastHistory from "./Pages/PatientPastHistory/PatientPastHistory";
 import Appointment from "./Pages/Appointment/Appointment";
+import PatientPastHistory from "./Pages/PatientPastHistory/PatientPastHistory";
+import HistoryCard from "./Components/HistoryCard/HistoryCard";
 
 const App = () => {
+  const history = {
+    date: "2024-08-10",
+    complaint: "Fever and Cough",
+    diagnosis: "Viral Infection",
+    doctor: "Dr. John Doe",
+  };
     return (
-        <Router>
-          <Routes>
-              <Route exact path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/google-signup" element={<GSignup />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/add-hospital" element={<ProtectedRoute><AddHospital /></ProtectedRoute>} />
-              <Route path="/hospitalInfo" element={<ProtectedRoute><HospitalInfo /></ProtectedRoute>} />
-              <Route path="/addPatient" element={<ProtectedRoute><AddPatient /></ProtectedRoute>} />
-              <Route path="/patientPastHistory" element={<ProtectedRoute><patientPastHistory /></ProtectedRoute>} />
-              <Route path="/appointment" element={<ProtectedRoute><Appointment /></ProtectedRoute>} />
-          </Routes>
-        </Router>
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/google-signup" element={<GSignup />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-hospital"
+            element={
+              <ProtectedRoute>
+                <AddHospital />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/hospitalInfo"
+            element={
+              <ProtectedRoute>
+                <HospitalInfo />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/addPatient"
+            element={
+              <ProtectedRoute>
+                <AddPatient />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/patientPastHistory"
+            element={
+              <ProtectedRoute>
+                <PatientPastHistory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/appointment"
+            element={
+              <ProtectedRoute>
+                <Appointment />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </Router>
     );
 };
 
