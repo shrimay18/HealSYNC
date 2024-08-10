@@ -173,24 +173,22 @@ const Appointment = () => {
                     <div className="rowAppointment">
                         <div className="columnAppointment">
                             <p className="AppointmentLabel">Follow Up</p>
-                            <input type="text" className="single AppointmentInput" placeholder="Please give any follow up advice to the patient" onChange={(e) => setAdvice(e.target.value)}/>
+                            <input type="text" className="double followUp AppointmentInput" placeholder="Please give any follow up advice to the patient" onChange={(e) => setAdvice(e.target.value)}/>
                         </div>
                         <div className="columnAppointment">
                             <p className="AppointmentLabel">Doctor Notes</p>
-                            <input type="text" className="single AppointmentInput" placeholder="Please give any notes to the patient" onChange={(e) => setDoctorNotes(e.target.value)}/>
+                            <input type="text" className="double AppointmentInput" placeholder="Please give any notes to the patient" onChange={(e) => setDoctorNotes(e.target.value)}/>
                         </div>
                     </div>
-                    <div className='rowAppointment'>
-                        <div className='columnAppointment'>
-                            <button className='saveButton' onClick={submit}>Save</button> {/* Corrected this line */}
-                        </div>
+                    <div className='buttonHolderAppointment'>
+                        <button className='saveButtonAppointment' onClick={submit}>Save</button> 
+                    </div>     
+                </div>
+                <div className='rightBlocks'>
+                    <div className='rightUpBlock'>
                     </div>
-                    <div className='rightBlocks'>
-                        <div className='rightUpBlock'>
-                        </div>
-                        <div className='rightDownBlock'>
-                            <div className='Notification'>Notification</div>
-                        </div>
+                    <div className='rightDownBlock'>
+                        <div className='Notification'>Notification</div>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,73 @@
+*{
+    margin:0px;
+    padding:0px;
+    box-sizing:border-box;
+}
+
+.search-patient{
+    width:100vw;
+    height: 100vh;
+    background-color: rgb(177,241,255);
+}
+.searchPatientBlock{
+    display:flex;
+}
+.searchPatientCenter{
+    /* display: flex; */
+    background-color: rgb(212,245,255);
+    height:85vh;
+    margin:2rem;
+    width:65vw;
+    border-radius: 20px;
+    overflow: scroll;
+    box-shadow: 0px 0px 10px 0px black;
+    overflow: scroll;
+}
+.searchPatientCenterHead{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.searchBarPatient{
+    background-color: rgb(178,237,255);
+    border:none;
+    border-radius: 20px;
+    font-size: 1rem;
+    /* padding-left: 1rem; */
+    margin-left:1rem;
+}
+.searchPatientBar{
+    display:flex;
+    margin:1.5rem;
+    width:25vw;
+    height:4vh;
+    border-radius: 20px;
+    align-items: center;
+    background-color: rgb(178,237,255);
+    padding-left: 1rem;
+}
+.addPatientButton{
+    display:flex;
+    width:15vw;
+    height:4vh;
+    background-color: rgb(178,237,255);
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.addPatientText{
+    margin-right: 1rem;
+    font-weight: 700;
+}
+.patientDirectory{
+    margin-left:1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+.patientDirectoryCardHolder{
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    margin-right:1.5rem;
+    /* margin-top:1.5rem; */
+}
