@@ -30,7 +30,7 @@
     font-weight: 700;
 }
 .patient-directory-card-patientId{
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 .patient-directory-card-buttons{
     display: flex;
@@ -41,4 +41,7 @@
 }
 .delete-icon{
     margin-right:0.75rem;
+}
+.title{
+    font-weight: bolder;
 }

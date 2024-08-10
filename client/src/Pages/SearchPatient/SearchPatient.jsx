@@ -1,19 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import './SearchPatient.css';
 import Navbar from "../../Components/Navbar/Navbar";
 import axios from 'axios';
-import { useState,useEffect } from 'react';
 import LeftSideBar from "../../Components/LeftSideBar/LeftSideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import PatientDirectoryCard from "../../Components/PatientDirectoryCard/PatientDirectoryCard";
 
 const SearchPatient = () => {
-    const [user, setUser] = React.useState('');
-    // const [hospitalName, setHospitalName] = React.useState('');
-    const [HospitalName, setHospitalName] = React.useState('');
+    const [user, setUser] = useState('');
+    const [hospitalName, setHospitalName] = useState('');
+    const [patients, setPatients] = useState([]);
+    const [filteredPatients, setFilteredPatients] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const get_user = async () => {
         try {
@@ -26,6 +28,7 @@ const SearchPatient = () => {
             setUser(response.data.data.name);
         } catch (error) {
             console.error('Error fetching user data:', error);
+            setError('Failed to fetch user data');
         }
     };
 
@@ -37,52 +40,112 @@ const SearchPatient = () => {
                     Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
                 }
             });
-            console.log("Hospital Details:", response.data);
             setHospitalName(response.data.HospitalName);
         } catch (error) {
             console.error('Error fetching hospital data:', error);
+            setError('Failed to fetch hospital data');
+        }
+    };
+
+    const get_patients = async () => {
+        try {
+            const response = await axios.get('http://localhost:3000/patientHistory', {
+                headers: {
+                    ContentType: 'application/json',
+                    Authorization: localStorage.getItem('currentHospitalId')
+                }
+            });
+            console.log('Fetched patient data:', response.data);
+            setPatients(response.data.patients);
+            setFilteredPatients(response.data.patients);
+            setHospitalName(response.data.hospitalName);
+        } catch (error) {
+            console.error('Error fetching patients data:', error);
+            setError('Failed to fetch patients data');
         }
     };
 
     useEffect(() => {
         get_user();
         get_hospital_name();
+        get_patients();
     }, []);
 
-    return(
+    const handleSearch = (event) => {
+        const query = event.target.value.toLowerCase();
+        setSearchQuery(query);
+        const filtered = patients.filter((patient) => 
+            patient.name.toLowerCase().includes(query)
+        );
+        setFilteredPatients(filtered);
+    };
+
+    const handleAddPatient = () => {
+        navigate('/addPatient');
+    };
+
+    const handleDeletePatient = async (patientId) => {
+        try {
+            await axios.delete(`http://localhost:3000/patientHistory/${patientId}`, {
+                headers: {
+                    ContentType: 'application/json',
+                    Authorization: localStorage.getItem('currentHospitalId')
+                }
+            });
+
+            // Remove the deleted patient from the state
+            const updatedPatients = patients.filter(patient => patient._id !== patientId);
+            setPatients(updatedPatients);
+            setFilteredPatients(updatedPatients);
+
+            console.log(`Patient ${patientId} deleted successfully`);
+        } catch (error) {
+            console.error('Error deleting patient:', error);
+            setError('Failed to delete patient');
+        }
+    };
+
+    const handleEditPatient = (patientId) => {
+        // Navigate to edit patient page or open edit modal
+        navigate(`/editPatient/${patientId}`);
+    };
+
+    return (
         <div className="search-patient">
             <Navbar name={user} showDropdown={true} />
             <div className="searchPatientBlock">
-                <LeftSideBar hosName={HospitalName} />
+                <LeftSideBar hosName={hospitalName} />
                 <div className="searchPatientCenter">
                     <div className="searchPatientCenterHead">
                         <div className="searchPatientBar">
                             <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon"/>
-                            <input type="text" placeholder="Search Patient" className="searchBarPatient"/>
+                            <input 
+                                type="text" 
+                                placeholder="Search Patient" 
+                                className="searchBarPatient" 
+                                value={searchQuery}
+                                onChange={handleSearch}
+                            />
                         </div>
-                        <div className="addPatientButton">
+                        <div className="addPatientButton" onClick={handleAddPatient}>
                             <span className="addPatientText">Add Patients</span>
                             <FontAwesomeIcon icon={faUserPlus} className="addPatientIcon"/>
                         </div>
                     </div>
-                    <div className="patientDirectory">Patient's Directory</div>
+                    <div className="patientDirectory">
+                        Patient's Directory ({filteredPatients.length} patients)
+                    </div>
+                    {error && <div className="error-message">{error}</div>}
                     <div className="patientDirectoryCardHolder">
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
-                        <PatientDirectoryCard name="Patient 1" />
+                        {filteredPatients.map((patient) => (
+                            <PatientDirectoryCard 
+                                key={patient._id} 
+                                name={patient.name} 
+                                patientId={patient._id}
+                                onDelete={handleDeletePatient}
+                                onEdit={handleEditPatient}
+                            />
+                        ))}
                     </div>
                 </div>
                 <div className='rightBlocks'>
