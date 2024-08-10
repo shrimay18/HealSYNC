@@ -10,15 +10,8 @@ import HospitalInfo from "./Pages/HospitalInfo/HospitalInfo";
 import AddPatient from "./Pages/AddPatient/AddPatient";
 import Appointment from "./Pages/Appointment/Appointment";
 import PatientPastHistory from "./Pages/PatientPastHistory/PatientPastHistory";
-import HistoryCard from "./Components/HistoryCard/HistoryCard";
 
 const App = () => {
-  const history = {
-    date: "2024-08-10",
-    complaint: "Fever and Cough",
-    diagnosis: "Viral Infection",
-    doctor: "Dr. John Doe",
-  };
     return (
       <Router>
         <Routes>
