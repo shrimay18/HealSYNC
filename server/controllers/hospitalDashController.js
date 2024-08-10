@@ -102,7 +102,7 @@ exports.addPatient = async (req, res) => {
         );
 
         console.log("Added Patient:", newPatient);
-        res.status(201).send('Patient added');
+        res.status(201).json({patientId: newPatient._id});
     } catch (err) {
         console.error("Error adding patient:", err);
         res.status(500).send('Failed to add patient');

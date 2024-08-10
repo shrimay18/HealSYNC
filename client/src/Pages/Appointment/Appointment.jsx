@@ -16,7 +16,7 @@ const Appointment = () => {
     const [height, setHeight] = useState(null);
     const [bloodPressure, setBloodPressure] = useState(null);
     const [chiefComplaint, setChiefComplaint] = useState(null);
-    const [diagonisis, setDiagonisis] = useState(null);
+    const [diagnosis, setDiagnosis] = useState(null);
     const [advice, setAdvice] = useState(null);
     const [followUp, setFollowUp] = useState(null);
     const [doctorNotes, setDoctorNotes] = useState(null);
@@ -57,35 +57,36 @@ const Appointment = () => {
     }, []);
 
     const submit = async () => {
+        console.log("Reached Submit");
         try {
-            const response = await axios.post('http://localhost:3000/patientHistory/addPatientHistory',
-                {
-                    // Ensure these variables are properly defined and set
+            const patientId = localStorage.getItem('currentPatientId');
+            if (!patientId) {
+                throw new Error("Patient ID not found in local storage");
+            }
 
-                    date: date,
-                    temperature: temperature,
-                    weight: weight,
-                    pulseRate: pulseRate,
-                    respiratoryRate: respiratoryRate,
-                    height: height,
-                    bloodPressure: bloodPressure,
-                    chiefComplaint: chiefComplaint,
-                    diagonisis: diagonisis,
-                    advice: advice,
-                    followUp: followUp,
-                    doctorNotes: doctorNotes,
-                },
-                {
-                    headers: {
-                        ContentType: 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('currentPatientId')}`
-                    }
+            const response = await axios.post('http://localhost:3000/patientHistory/addPatientHistory', {
+                patientId: patientId,
+                date: date,
+                temperature: temperature,
+                weight: weight,
+                pulseRate: pulseRate,
+                respiratoryRate: respiratoryRate,
+                height: height,
+                bloodPressure: bloodPressure,
+                chiefComplaint: chiefComplaint,
+                diagnosis: diagnosis,
+                advice: advice,
+                followUp: followUp,
+                doctorNotes: doctorNotes
+            }, {
+                headers: {
+                    ContentType: 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
-            );
-            console.log("Appointment data shared: ", response.data); // Log the response data
-
+            });
+            console.log("Patient history added", response);
         } catch (error) {
-            console.error('Error submitting patient history:', error);
+            console.error("Error adding patient history:", error);
         }
     };
 
@@ -161,19 +162,19 @@ const Appointment = () => {
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Diagnosis</p>
-                            <input type='text' className='single AppointmentInput' placeholder='Please give What You felt About The Patient' onChange={(e) => setDiagonisis(e.target.value)}/>
+                            <input type='text' className='single AppointmentInput' placeholder='Please give What You felt About The Patient' onChange={(e) => setDiagnosis(e.target.value)}/>
                         </div>
                     </div>
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Advice</p>
-                            <input type='text' className='single AppointmentInput' placeholder='Please give any advice to the patient' />
+                            <input type='text' className='single AppointmentInput' placeholder='Please give any advice to the patient' onChange={(e) => setAdvice(e.target.value)}/>
                         </div>
                     </div>
                     <div className="rowAppointment">
                         <div className="columnAppointment">
                             <p className="AppointmentLabel">Follow Up</p>
-                            <input type="text" className="single AppointmentInput" placeholder="Please give any follow up advice to the patient" onChange={(e) => setAdvice(e.target.value)}/>
+                            <input type="text" className="single AppointmentInput" placeholder="Please give any follow up advice to the patient" onChange={(e) => setFollowUp(e.target.value)}/>
                         </div>
                         <div className="columnAppointment">
                             <p className="AppointmentLabel">Doctor Notes</p>

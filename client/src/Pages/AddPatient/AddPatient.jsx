@@ -57,34 +57,37 @@ import { useNavigate } from 'react-router-dom';
          console.log("Hospital Details:", response.data);
          setHospitalName(response.data.HospitalName);
      }
-    const submit = async () => {
-        console.log("Reached Submit");
-        const response = await axios.post('http://localhost:3000/hospital/add-patient', {
-            name: name,
-            gender:gender,
-            DateOfBirth: dob,
-            contactNo: contactNo,
-            emergencyContact: emergencyContact,
-            email: email,
-            address: address,
-            city: city,
-            state: state,
-            pincode: pincode,
-            familyHistory: familyHistory,
-            pastMedicalHistory: pastMedicalHistory,
-            allergies: allergies,
-            hospitalId: localStorage.getItem('currentHospitalId')
-        }
-        , {
-            headers: {
-                ContentType: 'application/json',
-            }
-        });
-        console.log("Sent Patient Data " + response);
-        navigate("/patientPastHistory");
-        console.log();
-        localStorage.setItem('currentPatientId', response.data.patientId);
-    }
+     const submit = async () => {
+         console.log("Reached Submit");
+         try {
+             const response = await axios.post('http://localhost:3000/hospital/add-patient', {
+                 name: name,
+                 gender: gender,
+                 DateOfBirth: dob,
+                 contactNo: contactNo,
+                 emergencyContact: emergencyContact,
+                 email: email,
+                 address: address,
+                 city: city,
+                 state: state,
+                 pincode: pincode,
+                 familyHistory: familyHistory,
+                 pastMedicalHistory: pastMedicalHistory,
+                 allergies: allergies,
+                 hospitalId: localStorage.getItem('currentHospitalId')
+             }, {
+                 headers: {
+                     ContentType: 'application/json',
+                 }
+             });
+             console.log("Sent Patient Data " + response);
+             localStorage.setItem('currentPatientId', response.data.patientId); // Store patient ID in local storage
+             navigate("/patientPastHistory");
+             console.log("patient ID " + response.data.patientId);
+         } catch (error) {
+             console.error("Error adding patient:", error);
+         }
+     }
     useEffect(() => {
         get_user();
         get_hospital_name()

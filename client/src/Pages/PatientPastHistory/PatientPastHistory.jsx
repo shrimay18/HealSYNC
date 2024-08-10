@@ -6,8 +6,10 @@ import {useState, useEffect} from 'react';
 import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const PatientPastHistory = () => {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [HospitalName, setHospitalName] = useState(null);
     const [patientName, setPatientName] = useState('Patient Name');
@@ -31,9 +33,20 @@ const PatientPastHistory = () => {
         console.log("Hospital Details:", response.data);
         setHospitalName(response.data.HospitalName);
     }
+    const get_patient_name = async () => {
+        const response = await axios.get('http://localhost:3000/patientHistory/getPatientName', {
+            headers: {
+                ContentType: 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('currentPatientId')}`
+            }
+        });
+        console.log("Patient Details:", response.data);
+        setPatientName(response.data[0].name);
+    }
     useEffect(() => {
         get_user();
         get_hospital_name();
+        get_patient_name()
     }, []);
     return(
         <div className="patientPastHistory">
@@ -43,7 +56,7 @@ const PatientPastHistory = () => {
                 <div className='patientPastHistoryCenterBlock'>
                     <div className='patientPastHistoryHeader'>
                         <p className='fpn'>{patientName}</p>
-                        <div className='newAppointmentButton'>
+                        <div className='newAppointmentButton' onClick={() => navigate("/appointment")}>
                             <p>New Appointment</p>
                             <FontAwesomeIcon icon={faUserPlus} className='plusIcon' />
                         </div>
