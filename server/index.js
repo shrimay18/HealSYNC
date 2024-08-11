@@ -14,7 +14,7 @@ const patientPastHistoryRoutes = require("./Routes/patientHistoryRoutes");
 
 const port = process.env.PORT || 3000;
 
-// Passport configuration
+
 require('./passport');
 
 app.use(express.json());

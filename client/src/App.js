@@ -52,7 +52,7 @@ const App = () => {
           }
         />
         <Route
-          path="/patientPastHistory"
+          path="/patientPastHistory/:patientId"
           element={
             <ProtectedRoute>
               <PatientPastHistory />
@@ -60,7 +60,7 @@ const App = () => {
           }
         />
         <Route
-          path="/appointment"
+          path="/appointment/:patientId"
           element={
             <ProtectedRoute>
               <Appointment />
