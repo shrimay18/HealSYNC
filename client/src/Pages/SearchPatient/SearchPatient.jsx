@@ -58,7 +58,6 @@ const SearchPatient = () => {
             console.log('Fetched patient data:', response.data);
             setPatients(response.data.patients);
             setFilteredPatients(response.data.patients);
-            setHospitalName(response.data.hospitalName);
         } catch (error) {
             console.error('Error fetching patients data:', error);
             setError('Failed to fetch patients data');
@@ -93,7 +92,6 @@ const SearchPatient = () => {
                 }
             });
 
-            // Remove the deleted patient from the state
             const updatedPatients = patients.filter(patient => patient._id !== patientId);
             setPatients(updatedPatients);
             setFilteredPatients(updatedPatients);
@@ -106,8 +104,13 @@ const SearchPatient = () => {
     };
 
     const handleEditPatient = (patientId) => {
-        // Navigate to edit patient page or open edit modal
         navigate(`/editPatient/${patientId}`);
+    };
+
+    const handlePatientClick = (patientId, patientName) => {
+        localStorage.setItem('currentPatientName', patientName);
+        localStorage.setItem('currentPatientId', patientId);
+        navigate(`/patientPastHistory/${patientId}`);
     };
 
     return (
@@ -144,6 +147,7 @@ const SearchPatient = () => {
                                 patientId={patient._id}
                                 onDelete={handleDeletePatient}
                                 onEdit={handleEditPatient}
+                                onCardClick={handlePatientClick}
                             />
                         ))}
                     </div>

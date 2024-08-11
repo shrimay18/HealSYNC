@@ -5,7 +5,8 @@ const Patient = require("../models/Patients");
 exports.addPatientHistory = async (req, res) => {
   try {
     const hospitalId = req.headers.authorization;
-    console.log(`Adding patient for hospital ID: ${hospitalId}`);
+    console.log(`Adding patient history for hospital ID: ${hospitalId}`);
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
 
     const hospital = await Hospital.findById(hospitalId);
     if (!hospital) {
@@ -13,32 +14,15 @@ exports.addPatientHistory = async (req, res) => {
       return res.status(404).json({ message: "Hospital not found" });
     }
 
-    const newPatient = new Patient({
-      name: req.body.name,
-      //   gender: req.body.gender,
-      //   dob: req.body.DateOfBirth,
-      //   contactNo: req.body.contactNo,
-      //   emergencyContact: req.body.emergencyContact,
-      //   email: req.body.email,
-      //   address: req.body.address,
-      //   city: req.body.city,
-      //   state: req.body.state,
-      //   pincode: req.body.pincode,
-      //   familyHistory: req.body.familyHistory,
-      //   pastMedicalHistory: req.body.pastMedicalHistory,
-      //   allergies: req.body.allergies,
-      //   hospitalId: req.body.hospitalId,
-    });
-
-    await newPatient.save();
-    console.log(`New patient created with ID: ${newPatient._id}`);
-
-    hospital.patients.push(newPatient._id);
-    await hospital.save();
-    console.log(`Patient added to hospital ${hospital.HospitalName}`);
+    const { patientId } = req.body;
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      console.log(`Patient not found for ID: ${patientId}`);
+      return res.status(404).json({ message: "Patient not found" });
+    }
 
     const patientHistoryData = {
-      patientId: newPatient._id,
+      patientId: patientId,
       date: req.body.date,
       temperature: req.body.temperature,
       weight: req.body.weight,
@@ -53,21 +37,27 @@ exports.addPatientHistory = async (req, res) => {
       doctorNotes: req.body.doctorNotes,
     };
 
-    await PatientHistory.create(patientHistoryData);
-    console.log(`Patient history created for patient ${newPatient._id}`);
+    console.log('Patient history data to be saved:', JSON.stringify(patientHistoryData, null, 2));
+
+    const newPatientHistory = await PatientHistory.create(patientHistoryData);
+    console.log(`Patient history created for patient ${patientId}. History ID: ${newPatientHistory._id}`);
 
     res.status(201).json({
-      message: "Patient and history added successfully",
-      patientId: newPatient._id,
+      message: "Patient history added successfully",
+      patientHistoryId: newPatientHistory._id,
     });
   } catch (err) {
-    console.error("Error during adding patient and history:", err);
+    console.error("Error during adding patient history:");
+    console.error(err);
+    if (err.name === 'ValidationError') {
+      console.error('Validation Error Details:', err.errors);
+      return res.status(400).json({ message: "Validation Error", errors: err.errors });
+    }
     res
       .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+      .json({ message: "Internal Server Error", error: err.message, stack: err.stack });
   }
 };
-
 exports.getPatientHistory = async (req, res) => {
   try {
     const hospitalId = req.headers.authorization;
@@ -104,6 +94,45 @@ exports.getPatientHistory = async (req, res) => {
   }
 };
 
+exports.getSinglePatientHistory = async (req, res) => {
+  try {
+    const { patientId } = req.params;
+    const hospitalId = req.headers.authorization;
+
+    console.log(`Fetching history for patient ${patientId} from hospital ${hospitalId}`);
+
+    const hospital = await Hospital.findById(hospitalId);
+    if (!hospital) {
+      console.log(`Hospital not found for ID: ${hospitalId}`);
+      return res.status(404).json({ message: "Hospital not found" });
+    }
+
+    if (!hospital.patients.includes(patientId)) {
+      console.log(`Patient ${patientId} not found in hospital ${hospitalId}`);
+      return res.status(404).json({ message: "Patient not found in this hospital" });
+    }
+
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      console.log(`Patient not found for ID: ${patientId}`);
+      return res.status(404).json({ message: "Patient not found" });
+    }
+
+    const patientHistory = await PatientHistory.find({ patientId }).sort({ date: -1 });
+
+    res.status(200).json({
+      patient: {
+        _id: patient._id,
+        name: patient.name
+      },
+      history: patientHistory
+    });
+  } catch (err) {
+    console.error("Error fetching patient history:", err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+};
+
 exports.deletePatient = async (req, res) => {
   try {
     const { patientId } = req.params;
@@ -133,5 +162,15 @@ exports.deletePatient = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server Error", error: err.message });
+  }
+};
+
+exports.getServerDate = async (req, res) => {
+  try {
+    const serverDate = new Date().toISOString().split('T')[0];
+    res.status(200).json({ date: serverDate });
+  } catch (err) {
+    console.error("Error getting server date:", err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };

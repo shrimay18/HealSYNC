@@ -3,6 +3,8 @@ const patientHistoryController = require('../controllers/patientHistoryControlle
 
 route.post('/addPatientHistory', patientHistoryController.addPatientHistory);
 route.get('/', patientHistoryController.getPatientHistory);
+route.get('/server-date', patientHistoryController.getServerDate);
+route.get('/:patientId', patientHistoryController.getSinglePatientHistory);
 route.delete('/:patientId', patientHistoryController.deletePatient);
 
 module.exports = route;

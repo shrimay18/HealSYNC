@@ -9,26 +9,27 @@ import Dropdown from '../../Components/Dropdown/Dropdown';
 import PhoneNumber from '../../Components/PhoneNumberInput/PhoneNumber';
 import { useNavigate } from 'react-router-dom';
 
- const AddPatient = () => {
-     const navigate = useNavigate();
-     const [name, setName] = useState('');
-     const [dob, setDob] = useState('');
-     const [contactNo, setContactNo] = useState('');
-     const [emergencyContact, setEmergencyContact] = useState('');
-     const [email, setEmail] = useState('');
-     const [city, setCity] = useState('');
-     const [pincode, setPincode] = useState('');
-     const [user, setUser] = useState(null);
-     const [gender, setGender] = useState('');
-     const [state, setState] = useState('');
-     const [familyHistory, setFamilyHistory] = useState('');
-     const [pastMedicalHistory, setPastMedicalHistory] = useState('');
-     const [allergies, setAllergies] = useState('');
-     const [address, setAddress] = useState('');
-     const genders = ["Male", "Female", "Other"];
-     const [hospitalName, setHospitalName] = useState(null);
+const AddPatient = () => {
+    const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [dob, setDob] = useState('');
+    const [contactNo, setContactNo] = useState('');
+    const [emergencyContact, setEmergencyContact] = useState('');
+    const [email, setEmail] = useState('');
+    const [city, setCity] = useState('');
+    const [pincode, setPincode] = useState('');
+    const [user, setUser] = useState(null);
+    const [gender, setGender] = useState('');
+    const [state, setState] = useState('');
+    const [familyHistory, setFamilyHistory] = useState('');
+    const [pastMedicalHistory, setPastMedicalHistory] = useState('');
+    const [allergies, setAllergies] = useState('');
+    const [address, setAddress] = useState('');
+    const [hospitalName, setHospitalName] = useState(null);
 
-     const states = [
+    const genders = ["Male", "Female", "Other"];
+
+    const states = [
         "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
         "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir",
         "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra",
@@ -38,6 +39,7 @@ import { useNavigate } from 'react-router-dom';
         "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli",
         "Daman and Diu", "Delhi", "Lakshadweep", "Puducherry"
     ];
+
     const get_user = async () => {
         const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
             headers: {
@@ -47,48 +49,59 @@ import { useNavigate } from 'react-router-dom';
         });
         setUser(response.data.data.name);
     };
-     const get_hospital_name = async () => {
-         const response = await axios.get('http://localhost:3000/hospital/', {
-             headers: {
-                 ContentType: 'application/json',
-                 Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
-             }
-         });
-         console.log("Hospital Details:", response.data);
-         setHospitalName(response.data.HospitalName);
-     }
-    const submit = async () => {
-        console.log("Reached Submit");
-        const response = await axios.post('http://localhost:3000/hospital/add-patient', {
-            name: name,
-            gender:gender,
-            DateOfBirth: dob,
-            contactNo: contactNo,
-            emergencyContact: emergencyContact,
-            email: email,
-            address: address,
-            city: city,
-            state: state,
-            pincode: pincode,
-            familyHistory: familyHistory,
-            pastMedicalHistory: pastMedicalHistory,
-            allergies: allergies,
-            hospitalId: localStorage.getItem('currentHospitalId')
-        }
-        , {
+
+    const get_hospital_name = async () => {
+        const response = await axios.get('http://localhost:3000/hospital/', {
             headers: {
                 ContentType: 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
             }
         });
-        console.log("Sent Patient Data " + response);
-        navigate("/patientPastHistory");
-        console.log();
-        localStorage.setItem('currentPatientId', response.data.patientId);
+        console.log("Hospital Details:", response.data);
+        setHospitalName(response.data.HospitalName);
     }
+
+    const submit = async () => {
+        console.log("Reached Submit");
+        try {
+            const response = await axios.post('http://localhost:3000/hospital/add-patient', {
+                name: name,
+                gender: gender,
+                DateOfBirth: dob,
+                contactNo: contactNo,
+                emergencyContact: emergencyContact,
+                email: email,
+                address: address,
+                city: city,
+                state: state,
+                pincode: pincode,
+                familyHistory: familyHistory,
+                pastMedicalHistory: pastMedicalHistory,
+                allergies: allergies,
+                hospitalId: localStorage.getItem('currentHospitalId')
+            }, {
+                headers: {
+                    ContentType: 'application/json',
+                }
+            });
+            console.log("Sent Patient Data ", response);
+            const patientId = response.data.patientId;
+            localStorage.setItem('currentPatientName', name);
+            localStorage.setItem('currentPatientId', patientId);
+            console.log("Patient ID ", patientId);
+            
+            await new Promise(resolve => setTimeout(resolve, 100));
+            navigate(`/patientPastHistory/${patientId}`);
+        } catch (error) {
+            console.error("Error adding patient:", error);
+        }
+    }
+
     useEffect(() => {
         get_user();
         get_hospital_name()
     }, []);
+
     return (
         <div className="addPatient">
             <Navbar name={user} showDropdown={true} />
@@ -142,8 +155,7 @@ import { useNavigate } from 'react-router-dom';
                     </div>
                     <div className='rowAdd'>
                         <div className='columnAdd patientState'>
-                            <p className='component 
-                            patientStateLabel'>State</p>
+                            <p className='component patientStateLabel'>State</p>
                             <Dropdown options={states}
                                     selected={state}
                                     setSelected={setState}
@@ -178,7 +190,7 @@ import { useNavigate } from 'react-router-dom';
                         </div>
                     </div>
                     <div className='buttonHolderAddPatient'>
-                        <button className='addPatientButton' onClick={() => submit()}>Add Patient</button>
+                        <button className='addPatientButton' onClick={submit}>Add Patient</button>
                     </div>
                 </div>
                 <div className="rightBlocks">
@@ -190,7 +202,6 @@ import { useNavigate } from 'react-router-dom';
                 </div>
             </div>
         </div>
-        
     );
 }
 

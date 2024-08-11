@@ -38,7 +38,7 @@ const patientHistorySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    diagonisis: {
+    diagnosis: {
         type: String,
         required: true
     },
