@@ -13,7 +13,7 @@ const LeftSideBar = ({hosName}) => {
                 <FontAwesomeIcon icon={faHome} className='iconSolid Home'/>
                 <p>Home</p>
             </div>
-            <div className='infoIcon searchComponent' >
+            <div className='infoIcon searchComponent' onClick={() => navigate("/searchPatient")}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} className='iconSolid Search'/>
                 <p>Search</p>
             </div>

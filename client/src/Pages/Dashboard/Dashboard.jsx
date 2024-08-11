@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Card from "../../Components/Card/Card";
-import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
     const Navigate = useNavigate();
@@ -36,7 +35,7 @@ function Dashboard() {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             });
-            setHospitals(response.data[0].Hospitals); // Store fetched hospitals in state
+            setHospitals(response.data[0].Hospitals);
             setFilteredHospitals(response.data[0].Hospitals);
         } catch (error) {
             console.error('Error fetching hospitals:', error);

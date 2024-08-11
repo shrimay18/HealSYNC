@@ -47,25 +47,6 @@ const HospitalInfo = () => {
              <Navbar name={user} showDropdown={true} />
              <div className='hospitalInfoBlock'>
                 <LeftSideBar hosName={hospitalName}/>
-                {/* <div className='infoLeftBar'>
-                    <div className="hospitalNameHeader">Hospital</div>
-                    <div className='infoIcon homeComponent'>
-                        <FontAwesomeIcon icon={faHome} className='iconSolid Home'/>
-                        <p>Home</p>
-                    </div>
-                    <div className='infoIcon searchComponent'>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className='iconSolid Search'/>
-                        <p>Search</p>
-                    </div>
-                    <div className='infoIcon hospitalComponent'>
-                        <FontAwesomeIcon icon={faHospital} className='iconSolid Hospital'/>
-                        <p>Hospital</p>
-                    </div>
-                    <div className='infoIcon userComponent'>
-                        <FontAwesomeIcon icon={faUserPlus} className='iconSolid User'/>
-                        <p>Add Patient</p>
-                    </div>
-                </div> */}
                 <div className='overviewBlock'>
                     <div className='overviewHeader'>Total Overview</div>
                     <div className='cardsOverviewTop'>
@@ -98,11 +79,6 @@ const HospitalInfo = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <div className='doctorNote'>
-                        <div className='doctorNoteHeader'>Doctor's Note</div>
-                        //give three input fields for doctor's note
-
-                    </div> */}
                     <div className='addNotes'>
                         <div className='addNotesHeader'>Doctor's Note</div>
                         <AddNotes />

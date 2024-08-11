@@ -15,7 +15,7 @@ const patientPastHistoryRoutes = require("./Routes/patientHistoryRoutes");
 const port = process.env.PORT || 3000;
 
 // Passport configuration
-require('./passport'); // Ensure this is required here
+require('./passport');
 
 app.use(express.json());
 app.use(cors());
@@ -33,8 +33,7 @@ mongoose.connect(process.env.MONGO_URL)
         console.log("Connection failed!");
         console.log(err);
     });
-
-
+ 
 app.use(
     expressSession({
         secret: "cyberwolve",
@@ -64,4 +63,4 @@ app.get("/", (req, res) => {
     console.log(req.session.id);
     req.session.visited = true;
     res.send("Hello World");
-})
+});
