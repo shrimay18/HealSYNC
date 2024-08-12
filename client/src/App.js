@@ -60,6 +60,14 @@ const App = () => {
           }
         />
         <Route
+          path="/editPatient/:patientId"
+          element={
+            <ProtectedRoute>
+              <AddPatient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/patientPastHistory/:patientId"
           element={
             <ProtectedRoute>

@@ -124,7 +124,18 @@ exports.getSinglePatientHistory = async (req, res) => {
       patient: {
         _id: patient._id,
         name: patient.name,
-        // Include other patient fields as needed
+        gender: patient.gender,
+        DateOfBirth: patient.DateOfBirth,
+        contactNo: patient.contactNo,
+        emergencyContact: patient.emergencyContact,
+        email: patient.email,
+        address: patient.address,
+        city: patient.city,
+        state: patient.state,
+        pincode: patient.pincode,
+        familyHistory: patient.familyHistory,
+        pastMedicalHistory: patient.pastMedicalHistory,
+        allergies: patient.allergies
       },
       history: patientHistory
     });
