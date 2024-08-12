@@ -17,6 +17,40 @@ const PatientPastHistory = () => {
     const navigate = useNavigate();
     const { patientId } = useParams();
 
+    const parseDate = (dateString) => {
+        if (!dateString) return new Date(); // Return current date if dateString is undefined
+        
+        // First, try parsing as ISO date (e.g., "2023-06-15T00:00:00.000Z")
+        let date = new Date(dateString);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+        
+        // If that fails, try parsing as "dd-mmm-yyyy"
+        const [day, month, year] = dateString.split('-');
+        const monthIndex = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+            .indexOf(month.toLowerCase());
+        
+        if (monthIndex !== -1) {
+            return new Date(year, monthIndex, day);
+        }
+        
+        // If all parsing fails, return current date
+        console.error(`Unable to parse date: ${dateString}`);
+        return new Date();
+    };
+
+    const formatDate = (date) => {
+        if (!(date instanceof Date) || isNaN(date.getTime())) {
+            console.error(`Invalid date object: ${date}`);
+            return 'Invalid Date';
+        }
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][date.getMonth()];
+        const year = date.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+
     const get_user = async () => {
         try {
             const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
@@ -42,7 +76,21 @@ const PatientPastHistory = () => {
                 }
             });
             console.log('Fetched patient history:', response.data);
-            setPatientHistory(response.data.history);
+            
+            // Sort the history array by date in descending order
+            const sortedHistory = response.data.history.sort((a, b) => {
+                const dateA = parseDate(a.date);
+                const dateB = parseDate(b.date);
+                return dateB - dateA;
+            });
+            
+            // Format the dates
+            const formattedHistory = sortedHistory.map(history => ({
+                ...history,
+                date: formatDate(parseDate(history.date))
+            }));
+            
+            setPatientHistory(formattedHistory);
         } catch (error) {
             console.error('Error fetching patient history:', error);
             setError('Failed to fetch patient history');
@@ -95,8 +143,8 @@ const PatientPastHistory = () => {
                             <FontAwesomeIcon icon={faUserPlus} className='plusIcon' />
                         </div>
                         <div>
-                            {patientHistory.map((history) => (
-                                <HistoryCard history={history} name = {user} />
+                            {patientHistory.map((history, index) => (
+                                <HistoryCard key={history._id || index} history={history} name={user} />
                             ))}
                         </div>
                     </div>
