@@ -123,7 +123,8 @@ exports.getSinglePatientHistory = async (req, res) => {
     res.status(200).json({
       patient: {
         _id: patient._id,
-        name: patient.name
+        name: patient.name,
+        // Include other patient fields as needed
       },
       history: patientHistory
     });
