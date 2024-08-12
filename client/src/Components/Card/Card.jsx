@@ -1,10 +1,13 @@
 import React from 'react';
 import './Card.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Card({ title, description, id, onDelete, onClick }) {
+    const navigate = useNavigate();
+
     const deleteAHospital = async (e) => {
-        e.stopPropagation(); // Prevent the card click event from firing
+        e.stopPropagation();
         try {
             const confirmDelete = window.confirm(`Are you sure you want to delete ${title}?`);
             if (confirmDelete) {
@@ -14,7 +17,7 @@ function Card({ title, description, id, onDelete, onClick }) {
                         Authorization: `Bearer ${localStorage.getItem('token')}`
                     }
                 });
-                onDelete(id); // Call the callback to update the state in Dashboard
+                onDelete(id);
             }
         } catch (error) {
             console.error('Error deleting hospital:', error);
@@ -23,9 +26,8 @@ function Card({ title, description, id, onDelete, onClick }) {
     };
 
     const handleEditClick = (e) => {
-        e.stopPropagation(); // Prevent the card click event from firing
-        // Add edit functionality here
-        console.log('Edit clicked for hospital:', id);
+        e.stopPropagation();
+        navigate(`/edit-hospital/${id}`);
     };
 
     return (
