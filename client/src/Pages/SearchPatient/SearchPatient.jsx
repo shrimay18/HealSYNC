@@ -145,6 +145,7 @@ const SearchPatient = () => {
                                 key={patient._id} 
                                 name={patient.name} 
                                 patientId={patient._id}
+                                patientContactNo={patient.contactNo}
                                 onDelete={handleDeletePatient}
                                 onEdit={handleEditPatient}
                                 onCardClick={handlePatientClick}
