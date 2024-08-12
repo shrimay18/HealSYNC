@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import './PatientDirectoryCard.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPen } from "@fortawesome/free-solid-svg-icons";
 
-const PatientDirectoryCard = ({ name, patientId, onDelete, onEdit, onCardClick }) => {
+const PatientDirectoryCard = ({ name, patientId, onDelete, onCardClick }) => {
+    const navigate = useNavigate();
+
     const handleDelete = (e) => {
         e.stopPropagation();  // Prevent card click when delete is clicked
         if (window.confirm(`Are you sure you want to delete patient ${name}?`)) {
@@ -13,7 +16,7 @@ const PatientDirectoryCard = ({ name, patientId, onDelete, onEdit, onCardClick }
 
     const handleEdit = (e) => {
         e.stopPropagation();  // Prevent card click when edit is clicked
-        onEdit(patientId);
+        navigate(`/editPatient/${patientId}`);
     };
 
     return (
@@ -27,12 +30,12 @@ const PatientDirectoryCard = ({ name, patientId, onDelete, onEdit, onCardClick }
             </div>
             <div className="patient-directory-card-buttons">
                 <FontAwesomeIcon 
-                    icon={faTrash} 
+                    icon={faTrash}
                     className="delete-icon"
                     onClick={handleDelete}
                 />
                 <FontAwesomeIcon 
-                    icon={faPen} 
+                    icon={faPen}
                     className="edit-icon"
                     onClick={handleEdit}
                 />

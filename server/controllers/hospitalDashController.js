@@ -4,17 +4,16 @@ const jwt = require('jsonwebtoken');
 const patient = require('../models/Patients');
 const mongoose = require("mongoose");
 
-
 exports.getCurrentUser = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]; // Extract token from header
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
         return res.status(401).send('No token provided');
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify and decode token
-        const user = await User.findById(decoded.userId); // Extract user ID from token and fetch user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -32,15 +31,14 @@ exports.getCurrentUser = async (req, res) => {
 }
 
 exports.getHospital = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]; // Extract token from header
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
         return res.status(401).send('No token provided');
     }
 
     try {
-        // Find hospital by ID and populate the 'patients' field
-        const hospitalF = await hospital.findById(token).populate('patients'); // Ensure 'patients' is correct
+        const hospitalF = await hospital.findById(token).populate('patients');
 
         if (!hospitalF) {
             return res.status(404).send('Hospital not found');
@@ -53,13 +51,11 @@ exports.getHospital = async (req, res) => {
     }
 }
 
-
-
 exports.addPatient = async (req, res) => {
     const data = {
         name: req.body.name,
         gender: req.body.gender,
-        dob: req.body.DateOfBirth,
+        DateOfBirth: req.body.dob,
         contactNo: req.body.contactNo,
         emergencyContact: req.body.emergencyContact,
         email: req.body.email,
@@ -72,14 +68,36 @@ exports.addPatient = async (req, res) => {
         allergies: req.body.allergies,
         hospitalId: req.body.hospitalId
     };
-    console.log("Received Patient Data: ", data);
+    console.log("Received Patient Data: ", JSON.stringify(data, null, 2));
     try {
         const existingPatient = await patient.findOne({ name: data.name, contactNo: data.contactNo });
         if(existingPatient){
             return res.status(400).send('Patient already exists');
         }
 
-        const newPatient = await patient.create({
+        const newPatient = await patient.create(data);
+
+        console.log("New patient created in database:", JSON.stringify(newPatient, null, 2));
+        console.log("New patient keys:", Object.keys(newPatient._doc));
+
+        await hospital.updateOne(
+            { _id: data.hospitalId },
+            { $push: { patients: newPatient._id } }
+        );
+
+        res.status(200).json({ message: "Patient Added successfully", patientId: newPatient._id });
+    } catch (err) {
+        console.error("Error adding patient:", err);
+        res.status(500).send('Failed to add patient');
+    }
+}
+
+exports.updatePatient = async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+    console.log("Updating Patient Data: ", data);
+    try {
+        const updatedPatient = await patient.findByIdAndUpdate(id, {
             name: data.name,
             gender: data.gender,
             DateOfBirth: data.dob,
@@ -93,19 +111,16 @@ exports.addPatient = async (req, res) => {
             familyHistory: data.familyHistory,
             pastMedicalHistory: data.pastMedicalHistory,
             allergies: data.allergies,
-        });
-
-        // Update the hospital with the new patient
-        await hospital.updateOne(
-            { _id: data.hospitalId },
-            { $push: { patients: newPatient._id } }
-        );
-
-        console.log("Added Patient:", newPatient);
-        res.status(200).json({ message: "Patient Added successfully", patientId: newPatient._id });
-        } catch (err) {
-        console.error("Error adding patient:", err);
-        res.status(500).send('Failed to add patient');
+        }, { new: true });
+        
+        if (!updatedPatient) {
+            return res.status(404).send('Patient not found');
+        }
+        console.log("Updated Patient:", updatedPatient);
+        res.status(200).json({ message: "Patient updated successfully", patient: updatedPatient });
+    } catch (err) {
+        console.error("Error updating patient:", err);
+        res.status(500).send('Failed to update patient');
     }
 }
 
