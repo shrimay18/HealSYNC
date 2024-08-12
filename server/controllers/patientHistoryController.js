@@ -186,3 +186,31 @@ exports.getServerDate = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };
+
+exports.getAppointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+    const appointment = await PatientHistory.findById(appointmentId);
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+    res.status(200).json(appointment);
+  } catch (err) {
+    console.error("Error fetching appointment:", err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+};
+
+exports.updateAppointment = async (req, res) => {
+  try {
+    const { appointmentId } = req.params;
+    const updatedAppointment = await PatientHistory.findByIdAndUpdate(appointmentId, req.body, { new: true });
+    if (!updatedAppointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+    res.status(200).json({ message: "Appointment updated successfully", appointment: updatedAppointment });
+  } catch (err) {
+    console.error("Error updating appointment:", err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+};

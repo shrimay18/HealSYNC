@@ -6,5 +6,7 @@ route.get('/', patientHistoryController.getPatientHistory);
 route.get('/server-date', patientHistoryController.getServerDate);
 route.get('/:patientId', patientHistoryController.getSinglePatientHistory);
 route.delete('/:patientId', patientHistoryController.deletePatient);
+route.get('/appointment/:appointmentId', patientHistoryController.getAppointment);
+route.put('/updateAppointment/:appointmentId', patientHistoryController.updateAppointment);
 
 module.exports = route;

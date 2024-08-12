@@ -91,6 +91,15 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/appointment/:patientId/:appointmentId"
+          element={
+            <ProtectedRoute>
+              <Appointment />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </Router>
   );

@@ -1,8 +1,14 @@
-// HistoryCard.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './HistoryCard.css';
 
 function HistoryCard({ history, name }) {
+  const navigate = useNavigate();
+
+  const handleEdit = () => {
+    navigate(`/appointment/${history.patientId}/${history._id}`);
+  };
+
   return (
     <div className="historycard">
       <div className="card-body">
@@ -12,7 +18,7 @@ function HistoryCard({ history, name }) {
         <h5 className="card-doctor"><span className="title">Doctor: </span>{name}</h5>
       </div>  
       <div className="card-footer">
-        <button className="card-button">Save</button>
+        <button className="card-button" onClick={handleEdit}>Edit</button>
       </div>
     </div>
   );

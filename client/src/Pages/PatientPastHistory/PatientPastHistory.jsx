@@ -18,15 +18,13 @@ const PatientPastHistory = () => {
     const { patientId } = useParams();
 
     const parseDate = (dateString) => {
-        if (!dateString) return new Date(); // Return current date if dateString is undefined
-        
-        // First, try parsing as ISO date (e.g., "2023-06-15T00:00:00.000Z")
+        if (!dateString) return new Date(); 
+
         let date = new Date(dateString);
         if (!isNaN(date.getTime())) {
             return date;
         }
         
-        // If that fails, try parsing as "dd-mmm-yyyy"
         const [day, month, year] = dateString.split('-');
         const monthIndex = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
             .indexOf(month.toLowerCase());
@@ -35,7 +33,6 @@ const PatientPastHistory = () => {
             return new Date(year, monthIndex, day);
         }
         
-        // If all parsing fails, return current date
         console.error(`Unable to parse date: ${dateString}`);
         return new Date();
     };
