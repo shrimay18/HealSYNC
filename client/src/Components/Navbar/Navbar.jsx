@@ -14,6 +14,10 @@ const Navbar = ({ name = "Guest", showDropdown = false }) => {
     }
     const logout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('currentHospitalId');
+        localStorage.removeItem('currentPatientId');
+        localStorage.removeItem('currentPatientName');
+        localStorage.removeItem('token');
         navigate('/');
     }
 
