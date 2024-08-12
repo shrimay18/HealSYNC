@@ -6,29 +6,37 @@ import './Appointment.css';
 import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 
 const Appointment = () => {
-    const { patientId } = useParams();
+    const { patientId, appointmentId } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [HospitalName, setHospitalName] = useState(null);
-    const [name, setName] = useState('');
-    const [date, setDate] = useState('');
-    const [temperature, setTemperature] = useState('');
-    const [weight, setWeight] = useState('');
-    const [pulseRate, setPulseRate] = useState('');
-    const [respiratoryRate, setRespiratoryRate] = useState('');
-    const [height, setHeight] = useState('');
-    const [bloodPressure, setBloodPressure] = useState('');
-    const [chiefComplaint, setChiefComplaint] = useState('');
-    const [diagnosis, setDiagnosis] = useState('');
-    const [advice, setAdvice] = useState('');
-    const [followUp, setFollowUp] = useState('');
-    const [doctorNotes, setDoctorNotes] = useState('');
+    const [appointmentData, setAppointmentData] = useState({
+        name: '',
+        date: '',
+        temperature: '',
+        weight: '',
+        pulseRate: '',
+        respiratoryRate: '',
+        height: '',
+        bloodPressure: '',
+        chiefComplaint: '',
+        diagnosis: '',
+        advice: '',
+        followUp: '',
+        doctorNotes: ''
+    });
+
+    const isEditMode = !!appointmentId;
 
     useEffect(() => {
         get_user();
         get_hospital_name();
         fetchPatientData();
-        fetchServerDate();
+        if (isEditMode) {
+            fetchAppointmentData();
+        } else {
+            fetchServerDate();
+        }
     }, []);
 
     const get_user = async () => {
@@ -67,7 +75,10 @@ const Appointment = () => {
                     Authorization: `${localStorage.getItem('currentHospitalId')}`
                 }
             });
-            setName(response.data.patient.name);
+            setAppointmentData(prevData => ({
+                ...prevData,
+                name: response.data.patient.name
+            }));
         } catch (error) {
             console.error('Error fetching patient data:', error);
         }
@@ -76,34 +87,51 @@ const Appointment = () => {
     const fetchServerDate = async () => {
         try {
             const response = await axios.get('http://localhost:3000/patientHistory/server-date');
-            setDate(response.data.date);
+            setAppointmentData(prevData => ({
+                ...prevData,
+                date: response.data.date
+            }));
         } catch (error) {
             console.error('Error fetching server date:', error);
         }
     };
 
+    const fetchAppointmentData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/patientHistory/appointment/${appointmentId}`, {
+                headers: {
+                    ContentType: 'application/json',
+                    Authorization: localStorage.getItem('currentHospitalId')
+                }
+            });
+            setAppointmentData(prevData => ({
+                ...prevData,
+                ...response.data
+            }));
+        } catch (error) {
+            console.error('Error fetching appointment data:', error);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setAppointmentData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
     const submit = async () => {
         try {
-            const patientHistoryData = {
-                patientId: patientId,
-                date: date,
-                temperature: temperature,
-                weight: weight,
-                pulseRate: pulseRate,
-                respiratoryRate: respiratoryRate,
-                height: height,
-                bloodPressure: bloodPressure,
-                chiefComplaint: chiefComplaint,
-                diagnosis: diagnosis,
-                advice: advice,
-                followUp: followUp,
-                doctorNotes: doctorNotes
-            };
+            const endpoint = isEditMode
+                ? `http://localhost:3000/patientHistory/updateAppointment/${appointmentId}`
+                : 'http://localhost:3000/patientHistory/addPatientHistory';
 
-            console.log('Sending patient history data:', patientHistoryData);
+            const method = isEditMode ? 'put' : 'post';
 
-            const response = await axios.post('http://localhost:3000/patientHistory/addPatientHistory', 
-                patientHistoryData,
+            const response = await axios[method](
+                endpoint,
+                { ...appointmentData, patientId },
                 {
                     headers: {
                         'Content-Type': 'application/json',
@@ -111,10 +139,10 @@ const Appointment = () => {
                     }
                 }
             );
-            console.log("Patient history added", response.data);
+            console.log(isEditMode ? "Appointment updated" : "Patient history added", response.data);
             navigate(`/patientPastHistory/${patientId}`);
         } catch (error) {
-            console.error("Error adding patient history:");
+            console.error(isEditMode ? "Error updating appointment:" : "Error adding patient history:", error);
             if (error.response) {
                 console.error("Response data:", error.response.data);
                 console.error("Response status:", error.response.status);
@@ -125,7 +153,7 @@ const Appointment = () => {
                 console.error("Error message:", error.message);
             }
             console.error("Error config:", error.config);
-            alert("Failed to save patient history. Please try again.");
+            alert(isEditMode ? "Failed to update appointment. Please try again." : "Failed to save patient history. Please try again.");
         }
     };
 
@@ -135,36 +163,36 @@ const Appointment = () => {
             <div className='appointmentBlock'>
                 <LeftSideBar hosName={HospitalName} />
                 <div className='appointmentCenterBlock'>
-                    <p className='AppointmentHeaderText'>Appointment</p>
+                    <p className='AppointmentHeaderText'>{isEditMode ? 'Edit Appointment' : 'New Appointment'}</p>
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Patient Name</p>
-                            <input type='text' className='double AppointmentInput' value={name} readOnly />
+                            <input type='text' className='double AppointmentInput' value={appointmentData.name} readOnly />
                         </div>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Date</p>
-                            <input type='date' className='double AppointmentInput dateLabel' value={date} onChange={(e) => setDate(e.target.value)} />
+                            <input type='date' className='double AppointmentInput dateLabel' name="date" value={appointmentData.date} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className='rowAppointment'>
                         <div className='threeColumnAppointment'>
                             <p className='AppointmentLabel'>Temperature</p>
                             <div className='inputHolder'>
-                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient temperature' value={temperature} onChange={(e) => setTemperature(e.target.value)} />
+                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient temperature' name="temperature" value={appointmentData.temperature} onChange={handleInputChange} />
                                 <input type='text' className='smaller AppointmentInput timeLabel' placeholder='K' />
                             </div>
                         </div>
                         <div className='threeColumnAppointment'>
                             <p className='AppointmentLabel'>Blood Pressure</p>
                             <div className='inputHolder'>
-                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient BP' value={bloodPressure} onChange={(e) => setBloodPressure(e.target.value)} />
+                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient BP' name="bloodPressure" value={appointmentData.bloodPressure} onChange={handleInputChange} />
                                 <input type='text' className='smaller AppointmentInput timeLabel' />
                             </div>
                         </div>
                         <div className='threeColumnAppointment'>
                             <p className='AppointmentLabel'>Pulse Rate</p>
                             <div className='inputHolder'>
-                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient Pulse rate' value={pulseRate} onChange={(e) => setPulseRate(e.target.value)} />
+                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient Pulse rate' name="pulseRate" value={appointmentData.pulseRate} onChange={handleInputChange} />
                                 <input type='text' className='smaller AppointmentInput timeLabel' />
                             </div>
                         </div>
@@ -173,21 +201,21 @@ const Appointment = () => {
                         <div className='threeColumnAppointment'>
                             <p className='AppointmentLabel'>Respiratory rate</p>
                             <div className='inputHolder'>
-                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient RR' value={respiratoryRate} onChange={(e) => setRespiratoryRate(e.target.value)} />
+                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient RR' name="respiratoryRate" value={appointmentData.respiratoryRate} onChange={handleInputChange} />
                                 <input type='text' className='smaller AppointmentInput timeLabel' />
                             </div>
                         </div>
                         <div className='threeColumnAppointment'>
                             <p className='AppointmentLabel'>Weight</p>
                             <div className='inputHolder'>
-                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient weight' value={weight} onChange={(e) => setWeight(e.target.value)} />
+                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient weight' name="weight" value={appointmentData.weight} onChange={handleInputChange} />
                                 <input type='text' className='smaller AppointmentInput timeLabel' />
                             </div>
                         </div>
                         <div className='threeColumnAppointment'>
                             <p className='AppointmentLabel'>Height</p>
                             <div className='inputHolder'>
-                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient height' value={height} onChange={(e) => setHeight(e.target.value)} />
+                                <input type='text' className='a AppointmentInput timeLabel' placeholder='Enter patient height' name="height" value={appointmentData.height} onChange={handleInputChange} />
                                 <input type='text' className='smaller AppointmentInput timeLabel' />
                             </div>
                         </div>
@@ -195,36 +223,36 @@ const Appointment = () => {
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Chief Complaint</p>
-                            <input type='text' className='single AppointmentInput' placeholder='Please give your advice' value={chiefComplaint} onChange={(e) => setChiefComplaint(e.target.value)} />
+                            <input type='text' className='single AppointmentInput' placeholder='Please give your advice' name="chiefComplaint" value={appointmentData.chiefComplaint} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Diagnosis</p>
-                            <input type='text' className='single AppointmentInput' placeholder='Please give What You felt About The Patient' value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)} />
+                            <input type='text' className='single AppointmentInput' placeholder='Please give What You felt About The Patient' name="diagnosis" value={appointmentData.diagnosis} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
                             <p className='AppointmentLabel'>Advice</p>
-                            <input type='text' className='single AppointmentInput' placeholder='Please give any advice to the patient' value={advice} onChange={(e) => setAdvice(e.target.value)} />
+                            <input type='text' className='single AppointmentInput' placeholder='Please give any advice to the patient' name="advice" value={appointmentData.advice} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className="rowAppointment">
                         <div className="columnAppointment">
                             <p className="AppointmentLabel">Follow Up</p>
-                            <input type="text" className="single AppointmentInput" placeholder="Please give any follow up advice to the patient" value={followUp} onChange={(e) => setFollowUp(e.target.value)} />
+                            <input type="text" className="single AppointmentInput" placeholder="Please give any follow up advice to the patient" name="followUp" value={appointmentData.followUp} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className="rowAppointment">
                         <div className="columnAppointment">
                             <p className="AppointmentLabel">Doctor Notes</p>
-                            <input type="text" className="single AppointmentInput" placeholder="Please give any notes to the patient" value={doctorNotes} onChange={(e) => setDoctorNotes(e.target.value)} />
+                            <input type="text" className="single AppointmentInput" placeholder="Please give any notes to the patient" name="doctorNotes" value={appointmentData.doctorNotes} onChange={handleInputChange} />
                         </div>
                     </div>
                     <div className='rowAppointment'>
                         <div className='columnAppointment'>
-                            <button className='saveButton' onClick={submit}>Save</button>
+                            <button className='saveButton' onClick={submit}>{isEditMode ? 'Update' : 'Save'}</button>
                         </div>
                     </div>
                 </div>
