@@ -57,56 +57,40 @@ exports.getHospital = async (req, res) => {
 
 exports.addHospital = async (req, res) => {
     const data = {
-        HospitalName: req.body.name,
+        HospitalName: req.body.HospitalName,
         email: req.body.email,
         contactNo: req.body.contactNo,
-        Street: req.body.street,
-        Area: req.body.area,
-        Landmark: req.body.landmark,
+        Street: req.body.Street,
+        Area: req.body.Area,
+        Landmark: req.body.Landmark,
         pincode: req.body.pincode,
-        HospitalRegNo: req.body.hospitalRegNo,
-        Speciality: req.body.speciality,
-        userId : req.body.userId
+        HospitalRegNo: req.body.HospitalRegNo,
+        Speciality: req.body.Speciality,
+        userId: req.body.userId
     };
 
     try {
-        const existingHospital = await hospital.findOne({ HospitalRegNo: data.hospitalRegNo });
-        if(existingHospital){
-            res.status(409).send('Hospital already exists');
-            return;
+        const existingHospital = await hospital.findOne({ HospitalRegNo: data.HospitalRegNo });
+        if (existingHospital) {
+            return res.status(409).json({ message: 'Hospital already exists' });
         }
 
-        var hospitalAdded = await hospital.create({
-            HospitalName: data.HospitalName,
-            email: data.email,
-            contactNo: data.contactNo,
-            Street: data.Street,
-            Area: data.Area,
-            Landmark: data.Landmark,
-            pincode: data.pincode,
-            HospitalRegNo: data.HospitalRegNo,
-            Speciality: data.Speciality
-        });
+        var hospitalAdded = await hospital.create(data);
         let hospitalId = new mongoose.Types.ObjectId(hospitalAdded._id);
         await User.updateOne(
-            {
-                _id: data.userId
-            },
-            {
-                $push :{
-                    Hospitals: hospitalId
-                },
-            },
-            {
-                upsert: false,
-                new: true
-            }
-        )
-        res.status(201).send('Hospital added');
+            { _id: data.userId },
+            { $push: { Hospitals: hospitalId } },
+            { upsert: false, new: true }
+        );
+
+        res.status(201).json({
+            message: 'Hospital added successfully',
+            hospital: hospitalAdded
+        });
 
     } catch (err) {
-        console.error("Error during signup:", err);
-        res.status(500).send('Internal Server Error');
+        console.error("Error during hospital addition:", err);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
     }
 }
 
@@ -154,18 +138,45 @@ exports.deleteHospital = async (req, res) => {
 
 exports.updateHospital = async (req, res) => {
     const hospitalId = req.params.id;
-    const updateData = req.body;
+    const updateData = {
+        HospitalName: req.body.HospitalName,
+        email: req.body.email,
+        contactNo: req.body.contactNo,
+        Street: req.body.Street,
+        Area: req.body.Area,
+        Landmark: req.body.Landmark,
+        pincode: req.body.pincode,
+        HospitalRegNo: req.body.HospitalRegNo,
+        Speciality: req.body.Speciality
+    };
 
     try {
         const updatedHospital = await hospital.findByIdAndUpdate(hospitalId, updateData, { new: true });
 
         if (!updatedHospital) {
-            return res.status(404).send('Hospital not found');
+            return res.status(404).json({ message: 'Hospital not found' });
         }
 
-        res.status(200).send(updatedHospital);
+        res.status(200).json({
+            message: 'Hospital updated successfully',
+            hospital: updatedHospital
+        });
     } catch (err) {
         console.error("Error during updating hospital:", err);
+        res.status(500).json({ message: 'Internal Server Error', error: err.message });
+    }
+};
+
+exports.getHospitalById = async (req, res) => {
+    const hospitalId = req.params.id;
+    try {
+        const hospitalData = await hospital.findById(hospitalId);
+        if (!hospitalData) {
+            return res.status(404).send('Hospital not found');
+        }
+        res.status(200).json(hospitalData);
+    } catch (err) {
+        console.error("Error fetching hospital:", err);
         res.status(500).send('Internal Server Error');
     }
 };
