@@ -1,18 +1,20 @@
 const hospital = require('../models/Hospitals');
 const User = require('../models/Users');
+const Patients = require('../models/Patients');
+const PatientHistory = require('../models/patientHistory');
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 
 exports.getCurrentUser = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]; // Extract token from header
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
         return res.status(401).send('No token provided');
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify and decode token
-        const user = await User.findById(decoded.userId); // Extract user ID from token and fetch user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -30,14 +32,14 @@ exports.getCurrentUser = async (req, res) => {
 };
 
 exports.getHospital = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1]; // Extract token from header
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
         return res.status(401).send('No token provided');
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify and decode token
-        const user = await User.findById(decoded.userId); // Extract user ID from token and fetch user
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId);
 
         if (!user) {
             return res.status(404).send('User not found');
@@ -52,6 +54,7 @@ exports.getHospital = async (req, res) => {
         res.status(500).send('Failed to fetch hospitals');
     }
 };
+
 exports.addHospital = async (req, res) => {
     const data = {
         HospitalName: req.body.name,
@@ -108,8 +111,8 @@ exports.addHospital = async (req, res) => {
 }
 
 exports.deleteHospital = async (req, res) => {
-    const hospitalId = req.params.id; // Get hospital ID from request parameters
-    const token = req.headers.authorization.split(' ')[1]; // Extract token from header
+    const hospitalId = req.params.id;
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
         return res.status(401).send('No token provided');
@@ -127,28 +130,33 @@ exports.deleteHospital = async (req, res) => {
             return res.status(404).send('Hospital not found');
         }
 
+        if (hospitalToDelete.patients && hospitalToDelete.patients.length > 0) {
+            // Delete patient history records
+            await PatientHistory.deleteMany({ patientId: { $in: hospitalToDelete.patients } });
+            
+            // Delete patients
+            await Patients.deleteMany({ _id: { $in: hospitalToDelete.patients } });
+        }
 
         await hospital.deleteOne({ _id: hospitalId });
 
-
         await User.updateOne(
-            { _id: user },
+            { _id: user._id },
             { $pull: { Hospitals: hospitalId } }
         );
 
-        res.status(200).send('Hospital deleted');
+        res.status(200).send('Hospital, associated patients, and patient histories deleted');
     } catch (err) {
         console.error("Error during deleting hospital:", err);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 exports.updateHospital = async (req, res) => {
-    const hospitalId = req.params.id; // Get hospital ID from request parameters
-    const updateData = req.body; // Get the update data from request body
+    const hospitalId = req.params.id;
+    const updateData = req.body;
 
     try {
-        // Find the hospital and update it with new data
         const updatedHospital = await hospital.findByIdAndUpdate(hospitalId, updateData, { new: true });
 
         if (!updatedHospital) {
