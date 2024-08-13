@@ -1,101 +1,216 @@
-.addHospitalForm{
-    width:100vw;
-    height:100vh;
-    background-color: rgb(177,241,255);
-}
-.addHospitalHolder{
+.addHospitalForm {
+    width: 100%;
+    height: 100vh;
+    background-color: rgb(177, 241, 255);
     display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
+
 .signupheader {
     display: flex;
-    position: relative;
     align-items: center;
-    /* justify-content: center; */
     background-color: #d4f5ff;
-    height: 8vh;
-    width: 100vw;
-    box-shadow: 0 0 1vh rgba(0,0,0,1.1);
+    height: 60px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .signupheader p {
-    font-size: 2.5vh;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #000;
-    margin-left:1vw;
+    margin-left: 20px;
+}
+
+.addHospitalHolder {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    flex-grow: 1;
+    overflow: auto;
 }
 
 .addFormLeft {
-    /* display: flex; */
-    /*flex-direction: column;
+    width: 100%;
+    max-width: 1000px;
+    background-color: rgb(212, 245, 255);
+    border-radius: 20px;
+    padding: 30px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.addFormHeading {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.rowForm {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.columnForm {
+    flex: 1;
+}
+
+.columnForm.half {
+    flex: 0.5;
+}
+
+.namesForm {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.inputForm {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    border: none;
+    background-color: rgb(83, 170, 196);
+    color: white;
+    font-size: 1rem;
+    height: 40px;
+}
+
+.inputForm::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.inputForm.single {
+    width: 100%;
+}
+
+.checkbox {
+    display: flex;
     align-items: center;
-    justify-content: center; */
-    width: 70vw;
-    height: 85vh;
-    background-color: rgb(212,245,255);
-    margin:1.5%;
-    border-radius: 20px;
-    overflow: scroll;
+    justify-content: center;
+    margin: 20px 0;
 }
 
-.rowForm{
-    display:flex;
-    margin:1.5%;
-    justify-content: space-between;
+#confirm {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
 
-.columnForm{
-    height:10vh;
+.checkboxText {
+    color: red;
+    font-size: 0.9rem;
 }
-.addFormHeading{
-    font-size:4vh;
-    font-weight:bold;
+
+.buttonHolder {
     display: flex;
     justify-content: center;
-    margin:1.5%;
+    margin-top: 20px;
 }
-.namesForm{
-    font-size: 2.5vh;
-}
-.single{
-    width:66.5vw;
-    border-radius: 15px;
-    background-color: rgb(83,170,196);
-}
-.double{
-    width:26vw;
-    border-radius: 15px;
-    background-color: rgb(83,170,196);
-}
-.checkboxText{
-    color:red;
-}
-#confirm{
-    width:1vw;
-    height:2vh;
-}
-.checkbox{
-    display: flex;
-    justify-content: center;
-}
-.addHospitalButton{
-    background-color: rgb(0,49,83);
+
+.addHospitalButton {
+    background-color: rgb(0, 49, 83);
+    color: white;
+    border: none;
     border-radius: 20px;
-    width:20vw;
+    padding: 12px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
-.buttonHolder{
-    display: flex;
-    justify-content: center;
+
+.addHospitalButton:hover {
+    background-color: rgb(0, 70, 120);
 }
-/* .hospital{
-    width:25vw;
-} */
-.rightBlocksAdd{
-    display: flex;
-    flex-direction: column;
-    margin:1.5%;
-    justify-content: space-between;
+
+@media (max-width: 1024px) {
+    .addFormLeft {
+        max-width: 90%;
+    }
+
+    .inputForm {
+        height: 36px;
+        font-size: 0.95rem;
+    }
 }
-.Notification{
-    display: flex;
-    justify-content: center;
+
+@media (max-width: 768px) {
+    .signupheader {
+        height: 50px;
+    }
+
+    .signupheader p {
+        font-size: 1.2rem;
+    }
+
+    .addFormHeading {
+        font-size: 1.5rem;
+    }
+
+    .addFormLeft {
+        padding: 20px;
+    }
+
+    .rowForm {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .columnForm, .columnForm.half {
+        flex: 1;
+    }
+
+    .addHospitalButton {
+        width: 100%;
+    }
+
+    .inputForm {
+        height: 32px;
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    .namesForm {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .addHospitalHolder {
+        padding: 10px;
+    }
+
+    .addFormLeft {
+        padding: 15px;
+    }
+
+    .signupheader p {
+        font-size: 1rem;
+    }
+
+    .addFormHeading {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .namesForm {
+        font-size: 0.85rem;
+    }
+
+    .inputForm {
+        height: 30px;
+        font-size: 0.85rem;
+        padding: 5px 8px;
+    }
+
+    .checkboxText {
+        font-size: 0.8rem;
+    }
+
+    .addHospitalButton {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
 }
