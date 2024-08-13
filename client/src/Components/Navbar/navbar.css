@@ -1,42 +1,23 @@
-.loginheader {
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 5rem; /* Use rem units for padding */
-    background-color: #d3f3fa; /* light blue background */
-    width: 100%; /* Make the header full width */
+    padding: 1rem;
+    background-color: #d3f3fa;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.loginheader p {
+.navbar-brand p {
     margin: 0;
-    font-size: 1.5rem; /* Use rem units for font size */
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #000; 
+    color: #000;
 }
 
-.profile {
+.navbar-menu {
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.profile p {
-    margin-left: 0.5rem; 
-    font-size: 1.125rem; 
-    font-weight: normal;
-    color: #000; 
-}
-
-.profile svg {
-    font-size: 1.5rem; 
-}
-.loginheader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
 }
 
 .profile {
@@ -47,8 +28,13 @@
 }
 
 .profile p {
-    margin-left: 8px;
-    margin-right: 8px;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    color: #000;
+}
+
+.profile svg {
+    font-size: 1.2rem;
 }
 
 .dropdown-menu {
@@ -61,12 +47,13 @@
     border-radius: 4px;
     overflow: hidden;
     z-index: 1000;
+    min-width: 200px;
 }
 
 .dropdown-item {
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 0.75rem 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
 }
@@ -76,5 +63,49 @@
 }
 
 .dropdown-item span {
-    margin-left: 8px;
+    margin-left: 0.5rem;
+}
+
+.navbar-burger {
+    display: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    .navbar-menu {
+        display: none;
+        width: 100%;
+        order: 3;
+    }
+
+    .navbar-menu.is-active {
+        display: block;
+    }
+
+    .navbar-burger {
+        display: block;
+    }
+
+    .profile {
+        width: 100%;
+        justify-content: flex-end;
+        padding: 1rem 0;
+    }
+
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        background-color: #f1f1f1;
+    }
+
+    .dropdown-item {
+        padding: 1rem;
+    }
 }
