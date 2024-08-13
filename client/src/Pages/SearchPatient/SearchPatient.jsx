@@ -153,13 +153,6 @@ const SearchPatient = () => {
                         ))}
                     </div>
                 </div>
-                <div className='rightBlocks'>
-                    <div className='rightUpBlock'>
-                    </div>
-                    <div className='rightDownBlock'>
-                        <div className='Notification'>Notification</div>
-                    </div>
-                </div>
             </div>
         </div>
     );

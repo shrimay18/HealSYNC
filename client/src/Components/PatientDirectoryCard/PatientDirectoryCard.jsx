@@ -56,7 +56,7 @@ const PatientDirectoryCard = ({ name, patientId, patientContactNo, onDelete, onC
                     className="delete-icon"
                     onClick={handleDelete}
                 />
-                <FontAwesomeIcon 
+                <FontAwesomeIcon a
                     icon={faPen}
                     className="edit-icon"
                     onClick={handleEdit}
