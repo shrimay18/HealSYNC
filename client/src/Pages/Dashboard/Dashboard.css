@@ -51,11 +51,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 15px;  /* Reduced vertical padding to make it thinner */
+    padding: 0 15px;
     cursor: pointer;
-    min-width: 120px;  /* Set a minimum width to make them a bit longer */
-    height: 30px;  /* Set a fixed height to match the search bar */
-    font-size: 0.9rem;  /* Slightly reduced font size */
+    min-width: 120px;
+    height: 38px;  /* Adjusted to match search bar height */
+    font-size: 0.9rem;
 }
 
 .rightUpBlock, .rightDownBlock {
@@ -88,22 +88,33 @@
 }
 
 /* Responsive styles */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
     .dashboardBlocks {
         flex-direction: row;
+        padding: 30px;
     }
 
     .leftBlock {
         flex: 3;
-        margin-right: 20px;
+        margin: 0;
+        padding: 30px;
     }
 
     .rightBlocks {
         flex: 1;
+        margin-left: 30px;
+    }
+
+    .leftBlockTop {
+        gap: 20px;
+    }
+
+    .addHospital, .sortHospital {
+        min-width: 180px;
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1023px) {
     .loginheader {
         height: 45px;
     }
@@ -117,10 +128,9 @@
     }
 
     .addHospital, .sortHospital {
-        min-width: 100px;
-        height: 28px;
+        min-width: 120px;
+        height: 34px;  /* Adjusted for consistency */
         font-size: 0.8rem;
-        padding: 4px 12px;
     }
 
     .Notification {
@@ -146,10 +156,9 @@
     }
 
     .addHospital, .sortHospital {
-        min-width: 80px;
-        height: 26px;
+        min-width: 100px;
+        height: 30px;  /* Adjusted for consistency */
         font-size: 0.7rem;
-        padding: 3px 10px;
     }
 
     .Notification {
