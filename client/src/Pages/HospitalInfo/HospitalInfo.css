@@ -1,95 +1,131 @@
-*{
-    padding:0px;
-    margin:0px;
-    box-sizing:border-box;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-.hospitalInfo{
-    display:flex;
-    flex-direction:column;
-    width:100vw;
-    height:100vh;
-    background-color: rgb(177,241,255);
+body {
+    font-family: Arial, sans-serif;
 }
-.hospitalInfoBlock{
-    display:flex;
-}
-/* .infoLeftBar{
-    display:flex;
-    flex-direction:column;
-    width:20vw;
-    height:85vh;
-    margin:2rem;
-    border-radius: 20px;
-    background-color: rgb(212,245,255);
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
-} */
-.overviewBlock{
-    width:65vw;
-    height:85vh;
-    background-color: rgb(212,245,255);
-    margin:2rem;
-    border-radius: 20px;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
-}
-.overviewHeader{
-    font-size:2rem;
-    font-weight:700;
-    margin:1rem;
-}
-/* .hospitalNameHeader{
-    font-size: 2.5rem;
+
+.hospitalInfo {
     display: flex;
-    justify-content: center;
-    font-weight:400;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #b1f1ff;
 }
-.infoIcon{
-    display:flex;
-    flex-direction:row;
-    align-items: center;
-    height:3rem;
-    margin-left: 1rem;
+
+.hospitalInfoBlock {
+    display: flex;
+    flex: 1;
+    padding: 1rem;
+    gap: 1rem;
 }
-.infoIcon p{
-    margin-left: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 400;
-}
-.iconSolid{
-    width: 2rem;
-    height: 1.3rem;
-} */
-.overviewBlock{
-    /* display:flex; */
-}
-.cardsOverviewTop{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-around;
-}
-.todayHistoryHeader{
-    font-size:2rem;
-    font-weight:700;
-    margin:1rem;
-    margin-top:3rem;
-}
-.todayHistoryCardsBlock{
-    display:flex;
-    flex-direction:row;
-    justify-content:space-around;
-}
-.cards{
-    display:flex;
-    background-color: rgb(178,237,255);
-    height:10vh;
-    width:11vw;
+
+.overviewBlock {
+    flex: 1;
+    background-color: #ffffff;
     border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.addNotesHeader{
-    font-size:2rem;
-    font-weight:700;
-    margin:1rem;
-    margin-top:3rem;
+
+.overviewHeader,
+.todayHistoryHeader {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.cardsOverviewTop,
+.todayHistoryCardsBlock {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.cards {
+    background-color: #d4f5ff;
+    border-radius: 15px;
+    padding: 1.5rem;
+    width: calc(50% - 0.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.totalPatientsHeader,
+.todayPatientsHeader {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.totalPatientsCount,
+.todayPatientsCount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .cardsOverviewTop,
+    .todayHistoryCardsBlock {
+        flex-direction: column;
+    }
+
+    .cards {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 425px) {
+    .hospitalInfo {
+        background-color: #ffffff;
+    }
+
+    .hospitalInfoBlock {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+    }
+
+    .overviewBlock {
+        border-radius: 0;
+        box-shadow: none;
+        padding: 1rem;
+    }
+
+    .overviewHeader,
+    .todayHistoryHeader {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .cardsOverviewTop,
+    .todayHistoryCardsBlock {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .cards {
+        width: calc(50% - 0.5rem);
+        padding: 1rem;
+        border-radius: 10px;
+    }
+
+    .totalPatientsHeader,
+    .todayPatientsHeader {
+        font-size: 0.8rem;
+    }
+
+    .totalPatientsCount,
+    .todayPatientsCount {
+        font-size: 1.5rem;
+    }
 }
