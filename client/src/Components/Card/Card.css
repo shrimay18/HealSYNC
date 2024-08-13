@@ -1,30 +1,118 @@
-.card{
-    width:15vw;
-    height:10vh;
-    background-color: rgb(178,237,255);
+.card {
+    background-color: rgb(178, 237, 255);
     border-radius: 20px;
-    margin: 1.5%;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    padding:1%;
+    justify-content: space-between;
+    min-height: 150px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
-.cardHeading{
-    font-size: 140%;
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
-.changeData{
-    width:3.5vw;
-    height:2.5vh;
-    font-size: 70%;
-    margin-left:1%;
+
+.cardHeading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
-.cardButton{
+
+.cardDescription {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.cardButton {
     display: flex;
-    justify-content:end;
+    justify-content: flex-end;
+    gap: 10px;
 }
-.editCard{
-    background-color: rgb(44,66,114);
+
+.changeData {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 }
-.deleteCard{
-    background-color: rgb(255,0,0);
+
+.editCard {
+    background-color: rgb(44, 66, 114);
+    color: white;
+}
+
+.editCard:hover {
+    background-color: rgb(54, 76, 124);
+}
+
+.deleteCard {
+    background-color: rgb(255, 0, 0);
+    color: white;
+}
+
+.deleteCard:hover {
+    background-color: rgb(220, 0, 0);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1200px) {
+    .card {
+        padding: 12px;
+    }
+
+    .cardHeading {
+        font-size: 1.1rem;
+    }
+
+    .cardDescription {
+        font-size: 0.85rem;
+    }
+
+    .changeData {
+        font-size: 0.75rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        padding: 10px;
+        min-height: 130px;
+    }
+
+    .cardHeading {
+        font-size: 1rem;
+    }
+
+    .cardDescription {
+        font-size: 0.8rem;
+    }
+
+    .changeData {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card {
+        min-height: 120px;
+    }
+
+    .cardHeading {
+        font-size: 0.9rem;
+    }
+
+    .cardDescription {
+        font-size: 0.75rem;
+    }
+
+    .changeData {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+    }
 }

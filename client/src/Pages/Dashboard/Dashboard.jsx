@@ -104,15 +104,6 @@ function Dashboard() {
                         ))}
                     </div>
                 </div>
-                <div className="rightBlocks">
-                    <div className="rightUpBlock">
-                        {/* Add content for right upper block if needed */}
-                    </div>
-                    <div className="rightDownBlock">
-                        <div className="Notification">Notification</div>
-                        {/* Add notification content here */}
-                    </div>
-                </div>
             </div>
         </div>
     );

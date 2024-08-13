@@ -1,35 +1,65 @@
 .search-bar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background-color: transparent; /* Light blue background */
-    border-radius: 20px;
-    padding: 5px 10px;
-    width: 70%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: rgb(178, 237, 255);
+  border-radius: 20px;
+  padding: 2px 15px;  /* Reduced vertical padding to make it thinner */
+  width: 100%;
+  max-width: 600px;  /* Increased max-width to make it longer */
+  margin: 0 auto;
+}
+
+.search-bar .search-icon {
+  color: #666;
+  margin-right: 10px;
+  font-size: 0.9rem;  /* Slightly reduced icon size */
+}
+
+.search-input {
+  background-color: transparent;
+  width: 100%;
+  height: 30px;  /* Reduced height to make it thinner */
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;  /* Slightly reduced font size */
+  color: #333;
+  padding: 0 5px;
+}
+
+.search-bar .search-input::placeholder {
+  color: #666;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .search-bar {
+      padding: 2px 12px;
   }
-  
+
   .search-bar .search-icon {
-    color: #666;
-    margin-right: 10px;
+      font-size: 0.8rem;
   }
-  
-  /* .search-bar{
-    border: none;
-    outline: none;
-    background: transparent;
-    width: 80vw;
-    font-size: 16px;
-    color: #666;
-  } */
-  
-  .search-input{
-    background-color: rgb(178,237,255);
-    width:50vw;
-    height:4vh;
-    border-radius: 20px;
-    border:none;
+
+  .search-input {
+      height: 28px;
+      font-size: 0.8rem;
   }
-  .search-bar .search-input::placeholder {
-    color: #666;
+}
+
+@media screen and (max-width: 480px) {
+  .search-bar {
+      padding: 2px 10px;
   }
-  
+
+  .search-bar .search-icon {
+      font-size: 0.7rem;
+      margin-right: 8px;
+  }
+
+  .search-input {
+      height: 26px;
+      font-size: 0.7rem;
+  }
+}
