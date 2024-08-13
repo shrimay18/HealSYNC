@@ -1,73 +1,184 @@
-*{
-    margin:0px;
-    padding:0px;
-    box-sizing:border-box;
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-.search-patient{
-    width:100vw;
+body {
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.search-patient {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
-    background-color: rgb(177,241,255);
+    background-color: #b1f1ff;
 }
-.searchPatientBlock{
-    display:flex;
+
+.searchPatientBlock {
+    display: flex;
+    flex: 1;
+    padding: 1rem;
+    gap: 1rem;
+    overflow: hidden;
 }
-.searchPatientCenter{
-    /* display: flex; */
-    background-color: rgb(212,245,255);
-    height:85vh;
-    margin:2rem;
-    width:65vw;
+
+.searchPatientCenter {
+    flex: 1;
+    background-color: #ffffff;
     border-radius: 20px;
-    overflow: scroll;
-    box-shadow: 0px 0px 10px 0px black;
-    overflow: scroll;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
-.searchPatientCenterHead{
+
+.searchPatientCenterHead {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.searchPatientBar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-}
-.searchBarPatient{
-    background-color: rgb(178,237,255);
-    border:none;
+    background-color: #e6f7ff;
     border-radius: 20px;
+    padding: 0.3rem 1rem;
+    flex: 1;
+    height: 40px;
+}
+
+.searchIcon {
+    color: #4a90e2;
+    margin-right: 0.5rem;
+}
+
+.searchBarPatient {
+    border: none;
+    background: transparent;
     font-size: 1rem;
-    /* padding-left: 1rem; */
-    margin-left:1rem;
+    width: 100%;
+    outline: none;
 }
-.searchPatientBar{
-    display:flex;
-    margin:1.5rem;
-    width:25vw;
-    height:4vh;
-    border-radius: 20px;
-    align-items: center;
-    background-color: rgb(178,237,255);
-    padding-left: 1rem;
-}
-.addPatientButton{
-    display:flex;
-    width:15vw;
-    height:4vh;
-    background-color: rgb(178,237,255);
-    border-radius: 20px;
+
+.addPatientButton {
+    display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #4a90e2;
+    color: white;
+    border-radius: 20px;
+    padding: 0.3rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    min-width: 140px;
+    height: 40px;
+    transition: all 0.3s ease;
 }
-.addPatientText{
-    margin-right: 1rem;
+
+.addPatientButton:hover {
+    background-color: #357abd;
+}
+
+.addPatientText {
+    display: inline;
+}
+
+.addPatientIcon {
+    display: none;
+}
+
+.patientDirectory {
+    padding: 0 1.5rem;
+    font-size: 1.5rem;
     font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
 }
-.patientDirectory{
-    margin-left:1.5rem;
-    font-size: 2rem;
-    font-weight: 700;
+
+.patientDirectoryCardHolder {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 1.5rem 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
 }
-.patientDirectoryCardHolder{
-    display: flex;
-    flex-wrap: wrap;
-    /* justify-content: space-between; */
-    margin-right:1.5rem;
-    /* margin-top:1.5rem; */
+
+@media (max-width: 768px) {
+    .searchPatientCenter {
+        padding: 1rem;
+    }
+
+    .searchPatientCenterHead {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .searchPatientBar {
+        flex: 1;
+    }
+
+    .addPatientButton {
+        min-width: 40px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        padding: 0;
+        margin-left: 1rem;
+    }
+
+    .addPatientText {
+        display: none;
+    }
+
+    .addPatientIcon {
+        display: inline;
+        font-size: 1.5rem;
+    }
+
+    .addPatientButton:hover::after {
+        content: 'Add Patient';
+        position: absolute;
+        background-color: #333;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 0.5rem;
+    }
+}
+
+@media (max-width: 425px) {
+    .search-patient {
+        background-color: #ffffff;
+    }
+
+    .searchPatientBlock {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+    }
+
+    .searchPatientCenter {
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .searchPatientCenterHead {
+        padding: 1rem;
+    }
+
+    .patientDirectoryCardHolder {
+        grid-template-columns: 1fr;
+        padding: 0 1rem 1rem;
+    }
 }
