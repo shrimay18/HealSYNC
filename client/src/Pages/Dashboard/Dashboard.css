@@ -1,83 +1,162 @@
-.dashboard{
-    background-color: rgb(177,241,255);
-    width:100vw;
-    height: 100vh;
-    /* display: flex; */
+.dashboard {
+    background-color: rgb(177, 241, 255);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
-.loginheader{
+
+.loginheader {
     display: flex;
     align-items: center;
     background-color: #d4f5ff;
     position: relative;
-    height:8vh;
-    width:100vw;
+    height: 50px;
+    width: 100%;
     z-index: 2;
-    box-shadow: 0 0 1vh rgba(0,0,0,1.1);
-}
-.loginheader p{
-    font-size: 2.5vh;
-    font-weight: bold;
-    color: #000;
-    margin-left: 2vw;
-}
-.dashboardBlocks{
-    display: flex;
-}
-.leftBlock{
-    background-color: #D4F5FF;
-    width:75vw;
-    height:80vh;
-    margin:1.5%;
-    border-radius: 20px;
-    /* display: flex; */
-}
-.leftBlockTop{
-    display: flex;;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.addHospital, .sortHospital{
-    width:8vw;
-    height:3.5vh;
-    background-color: rgb(178,237,255);
+.loginheader p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #000;
+    margin-left: 20px;
+}
+
+.dashboardBlocks {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+
+.leftBlock {
+    background-color: #D4F5FF;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.leftBlockTop {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.addHospital, .sortHospital {
+    background-color: rgb(178, 237, 255);
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin:1.5%;
+    padding: 5px 15px;  /* Reduced vertical padding to make it thinner */
+    cursor: pointer;
+    min-width: 120px;  /* Set a minimum width to make them a bit longer */
+    height: 30px;  /* Set a fixed height to match the search bar */
+    font-size: 0.9rem;  /* Slightly reduced font size */
 }
-.rightUpBlock{
-    background-color: #D4F5FF;
-    width:22vw;
-    height:39vh;
-    margin:1.5%;
-    border-radius: 20px;
-}
-.rightDownBlock{
-    background-color: #D4F5FF;
-    width:22vw;
-    height:39vh;
-    margin:1.5%;
-    border-radius: 20px;
-    display: flex;
 
+.rightUpBlock, .rightDownBlock {
+    background-color: #D4F5FF;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
-.rightBlocks{
+
+.rightBlocks {
     display: flex;
     flex-direction: column;
-    margin:1.5%;
-    /* justify-content: center; */
 }
-.Notification{
-    font-size: 3.5vh;
-    margin:4%;
+
+.Notification {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
     font-weight: bold;
 }
-.linkAdd{
+
+.linkAdd {
     text-decoration: none;
-    color:#000;
+    color: #000;
 }
-.Hospitals{
-    display: flex;
-    flex-direction: row;
-    margin:1.5%;
+
+.Hospitals {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* Responsive styles */
+@media screen and (min-width: 768px) {
+    .dashboardBlocks {
+        flex-direction: row;
+    }
+
+    .leftBlock {
+        flex: 3;
+        margin-right: 20px;
+    }
+
+    .rightBlocks {
+        flex: 1;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .loginheader {
+        height: 45px;
+    }
+
+    .loginheader p {
+        font-size: 1rem;
+    }
+
+    .leftBlockTop {
+        gap: 10px;
+    }
+
+    .addHospital, .sortHospital {
+        min-width: 100px;
+        height: 28px;
+        font-size: 0.8rem;
+        padding: 4px 12px;
+    }
+
+    .Notification {
+        font-size: 1.1rem;
+    }
+
+    .Hospitals {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .dashboardBlocks {
+        padding: 15px;
+    }
+
+    .leftBlock, .rightUpBlock, .rightDownBlock {
+        padding: 15px;
+    }
+
+    .leftBlockTop {
+        gap: 8px;
+    }
+
+    .addHospital, .sortHospital {
+        min-width: 80px;
+        height: 26px;
+        font-size: 0.7rem;
+        padding: 3px 10px;
+    }
+
+    .Notification {
+        font-size: 1rem;
+    }
+
+    .Hospitals {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
 }

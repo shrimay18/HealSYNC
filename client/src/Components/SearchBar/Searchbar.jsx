@@ -13,13 +13,14 @@ const SearchBar = ({ onSearch }) => {
 
     return (
         <div className="search-bar">
-            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+            <FontAwesomeIcon icon={faSearch} className="search-icon" aria-hidden="true" />
             <input
                 type="text"
                 value={query}
                 onChange={handleInputChange}
                 placeholder="Search hospital"
                 className="search-input"
+                aria-label="Search hospital"
             />
         </div>
     );
