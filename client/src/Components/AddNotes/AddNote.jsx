@@ -3,16 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import './AddNote.css'; // Make sure to create this CSS file
 
-const NotesComponent = () => {
+const NotesComponent = (onClickAdd, note) => {
   const [notes, setNotes] = useState([]);
   const [noteInput, setNoteInput] = useState('');
 
-  const handleAddNote = () => {
-    if (noteInput.trim()) {
-      setNotes([...notes, noteInput]);
-      setNoteInput('');
-    }
-  };
+  
 
   const handleInputChange = (e) => {
     setNoteInput(e.target.value);
@@ -35,7 +30,7 @@ const NotesComponent = () => {
           placeholder="Type a note..."
           className='inputNotes'
         />
-        <button onClick={handleAddNote} className='addNoteButton'>
+        <button onClick={() => onClickAdd} className='addNoteButton'>
           <FontAwesomeIcon icon={faPlus} /> Add note
         </button>
       </div>

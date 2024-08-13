@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import './HospitalInfo.css';
 import Navbar from '../../Components/Navbar/Navbar';
 import AddNotes from '../../Components/AddNotes/AddNote';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faMagnifyingGlass, faHospital, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 
 const HospitalInfo = () => {
@@ -60,11 +57,43 @@ const HospitalInfo = () => {
         }
     };
 
+    const get_today_appointments = async () => {
+        try {
+            console.log('Fetching today\'s appointments...');
+            const response = await axios.get('http://localhost:3000/patientHistory/today-appointments', {
+                headers: {
+                    ContentType: 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
+                }
+            });
+            console.log('Response:', response.data);
+            setTodayAppointmentsCount(response.data.appointments);
+        } catch (error) {
+            console.error('Error fetching today\'s appointments:', error);
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+                console.error('Response status:', error.response.status);
+                console.error('Response headers:', error.response.headers);
+            } else if (error.request) {
+                console.error('No response received:', error.request);
+            } else {
+                console.error('Error setting up request:', error.message);
+            }
+            setError('Failed to fetch today\'s appointments');
+        }
+    };
 
     useEffect(() => {
         get_user();
         get_hospital_name();
         get_patients();
+        get_today_appointments();
+
+        // Set up an interval to fetch today's appointments every minute
+        const intervalId = setInterval(get_today_appointments, 60000);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
     }, []);
 
     return(
@@ -88,10 +117,6 @@ const HospitalInfo = () => {
                                 <div className='todayPatientsCount'>{todayAppointmentsCount}</div>
                             </div>
                         </div>
-                    </div>
-                    <div className='addNotes'>
-                        <div className='addNotesHeader'>Doctor's Note</div>
-                        <AddNotes />
                     </div>
                 </div>
                 <div className="rightBlocks">

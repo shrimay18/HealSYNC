@@ -1,6 +1,7 @@
 const route = require('express').Router();
 const patientHistoryController = require('../controllers/patientHistoryController');
 
+route.get('/today-appointments', patientHistoryController.getTodayAppointments);
 route.post('/addPatientHistory', patientHistoryController.addPatientHistory);
 route.get('/', patientHistoryController.getPatientHistory);
 route.get('/server-date', patientHistoryController.getServerDate);

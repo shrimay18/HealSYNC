@@ -52,6 +52,7 @@ app.use("/auth", authRoutes);
 app.use("/dashboard", dashBoardRoutes);
 app.use("/hospital", hospitalDashRoutes);
 app.use("/patientHistory", patientPastHistoryRoutes);
+app.use("/notes", require("./Routes/doctorNoteRoutes"));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
