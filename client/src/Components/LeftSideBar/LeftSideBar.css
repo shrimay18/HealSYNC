@@ -1,34 +1,72 @@
-.infoLeftBar{
-    display:flex;
-    flex-direction:column;
-    width:20vw;
-    height:85vh;
-    margin:2rem;
-    border-radius: 20px;
-    background-color: rgb(212,245,255);
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
-}
-.hospitalNameHeader{
-    font-size: 2.5rem;
+.infoLeftBar {
     display: flex;
-    justify-content: center;
-    font-weight:400;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
+    flex-direction: column;
+    width: 250px;
+    min-height: 100%;
+    padding: 1rem;
+    border-radius: 20px;
+    background-color: #d4f5ff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.infoIcon{
-    display:flex;
-    flex-direction:row;
-    align-items: center;
-    height:3rem;
-    margin-left: 1rem;
-}
-.infoIcon p{
-    margin-left: 0.5rem;
+
+.hospitalNameHeader {
     font-size: 1.5rem;
-    font-weight: 400;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
 }
-.iconSolid{
-    width: 2rem;
-    height: 1.3rem;
+
+.infoIcon {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.infoIcon:hover {
+    background-color: #b1f1ff;
+    border-radius: 10px;
+}
+
+.infoIcon p {
+    margin-left: 0.75rem;
+    font-size: 1rem;
+}
+
+.iconSolid {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+@media (max-width: 425px) {
+    .infoLeftBar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 10px;
+    }
+
+    .hospitalNameHeader {
+        display: none;
+    }
+
+    .infoIcon {
+        margin-bottom: 0;
+        padding: 0.5rem;
+    }
+
+    .infoIcon p {
+        display: none;
+    }
+
+    .iconSolid {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
 }
