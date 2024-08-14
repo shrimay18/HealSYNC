@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faMagnifyingGlass, faHospital, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import { AppContext } from '../../Context/AppContext';
 import './LeftSideBar.css';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../Context/AppContext';
 
 const LeftSideBar = () => {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ const LeftSideBar = () => {
 
     return (
         <div className='infoLeftBar'>
-            <div className="hospitalNameHeader">{hospitalName || "Loading..."}</div>
+            <div className="hospitalNameHeader">{hospitalName || "Select a Hospital"}</div>
             <div className='infoIcon homeComponent' onClick={() => navigate("/hospitalInfo")}>
                 <FontAwesomeIcon icon={faHome} className='iconSolid Home'/>
                 <p>Home</p>

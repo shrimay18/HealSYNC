@@ -11,7 +11,7 @@ import Card from "../../Components/Card/Card";
 import { AppContext } from '../../Context/AppContext';
 
 function Dashboard() {
-    const { user } = useContext(AppContext);
+    const { user, updateHospitalName } = useContext(AppContext);
     const [hospitals, setHospitals] = useState([]);
     const [filteredHospitals, setFilteredHospitals] = useState([]);
     const navigate = useNavigate();
@@ -54,8 +54,9 @@ function Dashboard() {
         setFilteredHospitals(prevFiltered => prevFiltered.filter(hospital => hospital._id !== hospitalId));
     };
 
-    const goToHospital = (hospitalId) => {
+    const goToHospital = (hospitalId, hospitalName) => {
         localStorage.setItem('currentHospitalId', hospitalId);
+        updateHospitalName(hospitalName);
         navigate('/hospitalInfo');
     }
 
@@ -83,7 +84,7 @@ function Dashboard() {
                                 description={hospital.Speciality}
                                 id={hospital._id}
                                 onDelete={removeHospitalFromState}
-                                onClick={goToHospital}
+                                onClick={() => goToHospital(hospital._id, hospital.HospitalName)}
                             />
                         ))}
                     </div>
