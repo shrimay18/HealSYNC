@@ -26,7 +26,7 @@ const ProtectedRoute = ({ children }) => {
       } catch (error) {
         console.error('Error verifying user:', error);
         setIsAuthenticated(false);
-        localStorage.removeItem("token");  // Remove invalid token
+        localStorage.removeItem("token"); 
       } finally {
         setIsLoading(false);
       }
@@ -36,7 +36,7 @@ const ProtectedRoute = ({ children }) => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;  // Or a loading spinner component
+    return <div>Loading...</div>; 
   }
 
   if (!isAuthenticated) {

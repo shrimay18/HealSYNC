@@ -11,13 +11,13 @@ const Signup = () => {
 
     const [message, setMessage] = useState('');
     const [name, setName] = useState('');
-    const [gender, setGender] = useState(''); // Initialize with default value if any
+    const [gender, setGender] = useState('');
     const [dob, setDob] = useState('');
     const [age, setAge] = useState('');
-    const [state, setState] = useState(''); // Initialize with default value if any
+    const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [pincode, setPincode] = useState('');
-    const [degree, setDegree] = useState(''); // Initialize with default value if any
+    const [degree, setDegree] = useState(''); 
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [RegNo, setRegNo] = useState('');
@@ -125,7 +125,7 @@ const Signup = () => {
                                 options={genders}
                                 selected={gender}
                                 setSelected={setGender}
-                                defaultSelected="Select Gender" // Default value
+                                defaultSelected="Select Gender" 
                             />
                         </div>
                         <div className="column">
@@ -159,7 +159,7 @@ const Signup = () => {
                                 options={states}
                                 selected={state}
                                 setSelected={setState}
-                                defaultSelected="Select State" // Default value
+                                defaultSelected="Select State" 
                             />
                         </div>
                         <div className="column">
@@ -201,7 +201,7 @@ const Signup = () => {
                                 options={degrees}
                                 selected={degree}
                                 setSelected={setDegree}
-                                defaultSelected="Select Degree" // Default value
+                                defaultSelected="Select Degree" 
                             />
                         </div>
                         <div className="column">

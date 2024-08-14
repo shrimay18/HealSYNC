@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('./models/Users'); // Adjust the path to your User model
+const User = require('./models/Users'); 
 
 passport.use(
     new GoogleStrategy(
@@ -12,14 +12,13 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                // console.log('Google Profile:', profile); // Log the profile to debug
 
                 let user = await User.findOne({ email: profile.emails[0].value });
 
                 if (user) {
                     return done(null, user, { redirectHome: true });
                 }
-                console.log('New User:',profile.id, profile.displayName, profile.emails[0].value); // Log new user details
+                console.log('New User:',profile.id, profile.displayName, profile.emails[0].value); 
                 user = new User({
                     name: profile.displayName,
                     email: profile.emails[0].value,
@@ -27,8 +26,7 @@ passport.use(
 
 
 
-                // await user.save();
-                console.log('User saved:', user); // Log the saved user
+                console.log('User saved:', user); 
                 return done(null, profile, { redirectHome: false });
             } catch (err) {
                 return done(err, null);
@@ -39,7 +37,7 @@ passport.use(
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
-//
+
 passport.deserializeUser(async (id, done) => {
     done(null, id);
 });

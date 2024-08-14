@@ -10,7 +10,6 @@ function Login() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    // Effect to check for existing token and redirect
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -56,7 +55,6 @@ function Login() {
         }
     };
 
-    // Debug useEffect to monitor token
     useEffect(() => {
         const checkToken = () => {
             const token = localStorage.getItem('token');
@@ -64,7 +62,7 @@ function Login() {
         };
 
         checkToken();
-        const interval = setInterval(checkToken, 1000); // Check every second
+        const interval = setInterval(checkToken, 1000);
 
         return () => clearInterval(interval);
     }, []);

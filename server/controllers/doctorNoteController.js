@@ -2,7 +2,6 @@ const doctorNote = require('../models/doctorNotes');
 
 exports.getDoctorNotes = async (req, res) => {
     try {
-        // using id
         const doctorNotes = await doctorNote.find({ doctorId: req.query.doctorId });
 
         res.status(200).json({

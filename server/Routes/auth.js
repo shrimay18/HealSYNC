@@ -36,9 +36,9 @@ router.get(
             console.log('Printing req After: ', req);
 
             if (req.authInfo.redirectHome) {
-                res.redirect(process.env.CLIENT_URL2); // redirect to home page if the user exists
+                res.redirect(process.env.CLIENT_URL2);
             } else {
-                res.redirect(process.env.CLIENT_URL); // redirect to client URL if the user is new
+                res.redirect(process.env.CLIENT_URL);
             }
         } else {
             res.redirect("/login/failed");
@@ -46,7 +46,6 @@ router.get(
     }
 );
 
-// Passport serializeUser and deserializeUser
 passport.serializeUser((user, done) => {
     done(null, user.id);
 });
