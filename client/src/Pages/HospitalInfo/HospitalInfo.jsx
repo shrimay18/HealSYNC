@@ -15,10 +15,8 @@ const HospitalInfo = () => {
         get_patients();
         get_today_appointments();
 
-        // Set up an interval to fetch today's appointments every minute
         const intervalId = setInterval(get_today_appointments, 60000);
 
-        // Clean up the interval on component unmount
         return () => clearInterval(intervalId);
     }, []);
 

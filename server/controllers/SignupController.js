@@ -1,9 +1,6 @@
 
 const UserModel = require('../models/Users');
 const multer = require('multer');
-
-// const UserModel = require('../models/Users');
-// const User = require("../passport")
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -12,7 +9,6 @@ const saltRounds = 10;
 exports.createUser = async (req, res) => {
     const myPlaintextPassword = req.body.password;
     const myPlaintextPassword1 = req.body.confirmPassword;
-     // Log file details
     req.body.password = await bcrypt.hash(myPlaintextPassword, saltRounds);
 
 
@@ -33,10 +29,10 @@ exports.createUser = async (req, res) => {
         phone: req.body.phone,
         Degree: req.body.Degree,
         RegistrationNumber: req.body.RegistrationNumber,
-        Pdf: req.file ? req.file.path : null // Save the file path to the database if the file exists
+        Pdf: req.file ? req.file.path : null
     };
 
-    console.log("Received data:", data); // Log incoming data
+    console.log("Received data:", data);
 
     try {
         const checkingForUsername = await UserModel.findOne({ username: data.username });
@@ -48,7 +44,7 @@ exports.createUser = async (req, res) => {
         console.log("Existing user (email):", checkingForEmail);
 
         if (checkingForEmail ) {
-            res.status(409).send('User already exists'); // Conflict status code for existing user
+            res.status(409).send('User already exists');
         } else {
             console.log("Inserting user:", data);
             await UserModel.insertMany([data]);
@@ -56,6 +52,6 @@ exports.createUser = async (req, res) => {
         }
     } catch (err) {
         console.error("Error during signup:", err);
-        res.status(500).send('Internal Server Error'); // Internal server error for any other issues
+        res.status(500).send('Internal Server Error');
     }
 }

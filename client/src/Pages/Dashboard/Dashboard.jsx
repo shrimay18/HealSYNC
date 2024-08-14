@@ -32,7 +32,6 @@ function Dashboard() {
             setFilteredHospitals(response.data[0].Hospitals);
         } catch (error) {
             console.error('Error fetching hospitals:', error);
-            // You could set an error state here and display it to the user
         }
     };
 

@@ -2,7 +2,6 @@ function Input(props) {
     const handleChange = (e) => {
         const value = e.target.value;
         if (props.type === 'number' && (value < props.min || value > props.max)) {
-            // Do nothing if the value is out of range
         }
         props.setValue(value);
         console.log(value);

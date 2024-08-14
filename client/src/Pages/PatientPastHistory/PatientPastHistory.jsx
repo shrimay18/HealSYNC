@@ -66,14 +66,12 @@ const PatientPastHistory = () => {
             });
             console.log('Fetched patient history:', response.data);
             
-            // Sort the history array by date in descending order
             const sortedHistory = response.data.history.sort((a, b) => {
                 const dateA = parseDate(a.date);
                 const dateB = parseDate(b.date);
                 return dateB - dateA;
             });
             
-            // Format the dates
             const formattedHistory = sortedHistory.map(history => ({
                 ...history,
                 date: formatDate(parseDate(history.date))

@@ -13,13 +13,13 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [name, setName] = useState('');
-    const [gender, setGender] = useState(''); // Initialize with default value if any
+    const [gender, setGender] = useState('');
     const [dob, setDob] = useState('');
     const [age, setAge] = useState('');
-    const [state, setState] = useState(''); // Initialize with default value if any
+    const [state, setState] = useState(''); 
     const [city, setCity] = useState('');
     const [pincode, setPincode] = useState('');
-    const [degree, setDegree] = useState(''); // Initialize with default value if any
+    const [degree, setDegree] = useState(''); 
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -74,8 +74,6 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log("Submitting form:", { username, password }); // Log form submission data
-        // Check if password and confirm password are the same
         if (password !== confirmPassword) {
             setMessage('Entered password does not match');
             return;
@@ -179,11 +177,10 @@ const Signup = () => {
                                 options={genders}
                                 selected={gender}
                                 setSelected={setGender}
-                                defaultSelected="Select Gender" // Default value
+                                defaultSelected="Select Gender" 
                             />
                         </div>
 
-                        {/*Date Of Birth*/}
                         <Input 
                             label="Date of Birth:"
                             type="date"
@@ -209,7 +206,7 @@ const Signup = () => {
                                 options={states}
                                 selected={state}
                                 setSelected={setState}
-                                defaultSelected="Select State" // Default value
+                                defaultSelected="Select State" 
                             />
                         </div>
 
