@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faMagnifyingGlass, faHospital, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { AppContext } from '../../Context/AppContext';
 import './LeftSideBar.css';
-import { useNavigate } from 'react-router-dom';
 
-const LeftSideBar = ({hosName}) => {
+const LeftSideBar = () => {
     const navigate = useNavigate();
+    const { hospitalName } = useContext(AppContext);
+
     return (
         <div className='infoLeftBar'>
-            <div className="hospitalNameHeader">{hosName}</div>
+            <div className="hospitalNameHeader">{hospitalName || "Loading..."}</div>
             <div className='infoIcon homeComponent' onClick={() => navigate("/hospitalInfo")}>
                 <FontAwesomeIcon icon={faHome} className='iconSolid Home'/>
                 <p>Home</p>
@@ -28,4 +31,5 @@ const LeftSideBar = ({hosName}) => {
         </div>
     );
 }
+
 export default LeftSideBar;

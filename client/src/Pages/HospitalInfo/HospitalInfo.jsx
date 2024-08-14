@@ -1,46 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import './HospitalInfo.css';
 import Navbar from '../../Components/Navbar/Navbar';
-import AddNotes from '../../Components/AddNotes/AddNote';
 import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
+import { AppContext } from '../../Context/AppContext';
 
 const HospitalInfo = () => {
-    const [user, setUser] = useState(null);
-    const [hospitalName, setHospitalName] = useState(null);
+    const { user, hospitalName } = useContext(AppContext);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [todayAppointmentsCount, setTodayAppointmentsCount] = useState(0);
     const [error, setError] = useState(null);
 
-    const get_user = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setUser(response.data.data.name);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            setError('Failed to fetch user data');
-        }
-    };
+    useEffect(() => {
+        get_patients();
+        get_today_appointments();
 
-    const get_hospital_name = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/hospital/', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
-                }
-            });
-            setHospitalName(response.data.HospitalName);
-        } catch (error) {
-            console.error('Error fetching hospital data:', error);
-            setError('Failed to fetch hospital data');
-        }
-    }
+        // Set up an interval to fetch today's appointments every minute
+        const intervalId = setInterval(get_today_appointments, 60000);
+
+        // Clean up the interval on component unmount
+        return () => clearInterval(intervalId);
+    }, []);
 
     const get_patients = async () => {
         try {
@@ -83,24 +63,11 @@ const HospitalInfo = () => {
         }
     };
 
-    useEffect(() => {
-        get_user();
-        get_hospital_name();
-        get_patients();
-        get_today_appointments();
-
-        // Set up an interval to fetch today's appointments every minute
-        const intervalId = setInterval(get_today_appointments, 60000);
-
-        // Clean up the interval on component unmount
-        return () => clearInterval(intervalId);
-    }, []);
-
     return(
         <div className="hospitalInfo">
-            <Navbar name={user} showDropdown={true} />
+            <Navbar showDropdown={true} />
             <div className='hospitalInfoBlock'>
-                <LeftSideBar hosName={hospitalName}/>
+                <LeftSideBar />
                 <div className='overviewBlock'>
                     <div className='overviewHeader'>Total Overview</div>
                     <div className='cardsOverviewTop'>
