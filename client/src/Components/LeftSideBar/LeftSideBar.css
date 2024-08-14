@@ -1,7 +1,7 @@
 .infoLeftBar {
     display: flex;
     flex-direction: column;
-    width: 250px;
+    width: 200px;
     min-height: 100%;
     padding: 1rem;
     border-radius: 20px;

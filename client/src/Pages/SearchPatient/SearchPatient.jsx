@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import './SearchPatient.css';
 import Navbar from "../../Components/Navbar/Navbar";
@@ -7,45 +7,15 @@ import LeftSideBar from "../../Components/LeftSideBar/LeftSideBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import PatientDirectoryCard from "../../Components/PatientDirectoryCard/PatientDirectoryCard";
+import { AppContext } from '../../Context/AppContext';
 
 const SearchPatient = () => {
-    const [user, setUser] = useState('');
-    const [hospitalName, setHospitalName] = useState('');
+    const { user } = useContext(AppContext);
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-
-    const get_user = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setUser(response.data.data.name);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            setError('Failed to fetch user data');
-        }
-    };
-
-    const get_hospital_name = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/hospital/', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
-                }
-            });
-            setHospitalName(response.data.HospitalName);
-        } catch (error) {
-            console.error('Error fetching hospital data:', error);
-            setError('Failed to fetch hospital data');
-        }
-    };
 
     const get_patients = async () => {
         try {
@@ -65,8 +35,6 @@ const SearchPatient = () => {
     };
 
     useEffect(() => {
-        get_user();
-        get_hospital_name();
         get_patients();
     }, []);
 
@@ -115,9 +83,9 @@ const SearchPatient = () => {
 
     return (
         <div className="search-patient">
-            <Navbar name={user} showDropdown={true} />
+            <Navbar showDropdown={true} />
             <div className="searchPatientBlock">
-                <LeftSideBar hosName={hospitalName} />
+                <LeftSideBar />
                 <div className="searchPatientCenter">
                     <div className="searchPatientCenterHead">
                         <div className="searchPatientBar">
