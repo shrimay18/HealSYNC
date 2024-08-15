@@ -21,6 +21,7 @@ const AddHospital = () => {
         Speciality: ''
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -47,6 +48,7 @@ const AddHospital = () => {
             }));
         } catch (error) {
             console.error('Error fetching hospital:', error);
+            setError('Failed to fetch hospital data. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -62,6 +64,7 @@ const AddHospital = () => {
 
     const submit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
             const submissionData = {
                 HospitalName: hospital.HospitalName,
@@ -78,28 +81,26 @@ const AddHospital = () => {
 
             console.log('Submitting data:', submissionData);
 
-            let response;
-            if (id) {
-                response = await axios.put(`http://localhost:3000/dashboard/update-hospital/${id}`, submissionData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-            } else {
-                response = await axios.post('http://localhost:3000/dashboard/hospital', submissionData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-            }
+            const url = id 
+                ? `http://localhost:3000/dashboard/update-hospital/${id}`
+                : 'http://localhost:3000/dashboard/hospital';
+            const method = id ? 'put' : 'post';
+
+            const response = await axios({
+                method,
+                url,
+                data: submissionData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
 
             console.log('Server response:', response.data);
-
             navigate("/dashboard");
         } catch (error) {
             console.error('Error submitting hospital data:', error.response ? error.response.data : error.message);
+            setError('Failed to submit hospital data. Please try again.');
         }
     }
 
@@ -110,70 +111,69 @@ const AddHospital = () => {
     return (
         <div className="addHospital">
             <Navbar showDropdown={true} />
-            <div className="addHospitalForm">
-                <div className="addHospitalHolder">
-                    <div className="addFormLeft">
-                        <div className="addFormHeading">{id ? 'Edit Hospital' : 'Add Hospital'}</div>
-                        <form onSubmit={submit}>
-                            <div className="rowForm">
-                                <div className="columnForm">
-                                    <div className="namesForm">Hospital Name</div>
-                                    <input type="text" name="HospitalName" className="inputForm single" placeholder='Enter the Hospital Name' value={hospital.HospitalName} onChange={handleChange} required/>
-                                </div>
+            <div className="addHospitalContent">
+                <div className="addHospitalForm">
+                    <div className="addFormHeading">{id ? 'Edit Hospital' : 'Add Hospital'}</div>
+                    {error && <div className="error-message">{error}</div>}
+                    <form onSubmit={submit}>
+                        <div className="rowForm">
+                            <div className="columnForm">
+                                <div className="namesForm">Hospital Name</div>
+                                <input type="text" name="HospitalName" className="inputForm single" placeholder='Enter the Hospital Name' value={hospital.HospitalName} onChange={handleChange} required/>
                             </div>
-                            <div className="rowForm">
-                                <div className="columnForm half">
-                                    <div className="namesForm">Email Id</div>
-                                    <input type="email" name="email" className="inputForm" placeholder='Enter the Email Id' value={hospital.email} onChange={handleChange} required/>
-                                </div>
-                                <div className="columnForm half">
-                                    <div className="namesForm">Contact No</div>
-                                    <input type="tel" name="contactNo" className="inputForm" placeholder='Enter the Contact Number' value={hospital.contactNo} onChange={handleChange} required/>
-                                </div>
+                        </div>
+                        <div className="rowForm">
+                            <div className="columnForm half">
+                                <div className="namesForm">Email Id</div>
+                                <input type="email" name="email" className="inputForm" placeholder='Enter the Email Id' value={hospital.email} onChange={handleChange} required/>
                             </div>
-                            <div className="rowForm">
-                                <div className="columnForm">
-                                    <div className="namesForm">Street</div>
-                                    <input type="text" name="Street" className="inputForm single" placeholder='Enter the Street' value={hospital.Street} onChange={handleChange} required/>
-                                </div>
+                            <div className="columnForm half">
+                                <div className="namesForm">Contact No</div>
+                                <input type="tel" name="contactNo" className="inputForm" placeholder='Enter the Contact Number' value={hospital.contactNo} onChange={handleChange} required/>
                             </div>
-                            <div className="rowForm">
-                                <div className="columnForm">
-                                    <div className="namesForm">Area</div>
-                                    <input type="text" name="Area" className="inputForm single" placeholder='Enter the Area' value={hospital.Area} onChange={handleChange} required/>
-                                </div>
+                        </div>
+                        <div className="rowForm">
+                            <div className="columnForm">
+                                <div className="namesForm">Street</div>
+                                <input type="text" name="Street" className="inputForm single" placeholder='Enter the Street' value={hospital.Street} onChange={handleChange} required/>
                             </div>
-                            <div className="rowForm">
-                                <div className="columnForm">
-                                    <div className="namesForm">Landmark</div>
-                                    <input type="text" name="Landmark" className="inputForm single" placeholder='Enter the Landmark' value={hospital.Landmark} onChange={handleChange}/>
-                                </div>
+                        </div>
+                        <div className="rowForm">
+                            <div className="columnForm">
+                                <div className="namesForm">Area</div>
+                                <input type="text" name="Area" className="inputForm single" placeholder='Enter the Area' value={hospital.Area} onChange={handleChange} required/>
                             </div>
-                            <div className="rowForm">
-                                <div className="columnForm half">
-                                    <div className="namesForm">Pincode</div>
-                                    <input type="text" name="pincode" className="inputForm" placeholder='Enter the Pincode' value={hospital.pincode} onChange={handleChange} required/>
-                                </div>
-                                <div className="columnForm half">
-                                    <div className="namesForm">Hospital Reg. No</div>
-                                    <input type="text" name="HospitalRegNo" className="inputForm" placeholder='Enter the Hospital Reg No' value={hospital.HospitalRegNo} onChange={handleChange} required/>
-                                </div>
+                        </div>
+                        <div className="rowForm">
+                            <div className="columnForm">
+                                <div className="namesForm">Landmark</div>
+                                <input type="text" name="Landmark" className="inputForm single" placeholder='Enter the Landmark' value={hospital.Landmark} onChange={handleChange}/>
                             </div>
-                            <div className="rowForm">
-                                <div className="columnForm">
-                                    <div className="namesForm">Speciality</div>
-                                    <input type="text" name="Speciality" className="inputForm single" placeholder='Enter your Speciality' value={hospital.Speciality} onChange={handleChange}/>
-                                </div>
+                        </div>
+                        <div className="rowForm">
+                            <div className="columnForm half">
+                                <div className="namesForm">Pincode</div>
+                                <input type="text" name="pincode" className="inputForm" placeholder='Enter the Pincode' value={hospital.pincode} onChange={handleChange} required/>
                             </div>
-                            <div className="checkbox">
-                                <input type="checkbox" id="confirm" name="confirm" value="confirm" required/>
-                                <label htmlFor="confirm" className='checkboxText'>I confirm that the above provided information is correct to my knowledge</label>
+                            <div className="columnForm half">
+                                <div className="namesForm">Hospital Reg. No</div>
+                                <input type="text" name="HospitalRegNo" className="inputForm" placeholder='Enter the Hospital Reg No' value={hospital.HospitalRegNo} onChange={handleChange} required/>
                             </div>
-                            <div className="buttonHolder">
-                                <button type="submit" className='addHospitalButton'>{id ? 'Update Hospital' : 'Add Hospital'}</button>
+                        </div>
+                        <div className="rowForm">
+                            <div className="columnForm">
+                                <div className="namesForm">Speciality</div>
+                                <input type="text" name="Speciality" className="inputForm single" placeholder='Enter your Speciality' value={hospital.Speciality} onChange={handleChange}/>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div className="checkbox">
+                            <input type="checkbox" id="confirm" name="confirm" value="confirm" required/>
+                            <label htmlFor="confirm" className='checkboxText'>I confirm that the above provided information is correct to my knowledge</label>
+                        </div>
+                        <div className="buttonHolder">
+                            <button type="submit" className='addHospitalButton'>{id ? 'Update Hospital' : 'Add Hospital'}</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

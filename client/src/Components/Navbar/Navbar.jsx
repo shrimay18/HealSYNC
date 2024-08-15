@@ -10,17 +10,14 @@ const Navbar = ({ showDropdown = false }) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
-    const { user } = useContext(AppContext);
+    const { user, logout: contextLogout } = useContext(AppContext);
 
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
     }
 
     const logout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('currentHospitalId');
-        localStorage.removeItem('currentPatientId');
-        localStorage.removeItem('currentPatientName');
+        contextLogout();
         navigate('/');
     }
 

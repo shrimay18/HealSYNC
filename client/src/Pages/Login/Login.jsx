@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../Components/Navbar/Navbar";
+import { AppContext } from '../../Context/AppContext';
 
 function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const { login } = useContext(AppContext);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -43,7 +45,7 @@ function Login() {
             );
             console.log("Response:", response.data);
             if (response.data.success) {
-                localStorage.setItem('token', response.data.token);
+                await login(response.data.token);  // Use the login function from context
                 console.log("Token stored:", localStorage.getItem('token'));
                 navigate('/dashboard');
             } else {
@@ -54,18 +56,6 @@ function Login() {
             setMessage(error.response?.data?.message || 'An error occurred during login');
         }
     };
-
-    useEffect(() => {
-        const checkToken = () => {
-            const token = localStorage.getItem('token');
-            console.log('Current token:', token);
-        };
-
-        checkToken();
-        const interval = setInterval(checkToken, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
 
     return (
         <div className="login">
