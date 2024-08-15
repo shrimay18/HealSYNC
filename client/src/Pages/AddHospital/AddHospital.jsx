@@ -109,61 +109,69 @@ const AddHospital = () => {
     }
 
     return (
-        <div className="addHospital">
+        <div className="add-hospital-container">
             <Navbar showDropdown={true} />
-            <div className="addHospitalContent">
-                <div className="addHospitalForm">
-                    <div className="addFormHeading">{id ? 'Edit Hospital' : 'Add Hospital'}</div>
-                    {error && <div className="error-message">{error}</div>}
-                    <form onSubmit={submit}>
-                        <div className="rowForm">
-                            <div className="columnForm">
-                                <div className="namesForm">Hospital Name</div>
-                                <input type="text" name="HospitalName" className="inputForm single" placeholder='Enter the Hospital Name' value={hospital.HospitalName} onChange={handleChange} required/>
+            <div className="add-hospital-content">
+                <div className="add-hospital-form-wrapper">
+                    <div className="add-hospital-form">
+                        <div className="add-hospital-heading">{id ? 'Edit Hospital' : 'Add Hospital'}</div>
+                        <form onSubmit={submit}>
+                            <div className="form-row">
+                                <div className="form-column">
+                                    <div className="form-label">Hospital Name</div>
+                                    <input type="text" name="HospitalName" className="form-input full-width" placeholder='Enter the Hospital Name' value={hospital.HospitalName} onChange={handleChange} required/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="rowForm">
-                            <div className="columnForm half">
-                                <div className="namesForm">Email Id</div>
-                                <input type="email" name="email" className="inputForm" placeholder='Enter the Email Id' value={hospital.email} onChange={handleChange} required/>
+                            <div className="form-row">
+                                <div className="form-column half-width">
+                                    <div className="form-label">Email Id</div>
+                                    <input type="email" name="email" className="form-input" placeholder='Enter the Email Id' value={hospital.email} onChange={handleChange} required/>
+                                </div>
+                                <div className="form-column half-width">
+                                    <div className="form-label">Contact No</div>
+                                    <input type="tel" name="contactNo" className="form-input" placeholder='Enter the Contact Number' value={hospital.contactNo} onChange={handleChange} required/>
+                                </div>
                             </div>
-                            <div className="columnForm half">
-                                <div className="namesForm">Contact No</div>
-                                <input type="tel" name="contactNo" className="inputForm" placeholder='Enter the Contact Number' value={hospital.contactNo} onChange={handleChange} required/>
+                            <div className="form-row">
+                                <div className="form-column">
+                                    <div className="form-label">Street</div>
+                                    <input type="text" name="Street" className="form-input full-width" placeholder='Enter the Street' value={hospital.Street} onChange={handleChange} required/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="rowForm">
-                            <div className="columnForm">
-                                <div className="namesForm">Street</div>
-                                <input type="text" name="Street" className="inputForm single" placeholder='Enter the Street' value={hospital.Street} onChange={handleChange} required/>
+                            <div className="form-row">
+                                <div className="form-column">
+                                    <div className="form-label">Area</div>
+                                    <input type="text" name="Area" className="form-input full-width" placeholder='Enter the Area' value={hospital.Area} onChange={handleChange} required/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="rowForm">
-                            <div className="columnForm">
-                                <div className="namesForm">Area</div>
-                                <input type="text" name="Area" className="inputForm single" placeholder='Enter the Area' value={hospital.Area} onChange={handleChange} required/>
+                            <div className="form-row">
+                                <div className="form-column">
+                                    <div className="form-label">Landmark</div>
+                                    <input type="text" name="Landmark" className="form-input full-width" placeholder='Enter the Landmark' value={hospital.Landmark} onChange={handleChange}/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="rowForm">
-                            <div className="columnForm">
-                                <div className="namesForm">Landmark</div>
-                                <input type="text" name="Landmark" className="inputForm single" placeholder='Enter the Landmark' value={hospital.Landmark} onChange={handleChange}/>
+                            <div className="form-row">
+                                <div className="form-column half-width">
+                                    <div className="form-label">Pincode</div>
+                                    <input type="text" name="pincode" className="form-input" placeholder='Enter the Pincode' value={hospital.pincode} onChange={handleChange} required/>
+                                </div>
+                                <div className="form-column half-width">
+                                    <div className="form-label">Hospital Reg. No</div>
+                                    <input type="text" name="HospitalRegNo" className="form-input" placeholder='Enter the Hospital Reg No' value={hospital.HospitalRegNo} onChange={handleChange} required/>
+                                </div>
                             </div>
-                        </div>
-                        <div className="rowForm">
-                            <div className="columnForm half">
-                                <div className="namesForm">Pincode</div>
-                                <input type="text" name="pincode" className="inputForm" placeholder='Enter the Pincode' value={hospital.pincode} onChange={handleChange} required/>
+                            <div className="form-row">
+                                <div className="form-column">
+                                    <div className="form-label">Speciality</div>
+                                    <input type="text" name="Speciality" className="form-input full-width" placeholder='Enter your Speciality' value={hospital.Speciality} onChange={handleChange}/>
+                                </div>
                             </div>
-                            <div className="columnForm half">
-                                <div className="namesForm">Hospital Reg. No</div>
-                                <input type="text" name="HospitalRegNo" className="inputForm" placeholder='Enter the Hospital Reg No' value={hospital.HospitalRegNo} onChange={handleChange} required/>
+                            <div className="form-checkbox">
+                                <input type="checkbox" id="confirm" name="confirm" value="confirm" required/>
+                                <label htmlFor="confirm" className='checkbox-label'>I confirm that the above provided information is correct to my knowledge</label>
                             </div>
-                        </div>
-                        <div className="rowForm">
-                            <div className="columnForm">
-                                <div className="namesForm">Speciality</div>
-                                <input type="text" name="Speciality" className="inputForm single" placeholder='Enter your Speciality' value={hospital.Speciality} onChange={handleChange}/>
+                            <div className="form-button-wrapper">
+                                <button type="submit" className='add-hospital-button'>{id ? 'Update Hospital' : 'Add Hospital'}</button>
                             </div>
                         </div>
                         <div className="checkbox">
