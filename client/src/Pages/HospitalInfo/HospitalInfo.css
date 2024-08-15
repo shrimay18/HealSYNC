@@ -13,6 +13,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     background-color: #b1f1ff;
+    padding-top: 60px; /* Add padding for navbar */
 }
 
 .hospitalInfoBlock {
@@ -30,16 +31,14 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.overviewHeader,
-.todayHistoryHeader {
+.overviewHeader, .todayHistoryHeader {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     color: #333;
 }
 
-.cardsOverviewTop,
-.todayHistoryCardsBlock {
+.cardsOverviewTop, .todayHistoryCardsBlock {
     display: flex;
     justify-content: space-between;
     margin-bottom: 2rem;
@@ -56,23 +55,75 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.totalPatientsHeader,
-.todayPatientsHeader {
+.totalPatientsHeader, .todayPatientsHeader {
     font-size: 1rem;
     color: #555;
     margin-bottom: 0.5rem;
 }
 
-.totalPatientsCount,
-.todayPatientsCount {
+.totalPatientsCount, .todayPatientsCount {
     font-size: 2.5rem;
     font-weight: 700;
     color: #333;
 }
 
+@media (max-width: 1200px) {
+    .hospitalInfo {
+        padding-top: 50px;
+    }
+
+    .overviewHeader, .todayHistoryHeader {
+        font-size: 1.3rem;
+    }
+
+    .totalPatientsHeader, .todayPatientsHeader {
+        font-size: 0.9rem;
+    }
+
+    .totalPatientsCount, .todayPatientsCount {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 1046px) {
+    .hospitalInfoBlock {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .overviewBlock {
+        flex: 1;
+        min-width: 0; /* Allow flex item to shrink below its content size */
+    }
+
+    .overviewHeader, .todayHistoryHeader {
+        font-size: 1.1rem;
+    }
+
+    .cards {
+        padding: 1rem;
+    }
+
+    .totalPatientsHeader, .todayPatientsHeader {
+        font-size: 0.8rem;
+    }
+
+    .totalPatientsCount, .todayPatientsCount {
+        font-size: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
-    .cardsOverviewTop,
-    .todayHistoryCardsBlock {
+    .hospitalInfoBlock {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .overviewBlock {
+        padding: 1rem;
+    }
+
+    .cardsOverviewTop, .todayHistoryCardsBlock {
         flex-direction: column;
     }
 
@@ -82,50 +133,39 @@ body {
     }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 480px) {
     .hospitalInfo {
         background-color: #ffffff;
     }
 
-    .hospitalInfoBlock {
-        flex-direction: column;
-        padding: 0;
-        gap: 0;
-    }
-
     .overviewBlock {
-        border-radius: 0;
-        box-shadow: none;
-        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .overviewHeader,
-    .todayHistoryHeader {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
+    .overviewHeader, .todayHistoryHeader {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
     }
 
-    .cardsOverviewTop,
-    .todayHistoryCardsBlock {
+    .cardsOverviewTop, .todayHistoryCardsBlock {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        gap: 1rem;
+        gap: 0.5rem;
     }
 
     .cards {
-        width: calc(50% - 0.5rem);
-        padding: 1rem;
-        border-radius: 10px;
+        width: calc(50% - 0.25rem);
+        padding: 0.8rem;
+        border-radius: 8px;
     }
 
-    .totalPatientsHeader,
-    .todayPatientsHeader {
-        font-size: 0.8rem;
+    .totalPatientsHeader, .todayPatientsHeader {
+        font-size: 0.7rem;
     }
 
-    .totalPatientsCount,
-    .todayPatientsCount {
-        font-size: 1.5rem;
+    .totalPatientsCount, .todayPatientsCount {
+        font-size: 1.2rem;
     }
 }
