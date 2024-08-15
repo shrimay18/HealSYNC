@@ -8,7 +8,7 @@ import Navbar from '../../Components/Navbar/Navbar';
 const AddHospital = () => {
     const navigate = useNavigate();
     const { id } = useParams();
-    const { user } = useContext(AppContext);
+    const { user, addHospital } = useContext(AppContext);
     const [hospital, setHospital] = useState({
         HospitalName: '',
         email: '',
@@ -63,6 +63,11 @@ const AddHospital = () => {
     const submit = async (e) => {
         e.preventDefault();
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('No token found');
+            }
+
             const submissionData = {
                 HospitalName: hospital.HospitalName,
                 email: hospital.email,
@@ -72,8 +77,7 @@ const AddHospital = () => {
                 Landmark: hospital.Landmark,
                 pincode: hospital.pincode ? Number(hospital.pincode) : undefined,
                 HospitalRegNo: hospital.HospitalRegNo ? Number(hospital.HospitalRegNo) : undefined,
-                Speciality: hospital.Speciality,
-                userId: user._id
+                Speciality: hospital.Speciality
             };
 
             console.log('Submitting data:', submissionData);
@@ -83,19 +87,23 @@ const AddHospital = () => {
                 response = await axios.put(`http://localhost:3000/dashboard/update-hospital/${id}`, submissionData, {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${token}`
                     }
                 });
             } else {
                 response = await axios.post('http://localhost:3000/dashboard/hospital', submissionData, {
                     headers: {
                         'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                        Authorization: `Bearer ${token}`
                     }
                 });
             }
 
             console.log('Server response:', response.data);
+
+            if (response.data.hospital && typeof addHospital === 'function') {
+                addHospital(response.data.hospital);
+            }
 
             navigate("/dashboard");
         } catch (error) {

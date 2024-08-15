@@ -56,43 +56,56 @@ exports.getHospital = async (req, res) => {
 };
 
 exports.addHospital = async (req, res) => {
-    const data = {
-        HospitalName: req.body.HospitalName,
-        email: req.body.email,
-        contactNo: req.body.contactNo,
-        Street: req.body.Street,
-        Area: req.body.Area,
-        Landmark: req.body.Landmark,
-        pincode: req.body.pincode,
-        HospitalRegNo: req.body.HospitalRegNo,
-        Speciality: req.body.Speciality,
-        userId: req.body.userId
-    };
+    const token = req.headers.authorization.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
 
     try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const data = {
+            HospitalName: req.body.HospitalName,
+            email: req.body.email,
+            contactNo: req.body.contactNo,
+            Street: req.body.Street,
+            Area: req.body.Area,
+            Landmark: req.body.Landmark,
+            pincode: req.body.pincode,
+            HospitalRegNo: req.body.HospitalRegNo,
+            Speciality: req.body.Speciality,
+            userId: user._id
+        };
+
         const existingHospital = await hospital.findOne({ HospitalRegNo: data.HospitalRegNo });
         if (existingHospital) {
             return res.status(409).json({ message: 'Hospital already exists' });
         }
 
-        var hospitalAdded = await hospital.create(data);
-        let hospitalId = new mongoose.Types.ObjectId(hospitalAdded._id);
-        await User.updateOne(
-            { _id: data.userId },
-            { $push: { Hospitals: hospitalId } },
-            { upsert: false, new: true }
-        );
+        const hospitalAdded = await hospital.create(data);
+        const hospitalId = hospitalAdded._id;
+
+        user.Hospitals.push(hospitalId);
+        await user.save();
 
         res.status(201).json({
             message: 'Hospital added successfully',
-            hospital: hospitalAdded
+            hospital: hospitalAdded,
+            user: user
         });
 
     } catch (err) {
         console.error("Error during hospital addition:", err);
         res.status(500).json({ message: 'Internal Server Error', error: err.message });
     }
-}
+};
+
 
 exports.deleteHospital = async (req, res) => {
     const hospitalId = req.params.id;
