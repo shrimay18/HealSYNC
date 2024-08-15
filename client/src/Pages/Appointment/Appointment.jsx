@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 import axios from 'axios';
@@ -12,7 +12,7 @@ const Appointment = () => {
     const { user } = useContext(AppContext);
     const [appointmentData, setAppointmentData] = useState({
         name: '',
-        date: new Date().toISOString().split('T')[0], // Set default to current date
+        date: '',
         temperature: '',
         weight: '',
         pulseRate: '',
@@ -25,22 +25,12 @@ const Appointment = () => {
         followUp: '',
         doctorNotes: ''
     });
-
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const isEditMode = !!appointmentId;
 
-    useEffect(() => {
-        fetchPatientData();
-        if (isEditMode) {
-            fetchAppointmentData();
-        } else {
-            fetchServerDate();
-        }
-    }, [isEditMode, appointmentId, patientId]);
-
-    const fetchPatientData = async () => {
+    const fetchPatientData = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await axios.get(`http://localhost:3000/patientHistory/${patientId}`, {
@@ -60,15 +50,17 @@ const Appointment = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [patientId]);
 
-    const fetchServerDate = async () => {
+    const fetchServerDate = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await axios.get('http://localhost:3000/patientHistory/server-date');
+            const serverDate = response.data.date;
+            
             setAppointmentData(prevData => ({
                 ...prevData,
-                date: response.data.date
+                date: serverDate
             }));
             setError(null);
         } catch (error) {
@@ -77,9 +69,9 @@ const Appointment = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
-    const fetchAppointmentData = async () => {
+    const fetchAppointmentData = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await axios.get(`http://localhost:3000/patientHistory/appointment/${appointmentId}`, {
@@ -99,17 +91,26 @@ const Appointment = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [appointmentId]);
 
-    const handleInputChange = (e) => {
+    useEffect(() => {
+        fetchPatientData();
+        if (isEditMode) {
+            fetchAppointmentData();
+        } else {
+            fetchServerDate();
+        }
+    }, [isEditMode, fetchPatientData, fetchAppointmentData, fetchServerDate]);
+
+    const handleInputChange = useCallback((e) => {
         const { name, value } = e.target;
         setAppointmentData(prevData => ({
             ...prevData,
             [name]: value
         }));
-    };
+    }, []);
 
-    const submit = async () => {
+    const submit = useCallback(async () => {
         setIsLoading(true);
         try {
             const endpoint = isEditMode
@@ -136,210 +137,168 @@ const Appointment = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [isEditMode, appointmentId, appointmentData, patientId, navigate]);
 
     return (
         <div className='appointment'>
             <Navbar showDropdown={true} />
-            <div className='appointmentBlock'>
-                <LeftSideBar />
-                <div className='appointmentCenterBlock'>
-                    <p className='AppointmentHeaderText'>{isEditMode ? 'Edit Appointment' : 'New Appointment'}</p>
-                    {isLoading && <p>Loading...</p>}
-                    {error && <p className="error">{error}</p>}
-                    <div className='rowAppointment'>
-                        <div className='columnAppointment'>
-                            <p className='AppointmentLabel'>Patient Name</p>
-                            <input type='text' className='double AppointmentInput' value={appointmentData.name} readOnly />
-                        </div>
-                        <div className='columnAppointment'>
-                            <p className='AppointmentLabel'>Date</p>
-                            <input 
-                                type='date' 
-                                className='double AppointmentInput dateLabel' 
-                                name="date" 
-                                value={appointmentData.date} 
-                                onChange={handleInputChange}
-                                disabled={isLoading}
-                            />
-                        </div>
+            <div className='navbar-spacer'></div>
+            <div className='appointment-wrapper'>
+                <div className='appointment-content'>
+                    <div className='sidebar-wrapper'>
+                        <LeftSideBar />
                     </div>
-                    <div className='rowAppointment'>
-                        <div className='threeColumnAppointment'>
-                            <p className='AppointmentLabel'>Temperature</p>
-                            <div className='inputHolder'>
+                    <div className='appointment-form-container'>
+                        <h2 className='appointment-header'>{isEditMode ? 'Edit Appointment' : 'New Appointment'}</h2>
+                        {isLoading && <p>Loading...</p>}
+                        {error && <p className="error">{error}</p>}
+                        <form className='appointment-form'>
+                            <div className='form-row'>
+                                <div className='form-group'>
+                                    <label htmlFor='name'>Patient Name</label>
+                                    <input type='text' id='name' value={appointmentData.name} readOnly />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor='date'>Date</label>
+                                    <input type='date' id='date' name='date' value={appointmentData.date} onChange={handleInputChange} />
+                                </div>
+                            </div>
+    
+                            <div className='form-row'>
+                                <div className='form-group'>
+                                    <label htmlFor='temperature'>Temperature (°F)</label>
+                                    <input 
+                                        type='text' 
+                                        id='temperature' 
+                                        name='temperature' 
+                                        value={appointmentData.temperature} 
+                                        onChange={handleInputChange} 
+                                        placeholder='Enter temperature' 
+                                    />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor='bloodPressure'>Blood Pressure (mmHg)</label>
+                                    <input 
+                                        type='text' 
+                                        id='bloodPressure' 
+                                        name='bloodPressure' 
+                                        value={appointmentData.bloodPressure} 
+                                        onChange={handleInputChange} 
+                                        placeholder='Enter BP' 
+                                    />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor='pulseRate'>Pulse Rate (bpm)</label>
+                                    <input 
+                                        type='text' 
+                                        id='pulseRate' 
+                                        name='pulseRate' 
+                                        value={appointmentData.pulseRate} 
+                                        onChange={handleInputChange} 
+                                        placeholder='Enter pulse rate' 
+                                    />
+                                </div>
+                            </div>
+    
+                            <div className='form-row'>
+                                <div className='form-group'>
+                                    <label htmlFor='respiratoryRate'>Respiratory Rate (breaths/min)</label>
+                                    <input 
+                                        type='text' 
+                                        id='respiratoryRate' 
+                                        name='respiratoryRate' 
+                                        value={appointmentData.respiratoryRate} 
+                                        onChange={handleInputChange} 
+                                        placeholder='Enter RR' 
+                                    />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor='weight'>Weight (kg)</label>
+                                    <input 
+                                        type='text' 
+                                        id='weight' 
+                                        name='weight' 
+                                        value={appointmentData.weight} 
+                                        onChange={handleInputChange} 
+                                        placeholder='Enter weight' 
+                                    />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor='height'>Height (cm)</label>
+                                    <input 
+                                        type='text' 
+                                        id='height' 
+                                        name='height' 
+                                        value={appointmentData.height} 
+                                        onChange={handleInputChange} 
+                                        placeholder='Enter height' 
+                                    />
+                                </div>
+                            </div>
+    
+                            <div className='form-group'>
+                                <label htmlFor='chiefComplaint'>Chief Complaint</label>
                                 <input 
                                     type='text' 
-                                    className='a AppointmentInput timeLabel' 
-                                    placeholder='Enter patient temperature' 
-                                    name="temperature" 
-                                    value={appointmentData.temperature} 
-                                    onChange={handleInputChange}
-                                    disabled={isLoading}
+                                    id='chiefComplaint' 
+                                    name='chiefComplaint' 
+                                    value={appointmentData.chiefComplaint} 
+                                    onChange={handleInputChange} 
+                                    placeholder='Enter chief complaint' 
                                 />
-                                <input type='text' className='smaller AppointmentInput timeLabel' placeholder='°F' readOnly />
                             </div>
-                        </div>
-                        <div className='threeColumnAppointment'>
-                            <p className='AppointmentLabel'>Blood Pressure</p>
-                            <div className='inputHolder'>
+    
+                            <div className='form-group'>
+                                <label htmlFor='diagnosis'>Diagnosis</label>
                                 <input 
                                     type='text' 
-                                    className='a AppointmentInput timeLabel' 
-                                    placeholder='Enter patient BP' 
-                                    name="bloodPressure" 
-                                    value={appointmentData.bloodPressure} 
-                                    onChange={handleInputChange}
-                                    disabled={isLoading}
+                                    id='diagnosis' 
+                                    name='diagnosis' 
+                                    value={appointmentData.diagnosis} 
+                                    onChange={handleInputChange} 
+                                    placeholder='Enter diagnosis' 
                                 />
-                                <input type='text' className='smaller AppointmentInput timeLabel' placeholder='mmHg' readOnly />
                             </div>
-                        </div>
-                        <div className='threeColumnAppointment'>
-                            <p className='AppointmentLabel'>Pulse Rate</p>
-                            <div className='inputHolder'>
+    
+                            <div className='form-group'>
+                                <label htmlFor='advice'>Advice</label>
                                 <input 
                                     type='text' 
-                                    className='a AppointmentInput timeLabel' 
-                                    placeholder='Enter patient Pulse rate' 
-                                    name="pulseRate" 
-                                    value={appointmentData.pulseRate} 
-                                    onChange={handleInputChange}
-                                    disabled={isLoading}
+                                    id='advice' 
+                                    name='advice' 
+                                    value={appointmentData.advice} 
+                                    onChange={handleInputChange} 
+                                    placeholder='Enter advice' 
                                 />
-                                <input type='text' className='smaller AppointmentInput timeLabel' placeholder='bpm' readOnly />
                             </div>
-                        </div>
-                    </div>
-                    <div className='rowAppointment'>
-                        <div className='threeColumnAppointment'>
-                            <p className='AppointmentLabel'>Respiratory rate</p>
-                            <div className='inputHolder'>
+    
+                            <div className='form-group'>
+                                <label htmlFor='followUp'>Follow Up</label>
                                 <input 
                                     type='text' 
-                                    className='a AppointmentInput timeLabel' 
-                                    placeholder='Enter patient RR' 
-                                    name="respiratoryRate" 
-                                    value={appointmentData.respiratoryRate} 
-                                    onChange={handleInputChange}
-                                    disabled={isLoading}
+                                    id='followUp' 
+                                    name='followUp' 
+                                    value={appointmentData.followUp} 
+                                    onChange={handleInputChange} 
+                                    placeholder='Enter follow up instructions' 
                                 />
-                                <input type='text' className='smaller AppointmentInput timeLabel' placeholder='breaths/min' readOnly />
                             </div>
-                        </div>
-                        <div className='threeColumnAppointment'>
-                            <p className='AppointmentLabel'>Weight</p>
-                            <div className='inputHolder'>
-                                <input 
-                                    type='text' 
-                                    className='a AppointmentInput timeLabel' 
-                                    placeholder='Enter patient weight' 
-                                    name="weight" 
-                                    value={appointmentData.weight} 
-                                    onChange={handleInputChange}
-                                    disabled={isLoading}
+    
+                            <div className='form-group'>
+                                <label htmlFor='doctorNotes'>Doctor Notes</label>
+                                <textarea 
+                                    id='doctorNotes' 
+                                    name='doctorNotes' 
+                                    value={appointmentData.doctorNotes} 
+                                    onChange={handleInputChange} 
+                                    placeholder='Enter additional notes' 
                                 />
-                                <input type='text' className='smaller AppointmentInput timeLabel' placeholder='kg' readOnly />
                             </div>
-                        </div>
-                        <div className='threeColumnAppointment'>
-                            <p className='AppointmentLabel'>Height</p>
-                            <div className='inputHolder'>
-                                <input 
-                                    type='text' 
-                                    className='a AppointmentInput timeLabel' 
-                                    placeholder='Enter patient height' 
-                                    name="height" 
-                                    value={appointmentData.height} 
-                                    onChange={handleInputChange}
-                                    disabled={isLoading}
-                                />
-                                <input type='text' className='smaller AppointmentInput timeLabel' placeholder='cm' readOnly />
-                            </div>
-                        </div>
-                    </div>
-                    <div className='rowAppointment'>
-                        <div className='columnAppointment'>
-                            <p className='AppointmentLabel'>Chief Complaint</p>
-                            <input 
-                                type='text' 
-                                className='single AppointmentInput' 
-                                placeholder='Please enter the chief complaint' 
-                                name="chiefComplaint" 
-                                value={appointmentData.chiefComplaint} 
-                                onChange={handleInputChange}
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
-                    <div className='rowAppointment'>
-                        <div className='columnAppointment'>
-                            <p className='AppointmentLabel'>Diagnosis</p>
-                            <input 
-                                type='text' 
-                                className='single AppointmentInput' 
-                                placeholder='Please enter the diagnosis' 
-                                name="diagnosis" 
-                                value={appointmentData.diagnosis} 
-                                onChange={handleInputChange}
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
-                    <div className='rowAppointment'>
-                        <div className='columnAppointment'>
-                            <p className='AppointmentLabel'>Advice</p>
-                            <input 
-                                type='text' 
-                                className='single AppointmentInput' 
-                                placeholder='Please enter any advice for the patient' 
-                                name="advice" 
-                                value={appointmentData.advice} 
-                                onChange={handleInputChange}
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
-                    <div className="rowAppointment">
-                        <div className="columnAppointment">
-                            <p className="AppointmentLabel">Follow Up</p>
-                            <input 
-                                type="text" 
-                                className="single AppointmentInput" 
-                                placeholder="Please enter any follow up instructions" 
-                                name="followUp" 
-                                value={appointmentData.followUp} 
-                                onChange={handleInputChange}
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
-                    <div className="rowAppointment">
-                        <div className="columnAppointment">
-                            <p className="AppointmentLabel">Doctor Notes</p>
-                            <textarea 
-                                className="single AppointmentInput" 
-                                placeholder="Please enter any additional notes" 
-                                name="doctorNotes" 
-                                value={appointmentData.doctorNotes} 
-                                onChange={handleInputChange}
-                                disabled={isLoading}
-                            />
-                        </div>
-                    </div>
-                    <div className='rowAppointment'>
-                        <div className='columnAppointment'>
-                            <button className='saveButton' onClick={submit} disabled={isLoading}>
+    
+                            <button type='button' className='save-button' onClick={submit} disabled={isLoading}>
                                 {isLoading ? 'Saving...' : (isEditMode ? 'Update' : 'Save')}
                             </button>
-                        </div>
-                    </div>
-                </div>
-                <div className='rightBlocks'>
-                    <div className='rightUpBlock'>
-                    </div>
-                    <div className='rightDownBlock'>
-                        <div className='Notification'>Notification</div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -347,4 +306,4 @@ const Appointment = () => {
     );
 };
 
-export default Appointment;
+export default React.memo(Appointment);
