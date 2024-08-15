@@ -22,26 +22,18 @@
     max-height: calc(100vh - 120px); /* Adjust based on your navbar height */
 }
 
+.signup-block h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
 .signup-block-form {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 20px;
-}
-
-.column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-/* New styles for consistent widths */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -51,8 +43,7 @@
 .span-1 { grid-column: span 1; }
 .span-2 { grid-column: span 2; }
 .span-3 { grid-column: span 3; }
-
-.span-gender { grid-column: span 1; }
+.span-dropdown { grid-column: span 1; }
 
 .input-wrapper {
     display: flex;
@@ -60,8 +51,9 @@
 }
 
 label {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 5px;
+    font-weight: 500;
 }
 
 input, select, .dropdown, .phone-input {
@@ -74,6 +66,10 @@ input, select, .dropdown, .phone-input {
     background-color: rgb(83,170,196);
     color: rgb(21,80,111);
     box-sizing: border-box;
+}
+
+input::placeholder {
+    color: rgba(21,80,111,0.7);
 }
 
 .name-input {
@@ -116,10 +112,6 @@ button:hover {
     width: auto;
     height: auto;
 }
-.row-1 .column { width: 100%; }
-.row-2 .column { width: calc(50% - 10px); }
-.row-3 .column { width: calc(33.333% - 13.333px); }
-
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
@@ -129,12 +121,24 @@ button:hover {
 }
 
 @media (max-width: 768px) {
+    .signup-block {
+        padding: 20px;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
     }
 
-    .span-1, .span-2, .span-3 {
+    .span-1, .span-2, .span-3, .span-dropdown {
         grid-column: 1;
+    }
+
+    label {
+        font-size: 16px;
+    }
+
+    input, select {
+        font-size: 16px;
     }
 }
 
