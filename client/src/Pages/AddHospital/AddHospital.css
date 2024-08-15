@@ -10,19 +10,24 @@
 .add-hospital-content {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 20px;
     flex-grow: 1;
-    overflow: auto;
+    overflow-y: auto;
+    margin-top: 60px; /* Space for navbar */
 }
 
 .add-hospital-form-wrapper {
     width: 100%;
     max-width: 1000px;
+    height: 80vh; /* Fixed height, adjust as needed */
     background-color: rgb(212, 245, 255);
     border-radius: 20px;
     padding: 30px;
-    max-height: calc(100vh - 100px);
-    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide the scrollbar */
 }
 
 .add-hospital-heading {
@@ -30,6 +35,24 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 30px;
+}
+
+.add-hospital-form {
+    flex-grow: 1;
+    overflow-y: scroll; /* Enable vertical scrolling */
+    padding-right: 17px; /* Compensate for the hidden scrollbar width */
+    margin-right: -17px; /* Compensate for the added padding */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.add-hospital-form::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.add-hospital-form {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .form-row {
@@ -113,20 +136,11 @@
     .add-hospital-form-wrapper {
         max-width: 90%;
     }
-
-    .form-input {
-        height: 36px;
-        font-size: 0.95rem;
-    }
 }
 
 @media (max-width: 768px) {
     .add-hospital-heading {
         font-size: 1.5rem;
-    }
-
-    .add-hospital-form-wrapper {
-        padding: 20px;
     }
 
     .form-row {
@@ -143,9 +157,7 @@
     }
 
     .form-input {
-        height: 32px;
         font-size: 0.9rem;
-        padding: 6px 10px;
     }
 
     .form-label {
@@ -156,10 +168,12 @@
 @media (max-width: 480px) {
     .add-hospital-content {
         padding: 10px;
+        margin-top: 50px; /* Adjust top margin for smaller screens */
     }
 
     .add-hospital-form-wrapper {
         padding: 15px;
+        height: 85vh; /* Slightly larger on small screens */
     }
 
     .add-hospital-heading {
@@ -172,7 +186,6 @@
     }
 
     .form-input {
-        height: 30px;
         font-size: 0.85rem;
         padding: 5px 8px;
     }
