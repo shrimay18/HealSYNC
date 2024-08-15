@@ -9,29 +9,20 @@ export const AppProvider = ({ children }) => {
 
     const fetchUserAndHospital = async () => {
         try {
-            const userResponse = await axios.get('http://localhost:3000/dashboard/get-current-user', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setUser(userResponse.data.data.name);
+            const token = localStorage.getItem('token');
+            if (token) {
+                const userResponse = await axios.get('http://localhost:3000/dashboard/get-current-user', {
+                    headers: {
+                        ContentType: 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setUser(userResponse.data.data.name);
+            }
 
             const storedHospitalName = localStorage.getItem('currentHospitalName');
             if (storedHospitalName) {
                 setHospitalName(storedHospitalName);
-            } else {
-                const hospitalId = localStorage.getItem('currentHospitalId');
-                if (hospitalId) {
-                    const hospitalResponse = await axios.get('http://localhost:3000/hospital/', {
-                        headers: {
-                            ContentType: 'application/json',
-                            Authorization: `Bearer ${hospitalId}`
-                        }
-                    });
-                    setHospitalName(hospitalResponse.data.HospitalName);
-                    localStorage.setItem('currentHospitalName', hospitalResponse.data.HospitalName);
-                }
             }
         } catch (error) {
             console.error('Error fetching user or hospital data:', error);
@@ -42,13 +33,28 @@ export const AppProvider = ({ children }) => {
         fetchUserAndHospital();
     }, []);
 
+    const login = async (token) => {
+        localStorage.setItem('token', token);
+        await fetchUserAndHospital();
+    };
+
     const updateHospitalName = (name) => {
         setHospitalName(name);
         localStorage.setItem('currentHospitalName', name);
     };
 
+    const logout = () => {
+        setUser(null);
+        setHospitalName(null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('currentHospitalId');
+        localStorage.removeItem('currentHospitalName');
+        localStorage.removeItem('currentPatientId');
+        localStorage.removeItem('currentPatientName');
+    };
+
     return (
-        <AppContext.Provider value={{ user, hospitalName, fetchUserAndHospital, updateHospitalName }}>
+        <AppContext.Provider value={{ user, hospitalName, fetchUserAndHospital, updateHospitalName, logout, login }}>
             {children}
         </AppContext.Provider>
     );

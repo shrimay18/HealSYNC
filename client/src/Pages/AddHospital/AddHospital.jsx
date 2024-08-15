@@ -21,6 +21,7 @@ const AddHospital = () => {
         Speciality: ''
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -47,6 +48,7 @@ const AddHospital = () => {
             }));
         } catch (error) {
             console.error('Error fetching hospital:', error);
+            setError('Failed to fetch hospital data. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -62,6 +64,7 @@ const AddHospital = () => {
 
     const submit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
             const submissionData = {
                 HospitalName: hospital.HospitalName,
@@ -78,28 +81,26 @@ const AddHospital = () => {
 
             console.log('Submitting data:', submissionData);
 
-            let response;
-            if (id) {
-                response = await axios.put(`http://localhost:3000/dashboard/update-hospital/${id}`, submissionData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-            } else {
-                response = await axios.post('http://localhost:3000/dashboard/hospital', submissionData, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-            }
+            const url = id 
+                ? `http://localhost:3000/dashboard/update-hospital/${id}`
+                : 'http://localhost:3000/dashboard/hospital';
+            const method = id ? 'put' : 'post';
+
+            const response = await axios({
+                method,
+                url,
+                data: submissionData,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
 
             console.log('Server response:', response.data);
-
             navigate("/dashboard");
         } catch (error) {
             console.error('Error submitting hospital data:', error.response ? error.response.data : error.message);
+            setError('Failed to submit hospital data. Please try again.');
         }
     }
 
@@ -172,8 +173,15 @@ const AddHospital = () => {
                             <div className="form-button-wrapper">
                                 <button type="submit" className='add-hospital-button'>{id ? 'Update Hospital' : 'Add Hospital'}</button>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div className="checkbox">
+                            <input type="checkbox" id="confirm" name="confirm" value="confirm" required/>
+                            <label htmlFor="confirm" className='checkboxText'>I confirm that the above provided information is correct to my knowledge</label>
+                        </div>
+                        <div className="buttonHolder">
+                            <button type="submit" className='addHospitalButton'>{id ? 'Update Hospital' : 'Add Hospital'}</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
