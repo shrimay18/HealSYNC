@@ -1,12 +1,13 @@
 .card {
     background-color: rgb(178, 237, 255);
     border-radius: 20px;
-    padding: 15px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 150px;
+    height: 160px; /* Fixed height in pixels */
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    overflow: hidden;
 }
 
 .card:hover {
@@ -15,28 +16,37 @@
 }
 
 .cardHeading {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .cardDescription {
     font-size: 0.9rem;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     flex-grow: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .cardButton {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
+    gap: 6px;
 }
 
 .changeData {
-    padding: 5px 10px;
-    font-size: 0.8rem;
+    padding: 3px 6px;
+    font-size: 0.7rem;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
 }
@@ -62,26 +72,7 @@
 /* Responsive styles */
 @media screen and (max-width: 1200px) {
     .card {
-        padding: 12px;
-    }
-
-    .cardHeading {
-        font-size: 1.1rem;
-    }
-
-    .cardDescription {
-        font-size: 0.85rem;
-    }
-
-    .changeData {
-        font-size: 0.75rem;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .card {
-        padding: 10px;
-        min-height: 130px;
+        height: 150px;
     }
 
     .cardHeading {
@@ -89,30 +80,58 @@
     }
 
     .cardDescription {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 
     .changeData {
-        padding: 4px 8px;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
+        padding: 3px 5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        height: 140px;
+        padding: 10px;
+    }
+
+    .cardHeading {
+        font-size: 0.95rem;
+    }
+
+    .cardDescription {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 2;
+        margin-bottom: 6px;
+    }
+
+    .changeData {
+        padding: 2px 4px;
+        font-size: 0.6rem;
     }
 }
 
 @media screen and (max-width: 480px) {
     .card {
-        min-height: 120px;
+        height: 130px;
     }
 
     .cardHeading {
         font-size: 0.9rem;
+        -webkit-line-clamp: 1;
     }
 
     .cardDescription {
         font-size: 0.75rem;
+        -webkit-line-clamp: 2;
     }
 
     .changeData {
-        padding: 3px 6px;
-        font-size: 0.65rem;
+        padding: 2px 3px;
+        font-size: 0.55rem;
+    }
+
+    .cardButton {
+        gap: 4px;
     }
 }
