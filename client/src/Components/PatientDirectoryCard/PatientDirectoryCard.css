@@ -10,6 +10,7 @@
     padding: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .patient-directory-card:hover {
@@ -22,6 +23,8 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    height: 100%;
+    justify-content: center;
 }
 
 .patient-directory-card-img {
@@ -56,10 +59,14 @@
 }
 
 .patient-directory-card-buttons {
+    position: absolute;
+    bottom: 0.3rem;
+    right: 0.3rem;
     display: flex;
-    width: 100%;
     justify-content: flex-end;
-    margin-top: 1rem;
+    padding: 0.2rem;
+    background-color: rgba(230, 247, 255, 0.8);
+    border-radius: 0 0 15px 0;
 }
 
 .delete-icon,
@@ -68,7 +75,7 @@
     color: #666;
     cursor: pointer;
     transition: color 0.3s ease;
-    padding: 0.5rem;
+    padding: 0.3rem;
 }
 
 .delete-icon:hover {
@@ -80,7 +87,7 @@
 }
 
 .delete-icon {
-    margin-right: 0.75rem;
+    margin-right: 0.2rem;
 }
 
 @media (max-width: 1200px) {
@@ -98,6 +105,16 @@
     .patient-directory-card-patientId {
         font-size: 0.8rem;
     }
+
+    .patient-directory-card-buttons {
+        padding: 0.15rem;
+    }
+
+    .delete-icon,
+    .edit-icon {
+        font-size: 1rem;
+        padding: 0.25rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -113,5 +130,21 @@
 
     .patient-directory-card-name {
         font-size: 1rem;
+    }
+
+    .patient-directory-card-buttons {
+        padding: 0.1rem;
+        bottom: 0.2rem;
+        right: 0.2rem;
+    }
+
+    .delete-icon,
+    .edit-icon {
+        font-size: 0.9rem;
+        padding: 0.2rem;
+    }
+
+    .delete-icon {
+        margin-right: 0.1rem;
     }
 }

@@ -1,74 +1,170 @@
-*{
-    margin:0px;
-    padding:0px;
-    box-sizing:border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.addPatient{
-    background-color: rgb(177,241,255);
+
+.addPatient {
+    background-color: rgb(177, 241, 255);
+    min-height: 100vh;
+    padding-top: 70px; /* Adjust based on your navbar height */
 }
-.addPatientBlock{
+
+.addPatientBlock {
     display: flex;
+    height: calc(100vh - 70px); /* Adjust based on your navbar height */
+    padding: 1.5rem; /* Equal padding around the entire block */
+    gap: 1.5rem; /* Gap between LeftSideBar and form */
 }
-.addPatientForm{
-    background-color: rgb(212,245,255);
-    height:85vh;
-    margin:2rem;
-    width:65vw;
+
+/* Styles for LeftSideBar - you may need to adjust the class name */
+.infoLeftBar {
+    width: 200px; /* Adjust width as needed */
+    margin-left: 0.5rem; /* Additional left margin */
+    background-color: rgb(212, 245, 255);
     border-radius: 20px;
-    overflow: scroll;
+    padding: 1rem;
 }
-.addPatientHeaderForm{
-    display: flex;
-    justify-content: center;
-    font-size:2.3rem;
-    font-weight:700;
-    margin:2rem;
+
+.addPatientForm {
+    flex: 1;
+    background-color: rgb(212, 245, 255);
+    border-radius: 20px;
+    overflow-y: auto;
+    padding: 2rem;
 }
-.patientPersonalInfo{
-    display: flex;
-    margin:2rem;
-    font-size:2rem;
+
+.addPatientHeaderForm {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.patientPersonalInfo, .patientMedicalHistory {
+    font-size: 1.5rem;
     font-weight: 500;
-    width: 90%;
-    /* text-decoration: underline; */
-    border-bottom:3px solid black;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid black;
 }
-.columnAdd{
-    margin:2rem;
+
+.rowAdd {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
 }
-.single{
-    width:49vw;
+
+.columnAdd {
+    flex: 1 1 300px;
+    margin-bottom: 1rem;
+    padding-right: 1rem;
 }
-.columnAdd p{
-    font-size: 1.25rem;
+
+.columnAdd p {
+    font-size: 1rem;
     font-weight: 500;
+    margin-bottom: 0.5rem;
 }
-.rowAdd{
+
+.single, .double, .triple {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.buttonHolderAddPatient {
     display: flex;
-    width:40vw;
+    justify-content: flex-end;
+    margin-top: 2rem;
 }
-.component{
-    margin-bottom: 0.4rem;
+
+.addPatientButton {
+    padding: 0.75rem 1.5rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
-.triple{
-    width:15vw;
+
+.addPatientButton:hover {
+    background-color: #357abd;
 }
-.patientMedicalHistory{
-    display: flex;
-    margin:2rem;
-    font-size:2rem;
-    font-weight: 500;
-    width: 90%;
-    /* text-decoration: underline; */
-    border-bottom:3px solid black;
+
+@media (max-width: 1024px) {
+    .addPatientBlock {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .infoLeftBar {
+        width: 180px;
+    }
 }
-.addPatientButton{
-    width:10vw;
-    margin:2rem;
-    
+
+@media (max-width: 768px) {
+    .addPatientBlock {
+        flex-direction: column;
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .infoLeftBar {
+        width: 100%;
+        margin-left: 0;
+        margin-bottom: 0.75rem;
+    }
+
+    .addPatientForm {
+        padding: 1rem;
+    }
+
+    .addPatientHeaderForm {
+        font-size: 1.5rem;
+    }
+
+    .patientPersonalInfo, .patientMedicalHistory {
+        font-size: 1.2rem;
+    }
+
+    .columnAdd {
+        flex: 1 1 100%;
+        padding-right: 0;
+    }
+
+    .buttonHolderAddPatient {
+        justify-content: center;
+    }
+
+    .addPatientButton {
+        width: 100%;
+        max-width: 300px;
+    }
 }
-.buttonHolderAddPatient{
-    display: flex;
-    justify-content: end;
-    /* margin:2rem; */
+
+@media (max-width: 480px) {
+    .addPatientBlock {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .addPatientForm {
+        padding: 0.75rem;
+    }
+
+    .addPatientHeaderForm {
+        font-size: 1.2rem;
+    }
+
+    .patientPersonalInfo, .patientMedicalHistory {
+        font-size: 1rem;
+    }
+
+    .columnAdd p {
+        font-size: 0.9rem;
+    }
 }
