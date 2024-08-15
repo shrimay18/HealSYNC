@@ -16,10 +16,10 @@ const Signup = () => {
     const [gender, setGender] = useState('');
     const [dob, setDob] = useState('');
     const [age, setAge] = useState('');
-    const [state, setState] = useState(''); 
+    const [state, setState] = useState('');
     const [city, setCity] = useState('');
     const [pincode, setPincode] = useState('');
-    const [degree, setDegree] = useState(''); 
+    const [degree, setDegree] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,12 +27,12 @@ const Signup = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [file, setFile] = useState(null);
 
-
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+
+    const handleFileChange = (file) => {
+        setFile(file);
     };
 
     const states = [
@@ -78,7 +78,7 @@ const Signup = () => {
             setMessage('Entered password does not match');
             return;
         }
-        if(age <= 18){
+        if (age <= 18) {
             setMessage('You are not a Valid Doctor!!!!');
             return;
         }
@@ -105,11 +105,9 @@ const Signup = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            if(response.data.success){
+            if (response.data.success) {
                 window.location.href = response.data.redirectUrl;
             }
-
-
         } catch (error) {
             if (error.response) {
                 setMessage(error.response.data);
@@ -125,163 +123,149 @@ const Signup = () => {
             <div className="signup-block">
                 <h1>Sign Up</h1>
                 <form className='signup-block-form' onSubmit={handleSubmit}>
-                    <div className="row">
-
-                        <div className="column">
+                    <div className="form-grid">
+                        <div className="input-wrapper span-2">
                             <label>Name:</label>
-                            <div className="row">
+                            <div className="name-input">
                                 <input type="text" id="dr" placeholder='Dr' readOnly />
-                                <input
+                                <Input
                                     type="text"
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    setValue={setName}
                                     placeholder="Enter your Name"
-                                    required={true}
+                                    required
                                 />
                             </div>
                         </div>
-
-                        {/*Username*/}
-                        <Input 
-                            label="Username:"
-                            type="text"
-                            value={username}
-                            setValue={setUsername}
-                        />
-                    </div>
-                    <div className="row">
-
-                        {/*Password*/}
-                        <Input 
-                            label="Password:"
-                            type="password"
-                            value={password}
-                            setValue={setPassword}
-                        />
-
-                        {/*Confirm Password*/}
-                        <Input 
-                            label="Confirm Password:"
-                            type="password"
-                            value={confirmPassword}
-                            setValue={setConfirmPassword}
-                        />
-                    </div>
-
-
-                    <div className="row">
-                        {/*Gender*/}
-                        <div className="column">
+                        <div className="input-wrapper span-dropdown">
+                            <Input 
+                                type="text"
+                                value={username}
+                                setValue={setUsername}
+                                label="Username"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-1">
+                            <Input 
+                                type="password"
+                                value={password}
+                                setValue={setPassword}
+                                label="Password"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-1">
+                            <Input 
+                                type="password"
+                                value={confirmPassword}
+                                setValue={setConfirmPassword}
+                                label="Confirm Password"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-dropdown">
+                            <label>Gender:</label>
                             <Dropdown 
-                                label='Gender: '
                                 options={genders}
                                 selected={gender}
                                 setSelected={setGender}
-                                defaultSelected="Select Gender" 
+
+                                defaultSelected="Select Gender"
                             />
                         </div>
+                        <div className="input-wrapper span-1">
+                            <Input 
+                                type="date"
+                                value={dob}
+                                setValue={setDob}
+                                label="Date of Birth"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-1">
+                            <Input
+                                type="number"
+                                value={age}
+                                setValue={setAge}
+                                label="Age"
+                                min={18}
+                                max={100}
+                                readOnly
+                            />
+                        </div>
+                        <div className="input-wrapper span-dropdown">
+                            <label>State:</label>
 
-                        <Input 
-                            label="Date of Birth:"
-                            type="date"
-                            value={dob}
-                            setValue={setDob}
-                        />
-
-                        {/*Age*/}
-                        <Input
-                            label="Age:"
-                            type="number"
-                            value={age}
-                            setValue={setAge}
-                            min={18}
-                            max={100}
-                        />
-                    </div>
-                    <div className="row">
-                        {/*State*/}
-                        <div className="column">
                             <Dropdown 
-                                label='State: '
                                 options={states}
                                 selected={state}
                                 setSelected={setState}
-                                defaultSelected="Select State" 
+
+                                defaultSelected="Select State"
+
                             />
                         </div>
-
-                        {/*City*/}
-                        <Input 
-                            label="City:"
-                            type="text"
-                            value={city}
-                            setValue={setCity}
-                        />
-
-                        {/*Pincode*/}
-                        <Input 
-                            label="Pincode:"
-                            type="number"
-                            value={pincode}
-                            setValue={setPincode}
-                        />
-                    </div>
-                    <div className="row">
-                        {/*Email*/}
-                        <Input
-                            label="Email:"
-                            type="email"
-                            value={email}
-                            setValue={setEmail}
-                        />
-
-                        {/*Contact Number*/}
-                        <div className="column">
+                        <div className="input-wrapper span-1">
+                            <Input 
+                                type="text"
+                                value={city}
+                                setValue={setCity}
+                                label="City"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-1">
+                            <Input 
+                                type="number"
+                                value={pincode}
+                                setValue={setPincode}
+                                label="Pincode"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-dropdown">
+                            <Input
+                                type="email"
+                                value={email}
+                                setValue={setEmail}
+                                label="Email"
+                                required
+                            />
+                        </div>
+                        <div className="input-wrapper span-1">
                             <label>Contact Number:</label>
                             <PhoneNumber
                                 state={phone}
                                 setState={setPhone}
                             />
                         </div>
-                    </div>
-
-
-                    <div className="row">
-                            {/*Degree*/}
-                            <div className="column">
-                                <label>Degree:</label>
-                                <Dropdown 
-                                    options={degrees}
-                                    selected={degree}
-                                    setSelected={setDegree}
-                                />
-                            </div>
-
-                            {/*Registration Number*/}
+                        <div className="input-wrapper span-1">
+                            <label>Degree:</label>
+                            <Dropdown 
+                                options={degrees}
+                                selected={degree}
+                                setSelected={setDegree}
+                                defaultSelected="Select Degree"
+                            />
+                        </div>
+                        <div className="input-wrapper span-3">
                             <Input 
-                                label="Registration Number:"
                                 type="text"
                                 value={RegNo}
                                 setValue={setRegNo}
+                                label="Registration Number"
+                                required
                             />
-                        
-                    </div>
-
-                    {/*PDF Upload*/}
-                    <div className="row">
-                        <div className="column">
-                            <label>Upload Degree:</label>
-                            <input type="file" onChange={handleFileChange} />
+                        </div>
+                        <div className="input-wrapper span-3">
+                            <PDFUpload
+                                onFileSelect={handleFileChange}
+                                required={true}
+                            />
                         </div>
                     </div>
-                    {/* <div className="terms">
-                        <input type="checkbox" required />
-                        <p>By clicking Signup, you agree to our Terms and Conditions</p>
-                    </div> */}
-
-
-                    {/*Terms and Condition*/}
-                    <div>
+                    <div className="terms">
                         <Checkbox
                             label="Accept Terms and Conditions"
                             checked={isChecked}
@@ -289,12 +273,10 @@ const Signup = () => {
                             required={true}
                         />
                     </div>
-
-                    {/*Submission*/}
                     <button type="submit">Signup</button>
                 </form>
+                {message && <p className="error-message">{message}</p>}
             </div>
-            <p>{message}</p>
         </div>
     );
 };

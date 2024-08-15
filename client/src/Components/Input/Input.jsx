@@ -1,22 +1,37 @@
-function Input(props) {
+import React from 'react';
+
+function Input({
+    type = 'text',
+    value,
+    setValue,
+    label,
+    placeholder,
+    min,
+    max,
+    required,
+    readOnly
+}) {
     const handleChange = (e) => {
-        const value = e.target.value;
-        if (props.type === 'number' && (value < props.min || value > props.max)) {
+        const newValue = e.target.value;
+        if (type === 'number' && (newValue < min || newValue > max)) {
+            return;
+
         }
-        props.setValue(value);
-        console.log(value);
+        setValue(newValue);
     };
 
     return (
-        <div className={`column ${props.label}`}>
-            <label>{props.label}</label>
+        <div className={`column ${label}`}>
+            {label && <label>{label}</label>}
             <input
-                type={props.type}
-                value={props.value}
+                type={type}
+                value={value}
                 onChange={handleChange}
-                placeholder={`Enter ${props.label}`}
-                min={props.min}
-                max={props.max}
+                placeholder={placeholder || (label ? `Enter ${label}` : '')}
+                min={min}
+                max={max}
+                required={required}
+                readOnly={readOnly}
             />
         </div>
     );
