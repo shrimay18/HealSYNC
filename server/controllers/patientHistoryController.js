@@ -249,40 +249,6 @@ exports.updateAppointment = async (req, res) => {
   }
 };
 
-// exports.getTodayAppointments = async (req, res) => {
-//   try {
-//     console.log('getTodayAppointments called');
-//     const hospitalId = req.headers.authorization.split(' ')[1];
-//     console.log('Hospital ID:', hospitalId);
-
-//     const today = new Date();
-//     today.setHours(0, 0, 0, 0);
-//     const tomorrow = new Date(today);
-//     tomorrow.setDate(tomorrow.getDate() + 1);
-
-//     console.log('Querying for appointments between', today, 'and', tomorrow);
-//     const patientsOfHospital = await Hospital.find({ hospitalId: hospitalId }).populate('patients');
-//     console.log('Patients of hospital:', patientsOfHospital);
-
-//     const todayAppointments = await PatientHistory.countDocuments({
-//       date: {
-//         $gte: today,
-//         $lt: tomorrow
-//       },
-//       hospitalId: hospitalId
-//     })
-
-//     console.log('Found appointments:', todayAppointments);
-
-//     res.status(200).json({
-//       appointmentsCount: todayAppointments.length,
-//       appointments: todayAppointments
-//     });
-//   } catch (err) {
-//     console.error("Error fetching today's appointments:", err);
-//     res.status(500).json({ message: "Internal Server Error", error: err.message });
-//   }
-// };
 
 exports.getTodayAppointments = async (req, res) => {
   try {
@@ -303,7 +269,6 @@ exports.getTodayAppointments = async (req, res) => {
 
     console.log("Querying for appointments between", today, "and", tomorrow);
 
-    // const patientsOfHospital = await Hospital.find({ _id: hospitalId }).populate('patients');
     const patientsOfHospital = await Hospital.find({ _id: hospitalId }).select(
       "patients"
     );

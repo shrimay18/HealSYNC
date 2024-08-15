@@ -115,10 +115,8 @@ exports.deleteHospital = async (req, res) => {
         }
 
         if (hospitalToDelete.patients && hospitalToDelete.patients.length > 0) {
-            // Delete patient history records
             await PatientHistory.deleteMany({ patientId: { $in: hospitalToDelete.patients } });
             
-            // Delete patients
             await Patients.deleteMany({ _id: { $in: hospitalToDelete.patients } });
         }
 

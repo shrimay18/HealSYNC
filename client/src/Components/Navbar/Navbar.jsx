@@ -1,14 +1,16 @@
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { faUser as faUserProfile } from '@fortawesome/free-regular-svg-icons';
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
+import { AppContext } from '../../Context/AppContext';
 import './navbar.css';
 
-const Navbar = ({ name = "Guest", showDropdown = false }) => {
+const Navbar = ({ showDropdown = false }) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
+    const { user } = useContext(AppContext);
 
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
@@ -42,7 +44,7 @@ const Navbar = ({ name = "Guest", showDropdown = false }) => {
             </div>
             <div className="profile" onClick={toggleDropdown} ref={dropdownRef}>
                 <FontAwesomeIcon icon={faUser} className="user-icon" />
-                <p className="username">{name}</p>
+                <p className="username">{user || "Guest"}</p>
                 {showDropdown && dropdownVisible && (
                     <div className="dropdown-menu">
                         <div className="dropdown-item">

@@ -170,6 +170,7 @@ const Signup = () => {
                                 options={genders}
                                 selected={gender}
                                 setSelected={setGender}
+
                                 defaultSelected="Select Gender"
                             />
                         </div>
@@ -195,11 +196,14 @@ const Signup = () => {
                         </div>
                         <div className="input-wrapper span-dropdown">
                             <label>State:</label>
+
                             <Dropdown 
                                 options={states}
                                 selected={state}
                                 setSelected={setState}
+
                                 defaultSelected="Select State"
+
                             />
                         </div>
                         <div className="input-wrapper span-1">

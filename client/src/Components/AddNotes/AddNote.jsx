@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import './AddNote.css'; // Make sure to create this CSS file
+import './AddNote.css'; 
 
 const NotesComponent = (onClickAdd, note) => {
   const [notes, setNotes] = useState([]);

@@ -8,7 +8,7 @@ const SearchBar = ({ onSearch }) => {
 
     const handleInputChange = (event) => {
         setQuery(event.target.value);
-        onSearch(event.target.value); // Trigger search on input change
+        onSearch(event.target.value);
     };
 
     return (

@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Navbar from '../../Components/Navbar/Navbar';
 import axios from 'axios';
 import './AddPatient.css';
 import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 import Dropdown from '../../Components/Dropdown/Dropdown';
 import PhoneNumber from '../../Components/PhoneNumberInput/PhoneNumber';
+import { AppContext } from '../../Context/AppContext';
 
 const AddPatient = () => {
     const { patientId } = useParams();
     const navigate = useNavigate();
+    const { user } = useContext(AppContext);
     const [formData, setFormData] = useState({
         name: '',
         gender: '',
@@ -26,8 +27,6 @@ const AddPatient = () => {
         pastMedicalHistory: '',
         allergies: '',
     });
-    const [user, setUser] = useState(null);
-    const [hospitalName, setHospitalName] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -44,42 +43,10 @@ const AddPatient = () => {
     ];
 
     useEffect(() => {
-        get_user();
-        get_hospital_name();
         if (patientId) {
             fetchPatientData();
         }
     }, [patientId]);
-
-    const get_user = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setUser(response.data.data.name);
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-            setError("Failed to fetch user data");
-        }
-    };
-
-    const get_hospital_name = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/hospital/', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
-                }
-            });
-            setHospitalName(response.data.HospitalName);
-        } catch (error) {
-            console.error("Error fetching hospital data:", error);
-            setError("Failed to fetch hospital data");
-        }
-    }
 
     const fetchPatientData = async () => {
         setLoading(true);
@@ -173,9 +140,9 @@ const AddPatient = () => {
 
     return (
         <div className="addPatient">
-            <Navbar name={user} showDropdown={true} />
+            <Navbar showDropdown={true} />
             <div className='addPatientBlock'>
-                <LeftSideBar hosName={hospitalName}/>
+                <LeftSideBar />
                 <div className='addPatientForm'>
                     <p className='addPatientHeaderForm'>{patientId ? 'Edit Patient' : 'Add Patient'}</p>
                     <p className='patientPersonalInfo'>Personal Information</p>
@@ -262,13 +229,6 @@ const AddPatient = () => {
                         <button className='addPatientButton' onClick={handleSubmit}>
                             {patientId ? 'Update Patient' : 'Add Patient'}
                         </button>
-                    </div>
-                </div>
-                <div className="rightBlocks">
-                    <div className="rightUpBlock">
-                    </div>
-                    <div className="rightDownBlock">
-                        <div className="Notification">Notification</div>
                     </div>
                 </div>
             </div>

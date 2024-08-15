@@ -1,4 +1,3 @@
-// Dropdown.js
 import React from 'react';
 import './Dropdown.css';
 const Dropdown = ({ options, selected, setSelected, defaultSelected }) => {

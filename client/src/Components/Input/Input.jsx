@@ -14,8 +14,8 @@ function Input({
     const handleChange = (e) => {
         const newValue = e.target.value;
         if (type === 'number' && (newValue < min || newValue > max)) {
-            // Do nothing if the value is out of range
             return;
+
         }
         setValue(newValue);
     };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Dashboard.css";
 import Navbar from "../../Components/Navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,27 +8,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusSquare } from '@fortawesome/free-regular-svg-icons';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import Card from "../../Components/Card/Card";
+import { AppContext } from '../../Context/AppContext';
 
 function Dashboard() {
-    const [user, setUser] = useState(null);
+    const { user, updateHospitalName } = useContext(AppContext);
     const [hospitals, setHospitals] = useState([]);
     const [filteredHospitals, setFilteredHospitals] = useState([]);
     const navigate = useNavigate();
 
-    const get_user = async () => {
-        try {
-            const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
-                headers: {
-                    ContentType: 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            setUser(response.data.data.name);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-            // Handle error (e.g., redirect to login if unauthorized)
-        }
-    };
+    useEffect(() => {
+        getHospitals();
+    }, []);
 
     const getHospitals = async () => {
         try {
@@ -42,14 +32,8 @@ function Dashboard() {
             setFilteredHospitals(response.data[0].Hospitals);
         } catch (error) {
             console.error('Error fetching hospitals:', error);
-            // Handle error (e.g., show error message to user)
         }
     };
-
-    useEffect(() => {
-        get_user();
-        getHospitals();
-    }, []);
 
     const handleSearch = (query) => {
         const filtered = hospitals.filter((hospital) => 
@@ -70,14 +54,15 @@ function Dashboard() {
         setFilteredHospitals(prevFiltered => prevFiltered.filter(hospital => hospital._id !== hospitalId));
     };
 
-    const goToHospital = (hospitalId) => {
+    const goToHospital = (hospitalId, hospitalName) => {
         localStorage.setItem('currentHospitalId', hospitalId);
+        updateHospitalName(hospitalName);
         navigate('/hospitalInfo');
     }
 
     return (
         <div className="dashboard">
-            <Navbar name={user} showDropdown={true} />
+            <Navbar showDropdown={true} />
             <div className="dashboardBlocks">
                 <div className="leftBlock">
                     <div className="leftBlockTop">
@@ -99,7 +84,7 @@ function Dashboard() {
                                 description={hospital.Speciality}
                                 id={hospital._id}
                                 onDelete={removeHospitalFromState}
-                                onClick={goToHospital}
+                                onClick={() => goToHospital(hospital._id, hospital.HospitalName)}
                             />
                         ))}
                     </div>

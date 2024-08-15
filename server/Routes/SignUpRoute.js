@@ -14,7 +14,7 @@ if (!fs.existsSync(dir)) {
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, dir); // Use the absolute path of the uploads directory
+        cb(null, dir);
     },
     filename: function(req, file, cb) {
         const date = new Date().toISOString().replace(/:/g, '-');
