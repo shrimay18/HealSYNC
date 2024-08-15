@@ -60,13 +60,11 @@ exports.addPatientHistory = async (req, res) => {
         .status(400)
         .json({ message: "Validation Error", errors: err.errors });
     }
-    res
-      .status(500)
-      .json({
-        message: "Internal Server Error",
-        error: err.message,
-        stack: err.stack,
-      });
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message,
+      stack: err.stack,
+    });
   }
 };
 exports.getPatientHistory = async (req, res) => {
@@ -198,15 +196,20 @@ exports.deletePatient = async (req, res) => {
 
 exports.getServerDate = async (req, res) => {
   try {
-    const serverDate = new Date().toISOString().split("T")[0];
+    const now = new Date();
+    const offset = 5.5 * 60 * 60 * 1000;
+    const istDate = new Date(now.getTime() + offset);
+    const serverDate = istDate.toISOString().split("T")[0];
+    
+    console.log("Sending server date:", serverDate);
     res.status(200).json({ date: serverDate });
   } catch (err) {
     console.error("Error getting server date:", err);
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: err.message });
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 };
+
+
 
 exports.getAppointment = async (req, res) => {
   try {
