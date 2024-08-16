@@ -1,38 +1,40 @@
 .historycard {
     background-color: rgb(83,170,196);
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
+    height: 100%;
     font-family: Arial, sans-serif;
-    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card-body {
-    margin-bottom: 15px;
+    margin-bottom: 24px;
 }
 
-.card-body h5 {
-    margin: 10px 0;
-    font-size: 14px;
+.card-heading {
+    margin: 16px 0;
+    font-size: 22px;
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
+    line-height: 1.4;
 }
 
 .card-date, .card-complaint, .card-diagnosis, .card-doctor {
-    color: #555;
+    color: #333;
     word-break: break-word;
 }
 
 .title {
     font-weight: bolder;
-    margin-right: 5px;
-    color: #333;
+    margin-right: 10px;
+    color: #222;
+    font-size: 24px;
 }
-
 
 .card-footer {
     text-align: right;
@@ -42,10 +44,10 @@
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 18px;
     transition: background-color 0.3s ease;
 }
 
@@ -53,30 +55,52 @@
     background-color: #0056b3;
 }
 
-@media screen and (max-width: 480px) {
-    .historycard {
-        padding: 10px;
-        margin: 10px auto;
+@media screen and (max-width: 1200px) {
+    .card-heading {
+        font-size: 20px;
     }
+    
+    .title {
+        font-size: 22px;
+    }
+}
 
-    .card-body h5 {
-        font-size: 12px;
+@media screen and (max-width: 992px) {
+    .card-heading {
+        font-size: 18px;
+    }
+    
+    .title {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card-heading {
+        font-size: 16px;
+    }
+    
+    .title {
+        font-size: 18px;
     }
 
     .card-button {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 10px 20px;
+        font-size: 16px;
     }
 }
 
-@media screen and (min-width: 481px) and (max-width: 768px) {
-    .historycard {
-        max-width: 90%;
+@media screen and (max-width: 480px) {
+    .card-heading {
+        font-size: 14px;
     }
-}
+    
+    .title {
+        font-size: 16px;
+    }
 
-@media screen and (min-width: 769px) {
-    .historycard {
-        max-width: 400px;
+    .card-button {
+        padding: 8px 16px;
+        font-size: 14px;
     }
 }

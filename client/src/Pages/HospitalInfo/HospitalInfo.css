@@ -127,6 +127,7 @@ body {
 
     .overviewBlock {
         padding: 1.5rem;
+        margin-top: 4rem;
     }
 
     .overviewHeader, .todayHistoryHeader {
