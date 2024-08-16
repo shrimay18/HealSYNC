@@ -2,103 +2,159 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  .patientPastHistory {
+}
+
+.patientPastHistory {
     width: 100vw;
     height: 100vh;
     background-color: rgb(177, 241, 255);
     display: flex;
     flex-direction: column;
-  }
-  
-  .navbar {
+}
+
+.navbar {
     width: 100%;
     height: 60px;
     background-color: rgb(177, 241, 255);
     z-index: 1000;
-  }
-  
-  .patientPastHistoryBlock {
+}
+
+.patientPastHistoryBlock {
     display: flex;
     flex: 1;
     padding: 1rem;
     gap: 1rem;
     overflow: hidden;
-    margin-top: 3.4rem;
+    margin-top: 4.5rem;
     height: 80vh;
-  }
-  
-  .leftSideBar {
+}
+
+.leftSideBar {
     flex-shrink: 0;
     width: 250px;
     background-color: rgb(212, 245, 255);
     border-radius: 20px;
     overflow: auto;
-  }
-  
-  .patientPastHistoryCenterBlock {
+}
+
+.patientPastHistoryCenterBlock {
     flex: 1;
     background-color: rgb(212, 245, 255);
     border-radius: 20px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-  }
-  
-  .patientPastHistoryHeader {
+}
+
+.patientPastHistoryHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
-  }
-  
-  .fpn {
-    font-size: 1.5rem;
+    padding: 1.5rem;
+    flex-wrap: nowrap;
+}
+
+.fpn {
+    font-size: 2.4rem;
     font-weight: 700;
-  }
-  
-  .newAppointmentButton {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.newAppointmentButton {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 2.5rem;
-    padding: 0 1rem;
+    height: 3.5rem;
+    padding: 0 2rem;
     background-color: rgb(178, 237, 255);
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
-  }
-  
-  .newAppointmentButton p {
-    font-size: 1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.newAppointmentButton p {
+    font-size: 1.4rem;
     margin-right: 0.5rem;
-  }
-  
-  .historyCardsContainer {
+}
+
+.historyCardsContainer {
     flex: 1;
     overflow-y: auto;
-    padding: 0 1rem 1rem 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 0.5rem;
-  }
-  
-  .historyCard {
-    width: calc(50% - 0.25rem);
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.historyCard {
     background-color: #ffffff;
-    border-radius: 10px;
-    padding: 0.75rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 0.5rem;
-  }
-  
-  @media (max-width: 768px) {
-    .historyCard {
-      width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 1200px) {
+    .historyCardsContainer {
+        grid-template-columns: 1fr 1fr;
     }
+}
+
+@media (max-width: 992px) {
+    .historyCardsContainer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
     .patientPastHistoryBlock {
-      margin-top: 9rem;
+        margin-top: 9rem;
     }
-    
-  }
+    .fpn {
+        font-size: 2rem;
+    }
+    .newAppointmentButton {
+        height: 3rem;
+        padding: 0 1.5rem;
+    }
+    .newAppointmentButton p {
+        font-size: 1.2rem;
+    }
+    .historyCard {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 528px) {
+    .fpn {
+        font-size: 1.6rem;
+        max-width: 60%;
+    }
+    .newAppointmentButton {
+        padding: 0 1rem;
+    }
+    .newAppointmentButton p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .patientPastHistoryBlock {
+        flex-direction: column;
+    }
+    .leftSideBar {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    .fpn {
+        font-size: 1.4rem;
+        max-width: 50%;
+    }
+    .newAppointmentButton p {
+        font-size: 0.9rem;
+    }
+}
