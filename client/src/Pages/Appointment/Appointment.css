@@ -46,7 +46,8 @@ body, html {
     display: flex;
     flex-grow: 1;
     gap: 2rem;
-    height: calc(100vh - 120px); /* Adjust 120px based on your navbar height + desired margins */
+    height: calc(100vh - 120px); 
+    /* width:100vw; */
 }
 
 /* .sidebar-wrapper {

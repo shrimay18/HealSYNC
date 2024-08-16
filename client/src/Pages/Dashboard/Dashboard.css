@@ -70,9 +70,10 @@
 .Hospitals {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-rows: repeat(auto-fill, minmax(150px, 1fr));
     gap: 20px;
-    overflow-y: auto; /* Enable scrolling for this section */
-    flex-grow: 1; /* Allow this section to grow and fill available space */
+    overflow-y: auto; 
+    flex-grow: 1;
 }
 
 .rightUpBlock, .rightDownBlock {
