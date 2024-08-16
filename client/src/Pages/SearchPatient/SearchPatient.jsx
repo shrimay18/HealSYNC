@@ -19,7 +19,7 @@ const SearchPatient = () => {
 
     const get_patients = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/patientHistory', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -54,7 +54,7 @@ const SearchPatient = () => {
 
     const handleDeletePatient = async (patientId) => {
         try {
-            await axios.delete(`http://localhost:3000/patientHistory/${patientId}`, {
+            await axios.delete(`https://healsync-nm7z.onrender.com/patientHistory/${patientId}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')

@@ -21,7 +21,7 @@ const PDFUpload = () => {
 
 
         try {
-            const response = await axios.post('http://localhost:3000/signup', formData, {
+            const response = await axios.post('https://healsync-nm7z.onrender.com/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

@@ -30,7 +30,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/login',
+            const response = await axios.post('https://healsync-nm7z.onrender.com/login',
                 {
                     username: username,
                     password: password

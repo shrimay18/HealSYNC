@@ -60,7 +60,7 @@ const AddPatient = () => {
         
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:3000/patientHistory/${patientId}`, {
+            const response = await axios.get(`https://healsync-nm7z.onrender.com/patientHistory/${patientId}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -151,8 +151,8 @@ const AddPatient = () => {
         setLoading(true);
         try {
             const url = patientId
-                ? `http://localhost:3000/hospital/update-patient/${patientId}`
-                : 'http://localhost:3000/hospital/add-patient';
+                ? `https://healsync-nm7z.onrender.com/hospital/update-patient/${patientId}`
+                : 'https://healsync-nm7z.onrender.com/hospital/add-patient';
             
             const method = patientId ? 'put' : 'post';
 

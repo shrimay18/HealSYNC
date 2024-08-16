@@ -45,7 +45,7 @@ const Appointment = () => {
 
     const fetchPatientData = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/patientHistory/${patientId}`, {
+            const response = await axios.get(`https://healsync-nm7z.onrender.com/patientHistory/${patientId}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: `${localStorage.getItem('currentHospitalId')}`
@@ -64,7 +64,7 @@ const Appointment = () => {
 
     const fetchServerDate = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:3000/patientHistory/server-date');
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory/server-date');
             const serverDate = response.data.date;
             
             setAppointmentData(prevData => ({
@@ -80,7 +80,7 @@ const Appointment = () => {
 
     const fetchAppointmentData = useCallback(async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/patientHistory/appointment/${appointmentId}`, {
+            const response = await axios.get(`https://healsync-nm7z.onrender.com/patientHistory/appointment/${appointmentId}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -157,8 +157,8 @@ const Appointment = () => {
 
         try {
             const endpoint = isEditMode
-                ? `http://localhost:3000/patientHistory/updateAppointment/${appointmentId}`
-                : 'http://localhost:3000/patientHistory/addPatientHistory';
+                ? `https://healsync-nm7z.onrender.com/patientHistory/updateAppointment/${appointmentId}`
+                : 'https://healsync-nm7z.onrender.com/patientHistory/addPatientHistory';
 
             const method = isEditMode ? 'put' : 'post';
 

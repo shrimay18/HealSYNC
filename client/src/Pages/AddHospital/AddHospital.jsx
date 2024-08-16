@@ -46,7 +46,7 @@ const AddHospital = () => {
 
     const fetchHospital = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/dashboard/hospital/${id}`, {
+            const response = await axios.get(`https://healsync-nm7z.onrender.com/dashboard/hospital/${id}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('token')}`
@@ -138,14 +138,14 @@ const AddHospital = () => {
 
             let response;
             if (id) {
-                response = await axios.put(`http://localhost:3000/dashboard/update-hospital/${id}`, submissionData, {
+                response = await axios.put(`https://healsync-nm7z.onrender.com/dashboard/update-hospital/${id}`, submissionData, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`
                     }
                 });
             } else {
-                response = await axios.post('http://localhost:3000/dashboard/hospital', submissionData, {
+                response = await axios.post('https://healsync-nm7z.onrender.com/dashboard/hospital', submissionData, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`

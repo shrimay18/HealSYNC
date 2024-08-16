@@ -86,7 +86,7 @@ const Signup = () => {
         formData.append('Degree', degree);
         formData.append('RegistrationNumber', RegNo);
         try {
-            const response = await axios.post('http://localhost:3000/signup/Gsignup', formData, {
+            const response = await axios.post('https://healsync-nm7z.onrender.com/signup/Gsignup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
