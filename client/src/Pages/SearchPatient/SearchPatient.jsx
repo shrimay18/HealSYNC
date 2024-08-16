@@ -10,7 +10,7 @@ import PatientDirectoryCard from "../../Components/PatientDirectoryCard/PatientD
 import { AppContext } from '../../Context/AppContext';
 
 const SearchPatient = () => {
-    const { user } = useContext(AppContext);
+    const { isLoading } = useContext(AppContext);
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -35,8 +35,10 @@ const SearchPatient = () => {
     };
 
     useEffect(() => {
-        get_patients();
-    }, []);
+        if (!isLoading) {
+            get_patients();
+        }
+    }, [isLoading]);
 
     const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
@@ -80,6 +82,10 @@ const SearchPatient = () => {
         localStorage.setItem('currentPatientId', patientId);
         navigate(`/patientPastHistory/${patientId}`);
     };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="search-patient">

@@ -10,7 +10,7 @@ const Navbar = ({ showDropdown = false }) => {
     const navigate = useNavigate();
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
-    const { user, logout: contextLogout } = useContext(AppContext);
+    const { user, isLoading, logout: contextLogout } = useContext(AppContext);
 
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
@@ -41,7 +41,7 @@ const Navbar = ({ showDropdown = false }) => {
             </div>
             <div className="profile" onClick={toggleDropdown} ref={dropdownRef}>
                 <FontAwesomeIcon icon={faUser} className="user-icon" />
-                <p className="username">{user || "Guest"}</p>
+                <p className="username">{isLoading ? "Loading..." : user || "Guest"}</p>
                 {showDropdown && dropdownVisible && (
                     <div className="dropdown-menu">
                         <div className="dropdown-item">

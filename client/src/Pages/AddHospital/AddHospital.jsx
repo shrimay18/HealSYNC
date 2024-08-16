@@ -5,6 +5,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from '../../Context/AppContext';
 import Navbar from '../../Components/Navbar/Navbar';
 
+// Inline PopUp component
+const PopUp = ({ message, onClose }) => {
+  return (
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <p>{message}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
+
 const AddHospital = () => {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -21,6 +33,8 @@ const AddHospital = () => {
         Speciality: ''
     });
     const [isLoading, setIsLoading] = useState(true);
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [popUpMessage, setPopUpMessage] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -47,6 +61,8 @@ const AddHospital = () => {
             }));
         } catch (error) {
             console.error('Error fetching hospital:', error);
+            setPopUpMessage('Error fetching hospital data. Please try again.');
+            setShowPopUp(true);
         } finally {
             setIsLoading(false);
         }
@@ -54,14 +70,53 @@ const AddHospital = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setHospital(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        if (name === 'pincode' || name === 'contactNo' || name === 'HospitalRegNo') {
+            const numericValue = value.replace(/\D/g, '');
+            setHospital(prevState => ({
+                ...prevState,
+                [name]: name === 'pincode' ? numericValue.slice(0, 6) : numericValue
+            }));
+        } else {
+            setHospital(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
+    };
+
+    const validateForm = () => {
+        const errors = [];
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10}$/;
+
+        if (!hospital.HospitalName) errors.push("Please enter Hospital Name");
+        if (!hospital.email) errors.push("Please enter Email ID");
+        else if (!emailRegex.test(hospital.email)) errors.push("Please enter a valid email address");
+        if (!hospital.contactNo) errors.push("Please enter Contact Number");
+        else if (!phoneRegex.test(hospital.contactNo)) errors.push("Contact Number must be 10 digits");
+        if (!hospital.Street) errors.push("Please enter Street");
+        if (!hospital.Area) errors.push("Please enter Area");
+        if (!hospital.Landmark) errors.push("Please enter Landmark");
+        if (!hospital.pincode) errors.push("Please enter Pincode");
+        else if (hospital.pincode.length !== 6) errors.push("Pincode must be exactly 6 digits");
+        if (!hospital.HospitalRegNo) errors.push("Please enter Hospital Registration Number");
+        else if (!/^\d+$/.test(hospital.HospitalRegNo)) errors.push("Hospital Registration Number must contain only digits");
+        if (!hospital.Speciality) errors.push("Please enter Speciality");
+
+        if (errors.length > 0) {
+            setPopUpMessage(errors.join('\n'));
+            setShowPopUp(true);
+            return false;
+        }
+        return true;
     };
 
     const submit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
+
         try {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -108,6 +163,18 @@ const AddHospital = () => {
             navigate("/dashboard");
         } catch (error) {
             console.error('Error submitting hospital data:', error.response ? error.response.data : error.message);
+            if (error.response && error.response.data) {
+                if (error.response.data.message === 'Email already registered') {
+                    setPopUpMessage('This email is already registered. Please use a different email address.');
+                } else if (error.response.data.message === 'Contact number already registered') {
+                    setPopUpMessage('This contact number is already registered. Please use a different number.');
+                } else {
+                    setPopUpMessage('Error submitting hospital data. Please try again.');
+                }
+            } else {
+                setPopUpMessage('Error submitting hospital data. Please try again.');
+            }
+            setShowPopUp(true);
         }
     }
 
@@ -136,7 +203,7 @@ const AddHospital = () => {
                                 </div>
                                 <div className="form-column half-width">
                                     <div className="form-label">Contact No</div>
-                                    <input type="tel" name="contactNo" className="form-input" placeholder='Enter the Contact Number' value={hospital.contactNo} onChange={handleChange} required/>
+                                    <input type="tel" name="contactNo" className="form-input" placeholder='Enter the Contact Number' value={hospital.contactNo} onChange={handleChange} maxLength={10} required/>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -154,13 +221,13 @@ const AddHospital = () => {
                             <div className="form-row">
                                 <div className="form-column">
                                     <div className="form-label">Landmark</div>
-                                    <input type="text" name="Landmark" className="form-input full-width" placeholder='Enter the Landmark' value={hospital.Landmark} onChange={handleChange}/>
+                                    <input type="text" name="Landmark" className="form-input full-width" placeholder='Enter the Landmark' value={hospital.Landmark} onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-column half-width">
                                     <div className="form-label">Pincode</div>
-                                    <input type="text" name="pincode" className="form-input" placeholder='Enter the Pincode' value={hospital.pincode} onChange={handleChange} required/>
+                                    <input type="text" name="pincode" className="form-input" placeholder='Enter the Pincode' value={hospital.pincode} onChange={handleChange} maxLength={6} required/>
                                 </div>
                                 <div className="form-column half-width">
                                     <div className="form-label">Hospital Reg. No</div>
@@ -170,7 +237,7 @@ const AddHospital = () => {
                             <div className="form-row">
                                 <div className="form-column">
                                     <div className="form-label">Speciality</div>
-                                    <input type="text" name="Speciality" className="form-input full-width" placeholder='Enter your Speciality' value={hospital.Speciality} onChange={handleChange}/>
+                                    <input type="text" name="Speciality" className="form-input full-width" placeholder='Enter your Speciality' value={hospital.Speciality} onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className="form-checkbox">
@@ -184,6 +251,12 @@ const AddHospital = () => {
                     </div>
                 </div>
             </div>
+            {showPopUp && (
+                <PopUp 
+                    message={popUpMessage} 
+                    onClose={() => setShowPopUp(false)} 
+                />
+            )}
         </div>
     );
 };

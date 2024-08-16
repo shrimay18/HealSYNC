@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../Components/Navbar/Navbar';
 import axios from 'axios';
@@ -8,10 +8,22 @@ import Dropdown from '../../Components/Dropdown/Dropdown';
 import PhoneNumber from '../../Components/PhoneNumberInput/PhoneNumber';
 import { AppContext } from '../../Context/AppContext';
 
+// Inline PopUp component
+const PopUp = ({ message, onClose }) => {
+  return (
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <p>{message}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
+
 const AddPatient = () => {
     const { patientId } = useParams();
     const navigate = useNavigate();
-    const { user } = useContext(AppContext);
+    const { isLoading: contextLoading } = useContext(AppContext);
     const [formData, setFormData] = useState({
         name: '',
         gender: '',
@@ -28,7 +40,8 @@ const AddPatient = () => {
         allergies: '',
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [popUpMessage, setPopUpMessage] = useState('');
 
     const genders = ["Male", "Female", "Other"];
     const states = [
@@ -42,13 +55,9 @@ const AddPatient = () => {
         "Daman and Diu", "Delhi", "Lakshadweep", "Puducherry"
     ];
 
-    useEffect(() => {
-        if (patientId) {
-            fetchPatientData();
-        }
-    }, [patientId]);
-
-    const fetchPatientData = async () => {
+    const fetchPatientData = useCallback(async () => {
+        if (contextLoading) return;
+        
         setLoading(true);
         try {
             const response = await axios.get(`http://localhost:3000/patientHistory/${patientId}`, {
@@ -81,21 +90,65 @@ const AddPatient = () => {
             });
         } catch (error) {
             console.error("Error fetching patient data:", error);
-            setError("Failed to fetch patient data: " + error.message);
+            setPopUpMessage("Failed to fetch patient data: " + error.message);
+            setShowPopUp(true);
         } finally {
             setLoading(false);
         }
-    };
+    }, [patientId, contextLoading]);
+
+    useEffect(() => {
+        if (patientId && !contextLoading) {
+            fetchPatientData();
+        }
+    }, [patientId, fetchPatientData, contextLoading]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+        if (name === 'pincode') {
+            // Only allow numbers and strictly limit to 6 digits
+            const pincodeValue = value.replace(/\D/g, '').slice(0, 6);
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: pincodeValue
+            }));
+        } else {
+            setFormData(prevState => ({
+                ...prevState,
+                [name]: value
+            }));
+        }
+    };
+
+    const validateForm = () => {
+        const errors = [];
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!formData.name) errors.push("Please fill Name");
+        if (!formData.gender) errors.push("Please select Gender");
+        if (!formData.dob) errors.push("Please fill Date of Birth");
+        if (!formData.contactNo) errors.push("Please fill Phone Number");
+        if (!formData.email) errors.push("Please fill Email ID");
+        else if (!emailRegex.test(formData.email)) errors.push("Please enter a valid email address");
+        if (!formData.address) errors.push("Please fill Address");
+        if (!formData.state) errors.push("Please select State");
+        if (!formData.city) errors.push("Please fill City");
+        if (!formData.pincode) errors.push("Please fill Pincode");
+        else if (formData.pincode.length !== 6) errors.push("Pincode must be exactly 6 digits");
+
+        if (errors.length > 0) {
+            setPopUpMessage(errors.join('\n'));
+            setShowPopUp(true);
+            return false;
+        }
+        return true;
     };
 
     const handleSubmit = async () => {
+        if (!validateForm()) {
+            return;
+        }
+
         setLoading(true);
         try {
             const url = patientId
@@ -124,19 +177,14 @@ const AddPatient = () => {
             navigate(`/patientPastHistory/${responsePatientId}`);
         } catch (error) {
             console.error("Error adding/updating patient:", error);
-            setError("Failed to add/update patient");
+            setPopUpMessage("Failed to add/update patient");
+            setShowPopUp(true);
         } finally {
             setLoading(false);
         }
     }
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     return (
         <div className="addPatient">
@@ -203,10 +251,21 @@ const AddPatient = () => {
                         </div>
                         <div className='columnAdd patientPincode'>
                             <p className='patientPincodeLabel'>Pincode</p>
-                            <input type='number' name='pincode' className='triple patientPincodeInput' placeholder='Enter your pincode' value={formData.pincode} onChange={handleInputChange}/>
+                            <input 
+                                type='text' 
+                                name='pincode' 
+                                className='triple patientPincodeInput' 
+                                placeholder='Enter your pincode' 
+                                value={formData.pincode} 
+                                onChange={handleInputChange}
+                                maxLength={6}
+                                pattern="\d{6}"
+                                title="Pincode must be exactly 6 digits"
+                                required
+                            />
                         </div>
                     </div>  
-                    <p className='patientMedicalHistory'>Medical Information</p> 
+                    <p className='patientMedicalHistory'>Medical Information (Optional)</p> 
                     <div className='rowAdd'>
                         <div className='columnAdd FamilyHistory'>
                             <p className='FamilyHistoryLabel'>Family History</p>
@@ -232,6 +291,12 @@ const AddPatient = () => {
                     </div>
                 </div>
             </div>
+            {showPopUp && (
+                <PopUp 
+                    message={popUpMessage} 
+                    onClose={() => setShowPopUp(false)} 
+                />
+            )}
         </div>
     );
 }

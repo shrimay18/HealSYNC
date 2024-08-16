@@ -53,7 +53,7 @@ function Login() {
             }
         } catch (error) {
             console.error('Login error:', error);
-            setMessage(error.response?.data?.message || 'An error occurred during login');
+            setMessage(error.response?.data?.message || 'Please verify your credentials');
         }
     };
 
@@ -84,17 +84,8 @@ function Login() {
                                 required 
                             />
                         </div>
-                        <div className="forgot">
-                            <Link to="/forgot" className="no-underline">
-                                <p>Forgot Password?</p>
-                            </Link>
-                        </div>
                         <div className="button-holder">
                             <button id="lgn-btn" type="submit">Login</button>
-                            <p>Or</p>
-                            <button id="sign-btn" type="button" onClick={googleAuth}>
-                                Sign in using Google
-                            </button>
                         </div>
                     </form>
                     <div className="register">

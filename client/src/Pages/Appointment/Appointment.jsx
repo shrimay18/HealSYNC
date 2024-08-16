@@ -6,6 +6,18 @@ import './Appointment.css';
 import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 import { AppContext } from '../../Context/AppContext';
 
+// Inline PopUp component
+const PopUp = ({ message, onClose }) => {
+  return (
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <p>{message}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
+
 const Appointment = () => {
     const { patientId, appointmentId } = useParams();
     const navigate = useNavigate();
@@ -25,13 +37,13 @@ const Appointment = () => {
         followUp: '',
         doctorNotes: ''
     });
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [popUpMessage, setPopUpMessage] = useState('');
 
     const isEditMode = !!appointmentId;
 
     const fetchPatientData = useCallback(async () => {
-        setIsLoading(true);
         try {
             const response = await axios.get(`http://localhost:3000/patientHistory/${patientId}`, {
                 headers: {
@@ -47,13 +59,10 @@ const Appointment = () => {
         } catch (error) {
             console.error('Error fetching patient data:', error);
             setError('Failed to fetch patient data. Please try again.');
-        } finally {
-            setIsLoading(false);
         }
     }, [patientId]);
 
     const fetchServerDate = useCallback(async () => {
-        setIsLoading(true);
         try {
             const response = await axios.get('http://localhost:3000/patientHistory/server-date');
             const serverDate = response.data.date;
@@ -66,13 +75,10 @@ const Appointment = () => {
         } catch (error) {
             console.error('Error fetching server date:', error);
             setError('Failed to fetch the current date. Please try again.');
-        } finally {
-            setIsLoading(false);
         }
     }, []);
 
     const fetchAppointmentData = useCallback(async () => {
-        setIsLoading(true);
         try {
             const response = await axios.get(`http://localhost:3000/patientHistory/appointment/${appointmentId}`, {
                 headers: {
@@ -88,8 +94,6 @@ const Appointment = () => {
         } catch (error) {
             console.error('Error fetching appointment data:', error);
             setError('Failed to fetch appointment data. Please try again.');
-        } finally {
-            setIsLoading(false);
         }
     }, [appointmentId]);
 
@@ -110,8 +114,47 @@ const Appointment = () => {
         }));
     }, []);
 
+    const validateForm = () => {
+        const errors = [];
+
+        if (!appointmentData.date) errors.push("Date is required");
+        if (!appointmentData.temperature) errors.push("Temperature is required");
+        else {
+            const temp = parseFloat(appointmentData.temperature);
+            if (isNaN(temp) || temp < 90 || temp > 108) errors.push("Temperature must be between 90 and 108°F");
+        }
+        if (!appointmentData.bloodPressure) errors.push("Blood Pressure is required");
+        else {
+            const bpRegex = /^\d{2,3}\/\d{2,3}$/;
+            if (!bpRegex.test(appointmentData.bloodPressure)) errors.push("Blood Pressure must be in the format of 120/80");
+        }
+        if (!appointmentData.pulseRate) errors.push("Pulse Rate is required");
+        else if (isNaN(appointmentData.pulseRate)) errors.push("Pulse Rate must be a number");
+        if (!appointmentData.respiratoryRate) errors.push("Respiratory Rate is required");
+        else if (!Number.isInteger(Number(appointmentData.respiratoryRate))) errors.push("Respiratory Rate must be an integer");
+        if (!appointmentData.weight) errors.push("Weight is required");
+        else if (isNaN(appointmentData.weight)) errors.push("Weight must be a number");
+        if (!appointmentData.height) errors.push("Height is required");
+        else if (isNaN(appointmentData.height)) errors.push("Height must be a number");
+        if (!appointmentData.chiefComplaint) errors.push("Chief Complaint is required");
+        if (!appointmentData.diagnosis) errors.push("Diagnosis is required");
+        if (!appointmentData.advice) errors.push("Advice is required");
+        if (!appointmentData.followUp) errors.push("Follow Up is required");
+        if (!appointmentData.doctorNotes) errors.push("Doctor Notes are required");
+
+        if (errors.length > 0) {
+            setPopUpMessage(errors.join('\n'));
+            setShowPopUp(true);
+            return false;
+        }
+        return true;
+    };
+
     const submit = useCallback(async () => {
-        setIsLoading(true);
+        if (!validateForm()) {
+            return;
+        }
+
         try {
             const endpoint = isEditMode
                 ? `http://localhost:3000/patientHistory/updateAppointment/${appointmentId}`
@@ -133,9 +176,8 @@ const Appointment = () => {
             navigate(`/patientPastHistory/${patientId}`);
         } catch (error) {
             console.error(isEditMode ? "Error updating appointment:" : "Error adding patient history:", error);
-            setError(isEditMode ? "Failed to update appointment. Please try again." : "Failed to save patient history. Please try again.");
-        } finally {
-            setIsLoading(false);
+            setPopUpMessage(isEditMode ? "Failed to update appointment. Please try again." : "Failed to save patient history. Please try again.");
+            setShowPopUp(true);
         }
     }, [isEditMode, appointmentId, appointmentData, patientId, navigate]);
 
@@ -150,8 +192,6 @@ const Appointment = () => {
                     </div>
                     <div className='appointment-form-container'>
                         <h2 className='appointment-header'>{isEditMode ? 'Edit Appointment' : 'New Appointment'}</h2>
-                        {isLoading && <p>Loading...</p>}
-                        {error && <p className="error">{error}</p>}
                         <form className='appointment-form'>
                             <div className='form-row'>
                                 <div className='form-group'>
@@ -160,7 +200,7 @@ const Appointment = () => {
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='date'>Date</label>
-                                    <input type='date' id='date' name='date' value={appointmentData.date} onChange={handleInputChange} />
+                                    <input type='date' id='date' name='date' value={appointmentData.date} onChange={handleInputChange} required />
                                 </div>
                             </div>
     
@@ -168,12 +208,16 @@ const Appointment = () => {
                                 <div className='form-group'>
                                     <label htmlFor='temperature'>Temperature (°F)</label>
                                     <input 
-                                        type='text' 
+                                        type='number' 
                                         id='temperature' 
                                         name='temperature' 
                                         value={appointmentData.temperature} 
                                         onChange={handleInputChange} 
                                         placeholder='Enter temperature' 
+                                        required
+                                        min="90"
+                                        max="108"
+                                        step="0.1"
                                     />
                                 </div>
                                 <div className='form-group'>
@@ -184,18 +228,21 @@ const Appointment = () => {
                                         name='bloodPressure' 
                                         value={appointmentData.bloodPressure} 
                                         onChange={handleInputChange} 
-                                        placeholder='Enter BP' 
+                                        placeholder='Enter BP (e.g., 120/80)' 
+                                        required
+                                        pattern="\d{2,3}\/\d{2,3}"
                                     />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='pulseRate'>Pulse Rate (bpm)</label>
                                     <input 
-                                        type='text' 
+                                        type='number' 
                                         id='pulseRate' 
                                         name='pulseRate' 
                                         value={appointmentData.pulseRate} 
                                         onChange={handleInputChange} 
                                         placeholder='Enter pulse rate' 
+                                        required
                                     />
                                 </div>
                             </div>
@@ -204,34 +251,40 @@ const Appointment = () => {
                                 <div className='form-group'>
                                     <label htmlFor='respiratoryRate'>Respiratory Rate (breaths/min)</label>
                                     <input 
-                                        type='text' 
+                                        type='number' 
                                         id='respiratoryRate' 
                                         name='respiratoryRate' 
                                         value={appointmentData.respiratoryRate} 
                                         onChange={handleInputChange} 
                                         placeholder='Enter RR' 
+                                        required
+                                        step="1"
                                     />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='weight'>Weight (kg)</label>
                                     <input 
-                                        type='text' 
+                                        type='number' 
                                         id='weight' 
                                         name='weight' 
                                         value={appointmentData.weight} 
                                         onChange={handleInputChange} 
                                         placeholder='Enter weight' 
+                                        required
+                                        step="0.1"
                                     />
                                 </div>
                                 <div className='form-group'>
                                     <label htmlFor='height'>Height (cm)</label>
                                     <input 
-                                        type='text' 
+                                        type='number' 
                                         id='height' 
                                         name='height' 
                                         value={appointmentData.height} 
                                         onChange={handleInputChange} 
                                         placeholder='Enter height' 
+                                        required
+                                        step="0.1"
                                     />
                                 </div>
                             </div>
@@ -245,6 +298,7 @@ const Appointment = () => {
                                     value={appointmentData.chiefComplaint} 
                                     onChange={handleInputChange} 
                                     placeholder='Enter chief complaint' 
+                                    required
                                 />
                             </div>
     
@@ -257,6 +311,7 @@ const Appointment = () => {
                                     value={appointmentData.diagnosis} 
                                     onChange={handleInputChange} 
                                     placeholder='Enter diagnosis' 
+                                    required
                                 />
                             </div>
     
@@ -269,6 +324,7 @@ const Appointment = () => {
                                     value={appointmentData.advice} 
                                     onChange={handleInputChange} 
                                     placeholder='Enter advice' 
+                                    required
                                 />
                             </div>
     
@@ -281,6 +337,7 @@ const Appointment = () => {
                                     value={appointmentData.followUp} 
                                     onChange={handleInputChange} 
                                     placeholder='Enter follow up instructions' 
+                                    required
                                 />
                             </div>
     
@@ -292,16 +349,23 @@ const Appointment = () => {
                                     value={appointmentData.doctorNotes} 
                                     onChange={handleInputChange} 
                                     placeholder='Enter additional notes' 
+                                    required
                                 />
                             </div>
     
-                            <button type='button' className='save-button' onClick={submit} disabled={isLoading}>
-                                {isLoading ? 'Saving...' : (isEditMode ? 'Update' : 'Save')}
+                            <button type='button' className='save-button' onClick={submit}>
+                                {isEditMode ? 'Update' : 'Save'}
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
+            {showPopUp && (
+                <PopUp 
+                    message={popUpMessage} 
+                    onClose={() => setShowPopUp(false)} 
+                />
+            )}
         </div>
     );
 };
