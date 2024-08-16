@@ -7,11 +7,13 @@ import { AppContext } from '../../Context/AppContext';
 
 const LeftSideBar = () => {
     const navigate = useNavigate();
-    const { hospitalName } = useContext(AppContext);
+    const { hospitalName, isLoading } = useContext(AppContext);
 
     return (
         <div className='infoLeftBar'>
-            <div className="hospitalNameHeader">{hospitalName || "Select a Hospital"}</div>
+            <div className="hospitalNameHeader">
+                {isLoading ? "Loading..." : hospitalName || "Select a Hospital"}
+            </div>
             <div className='infoIcon homeComponent' onClick={() => navigate("/hospitalInfo")}>
                 <FontAwesomeIcon icon={faHome} className='iconSolid Home'/>
                 <p>Home</p>

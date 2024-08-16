@@ -6,19 +6,21 @@ import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 import { AppContext } from '../../Context/AppContext';
 
 const HospitalInfo = () => {
-    const { user, hospitalName } = useContext(AppContext);
+    const { isLoading } = useContext(AppContext);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [todayAppointmentsCount, setTodayAppointmentsCount] = useState(0);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        get_patients();
-        get_today_appointments();
+        if (!isLoading) {
+            get_patients();
+            get_today_appointments();
 
-        const intervalId = setInterval(get_today_appointments, 60000);
+            const intervalId = setInterval(get_today_appointments, 60000);
 
-        return () => clearInterval(intervalId);
-    }, []);
+            return () => clearInterval(intervalId);
+        }
+    }, [isLoading]);
 
     const get_patients = async () => {
         try {
@@ -60,6 +62,10 @@ const HospitalInfo = () => {
             setError('Failed to fetch today\'s appointments');
         }
     };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return(
         <div className="hospitalInfo">
