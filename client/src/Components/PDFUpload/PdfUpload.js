@@ -8,28 +8,24 @@ const PDFUpload = () => {
     const handleFileChange = (e) => {
         e.preventDefault();
         setFile(e.target.files[0]);
-        console.log("File selected: ", e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
-            console.log("No file selected");
             return;
         }
 
         const formData = new FormData();
         formData.append('file', file);
 
-        console.log("Form data: ", formData);
 
         try {
-            const response = await axios.post('http://localhost:3000/signup', formData, {
+            const response = await axios.post('https://healsync-nm7z.onrender.com/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log("Response: ", response);
         } catch (error) {
             console.error("Error: ", error);
         }

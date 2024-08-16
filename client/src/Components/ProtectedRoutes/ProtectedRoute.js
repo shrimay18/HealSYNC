@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children }) => {
       }
 
       try {
-        const response = await axios.get('http://localhost:3000/dashboard/get-current-user', {
+        const response = await axios.get('https://healsync-nm7z.onrender.com/dashboard/get-current-user', {
           headers: {
             ContentType: 'application/json',
             Authorization: `Bearer ${token}`

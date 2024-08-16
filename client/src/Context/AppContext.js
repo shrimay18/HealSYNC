@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             if (token) {
-                const userResponse = await axios.get('http://localhost:3000/dashboard/get-current-user', {
+                const userResponse = await axios.get('https://healsync-nm7z.onrender.com/dashboard/get-current-user', {
                     headers: {
                         ContentType: 'application/json',
                         Authorization: `Bearer ${token}`

@@ -24,7 +24,7 @@ const HospitalInfo = () => {
 
     const get_patients = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/patientHistory', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -39,14 +39,12 @@ const HospitalInfo = () => {
 
     const get_today_appointments = async () => {
         try {
-            console.log('Fetching today\'s appointments...');
-            const response = await axios.get('http://localhost:3000/patientHistory/today-appointments', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory/today-appointments', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
                 }
             });
-            console.log('Response:', response.data);
             setTodayAppointmentsCount(response.data.appointments);
         } catch (error) {
             console.error('Error fetching today\'s appointments:', error);

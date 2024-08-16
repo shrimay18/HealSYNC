@@ -19,13 +19,12 @@ const SearchPatient = () => {
 
     const get_patients = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/patientHistory', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
                 }
             });
-            console.log('Fetched patient data:', response.data);
             setPatients(response.data.patients);
             setFilteredPatients(response.data.patients);
         } catch (error) {
@@ -55,7 +54,7 @@ const SearchPatient = () => {
 
     const handleDeletePatient = async (patientId) => {
         try {
-            await axios.delete(`http://localhost:3000/patientHistory/${patientId}`, {
+            await axios.delete(`https://healsync-nm7z.onrender.com/patientHistory/${patientId}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -66,7 +65,6 @@ const SearchPatient = () => {
             setPatients(updatedPatients);
             setFilteredPatients(updatedPatients);
 
-            console.log(`Patient ${patientId} deleted successfully`);
         } catch (error) {
             console.error('Error deleting patient:', error);
             setError('Failed to delete patient');
