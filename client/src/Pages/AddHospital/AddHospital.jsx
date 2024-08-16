@@ -135,7 +135,6 @@ const AddHospital = () => {
                 Speciality: hospital.Speciality
             };
 
-            console.log('Submitting data:', submissionData);
 
             let response;
             if (id) {
@@ -153,8 +152,6 @@ const AddHospital = () => {
                     }
                 });
             }
-
-            console.log('Server response:', response.data);
 
             if (response.data.hospital && typeof addHospital === 'function') {
                 addHospital(response.data.hospital);

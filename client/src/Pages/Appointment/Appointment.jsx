@@ -172,7 +172,6 @@ const Appointment = () => {
                     }
                 }
             );
-            console.log(isEditMode ? "Appointment updated" : "Patient history added", response.data);
             navigate(`/patientPastHistory/${patientId}`);
         } catch (error) {
             console.error(isEditMode ? "Error updating appointment:" : "Error adding patient history:", error);

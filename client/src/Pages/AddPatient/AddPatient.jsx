@@ -66,7 +66,6 @@ const AddPatient = () => {
                     Authorization: localStorage.getItem('currentHospitalId')
                 }
             });
-            console.log("Fetched patient data:", response.data);
     
             const patientData = response.data.patient;
             if (!patientData) {
@@ -169,7 +168,6 @@ const AddPatient = () => {
                 }
             });
 
-            console.log(patientId ? "Updated Patient Data " : "Sent Patient Data ", response);
             const responsePatientId = patientId || response.data.patientId;
             localStorage.setItem('currentPatientName', formData.name);
             localStorage.setItem('currentPatientId', responsePatientId);

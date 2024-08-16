@@ -25,7 +25,6 @@ const SearchPatient = () => {
                     Authorization: localStorage.getItem('currentHospitalId')
                 }
             });
-            console.log('Fetched patient data:', response.data);
             setPatients(response.data.patients);
             setFilteredPatients(response.data.patients);
         } catch (error) {
@@ -66,7 +65,6 @@ const SearchPatient = () => {
             setPatients(updatedPatients);
             setFilteredPatients(updatedPatients);
 
-            console.log(`Patient ${patientId} deleted successfully`);
         } catch (error) {
             console.error('Error deleting patient:', error);
             setError('Failed to delete patient');

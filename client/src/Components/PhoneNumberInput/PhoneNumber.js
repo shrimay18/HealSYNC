@@ -7,7 +7,6 @@ const PhoneNumberInput = ({state, setState}) => {
 
     const handleChange = (e) => {
         setState(e);
-        console.log(state);
     }
 
   return (

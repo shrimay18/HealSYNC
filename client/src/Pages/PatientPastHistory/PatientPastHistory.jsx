@@ -64,7 +64,6 @@ const PatientPastHistory = () => {
                     Authorization: localStorage.getItem('currentHospitalId')
                 }
             });
-            console.log('Fetched patient history:', response.data);
             
             const sortedHistory = response.data.history.sort((a, b) => {
                 const dateA = parseDate(a.date);
