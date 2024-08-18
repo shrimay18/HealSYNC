@@ -114,8 +114,9 @@
     }
 
     .infoLeftBar {
-        width: 100%;
-        margin-left: 0;
+        width: 100vw;
+        margin-left:0px;
+        border-radius: 0px;
         margin-bottom: 0.75rem;
     }
 
@@ -147,6 +148,11 @@
 }
 
 @media (max-width: 480px) {
+    .infoLeftBar {
+        width: 100vw;
+        margin-left:0px;
+        border-radius: 0px;
+    }
     .addPatientBlock {
         padding: 0.5rem;
         gap: 0.5rem;
