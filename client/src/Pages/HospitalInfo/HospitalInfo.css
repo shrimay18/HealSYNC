@@ -166,6 +166,8 @@ body {
     .overviewBlock {
         padding: 1rem;
         border-radius: 15px;
+        margin-top:4.3rem;
+        overflow-y: hidden;
     }
 
     .overviewHeader, .todayHistoryHeader {

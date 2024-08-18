@@ -50,10 +50,10 @@
 @media (max-width: 768px) {
     .infoLeftBar {
         position: fixed;
-        top: 60px; /* Adjust based on your main navbar height */
+        top: 70px; 
         left: 0;
         width: 100%;
-        height: auto;
+        height: 10vh;
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
@@ -63,10 +63,7 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    .hamburger-menu {
-        display: none;
-    }
-
+    
     .hospitalNameHeader {
         display: none;
     }
@@ -89,7 +86,12 @@
         height: 1.5rem;
     }
 }
-
+/* @media(max-width:610px){
+    .infoLeftBar{
+        padding: 0.5rem 0.25rem;
+        width:80vw;
+    }
+} */
 @media (max-width: 480px) {
     .infoLeftBar {
         padding: 0.5rem 0.25rem;
