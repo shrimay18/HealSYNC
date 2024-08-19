@@ -20,20 +20,16 @@ const PatientDirectoryCard = ({ name, patientId, patientContactNo, onDelete, onC
     };
 
     const formatContactNumber = (contactNo) => {
-        console.log("Original contact number:", contactNo);
         if (typeof contactNo !== 'number') {
-            console.log("Contact number is not a number");
             return "Invalid number";
         }
 
         const contactString = contactNo.toString();
         if (contactString.length <= 2) {
-            console.log("Contact number is too short");
             return contactString;
         }
 
         const formattedNumber = contactString.slice(2);
-        console.log("Formatted contact number:", formattedNumber);
         return formattedNumber;
     };
 

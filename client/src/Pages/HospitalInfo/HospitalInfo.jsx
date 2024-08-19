@@ -6,23 +6,25 @@ import LeftSideBar from '../../Components/LeftSideBar/LeftSideBar';
 import { AppContext } from '../../Context/AppContext';
 
 const HospitalInfo = () => {
-    const { user, hospitalName } = useContext(AppContext);
+    const { isLoading } = useContext(AppContext);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [todayAppointmentsCount, setTodayAppointmentsCount] = useState(0);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        get_patients();
-        get_today_appointments();
+        if (!isLoading) {
+            get_patients();
+            get_today_appointments();
 
-        const intervalId = setInterval(get_today_appointments, 60000);
+            const intervalId = setInterval(get_today_appointments, 60000);
 
-        return () => clearInterval(intervalId);
-    }, []);
+            return () => clearInterval(intervalId);
+        }
+    }, [isLoading]);
 
     const get_patients = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/patientHistory', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -37,14 +39,12 @@ const HospitalInfo = () => {
 
     const get_today_appointments = async () => {
         try {
-            console.log('Fetching today\'s appointments...');
-            const response = await axios.get('http://localhost:3000/patientHistory/today-appointments', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory/today-appointments', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('currentHospitalId')}`
                 }
             });
-            console.log('Response:', response.data);
             setTodayAppointmentsCount(response.data.appointments);
         } catch (error) {
             console.error('Error fetching today\'s appointments:', error);
@@ -60,6 +60,10 @@ const HospitalInfo = () => {
             setError('Failed to fetch today\'s appointments');
         }
     };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return(
         <div className="hospitalInfo">

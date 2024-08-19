@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export const AppContext = createContext();
@@ -6,12 +6,13 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [hospitalName, setHospitalName] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const fetchUserAndHospital = async () => {
+    const fetchUserAndHospital = useCallback(async () => {
         try {
             const token = localStorage.getItem('token');
             if (token) {
-                const userResponse = await axios.get('http://localhost:3000/dashboard/get-current-user', {
+                const userResponse = await axios.get('https://healsync-nm7z.onrender.com/dashboard/get-current-user', {
                     headers: {
                         ContentType: 'application/json',
                         Authorization: `Bearer ${token}`
@@ -26,12 +27,14 @@ export const AppProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Error fetching user or hospital data:', error);
+        } finally {
+            setIsLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchUserAndHospital();
-    }, []);
+    }, [fetchUserAndHospital]);
 
     const login = async (token) => {
         localStorage.setItem('token', token);
@@ -54,7 +57,7 @@ export const AppProvider = ({ children }) => {
     };
 
     return (
-        <AppContext.Provider value={{ user, hospitalName, fetchUserAndHospital, updateHospitalName, logout, login }}>
+        <AppContext.Provider value={{ user, hospitalName, isLoading, fetchUserAndHospital, updateHospitalName, logout, login }}>
             {children}
         </AppContext.Provider>
     );

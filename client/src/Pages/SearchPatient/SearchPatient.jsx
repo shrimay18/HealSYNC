@@ -10,7 +10,7 @@ import PatientDirectoryCard from "../../Components/PatientDirectoryCard/PatientD
 import { AppContext } from '../../Context/AppContext';
 
 const SearchPatient = () => {
-    const { user } = useContext(AppContext);
+    const { isLoading } = useContext(AppContext);
     const [patients, setPatients] = useState([]);
     const [filteredPatients, setFilteredPatients] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
@@ -19,13 +19,12 @@ const SearchPatient = () => {
 
     const get_patients = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/patientHistory', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/patientHistory', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
                 }
             });
-            console.log('Fetched patient data:', response.data);
             setPatients(response.data.patients);
             setFilteredPatients(response.data.patients);
         } catch (error) {
@@ -35,8 +34,10 @@ const SearchPatient = () => {
     };
 
     useEffect(() => {
-        get_patients();
-    }, []);
+        if (!isLoading) {
+            get_patients();
+        }
+    }, [isLoading]);
 
     const handleSearch = (event) => {
         const query = event.target.value.toLowerCase();
@@ -53,7 +54,7 @@ const SearchPatient = () => {
 
     const handleDeletePatient = async (patientId) => {
         try {
-            await axios.delete(`http://localhost:3000/patientHistory/${patientId}`, {
+            await axios.delete(`https://healsync-nm7z.onrender.com/patientHistory/${patientId}`, {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: localStorage.getItem('currentHospitalId')
@@ -64,7 +65,6 @@ const SearchPatient = () => {
             setPatients(updatedPatients);
             setFilteredPatients(updatedPatients);
 
-            console.log(`Patient ${patientId} deleted successfully`);
         } catch (error) {
             console.error('Error deleting patient:', error);
             setError('Failed to delete patient');
@@ -80,6 +80,10 @@ const SearchPatient = () => {
         localStorage.setItem('currentPatientId', patientId);
         navigate(`/patientPastHistory/${patientId}`);
     };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="search-patient">

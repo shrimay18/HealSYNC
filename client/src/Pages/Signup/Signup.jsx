@@ -8,10 +8,21 @@ import Checkbox from '../../Components/Checkbox/Checkbox';
 import Navbar from '../../Components/Navbar/Navbar';
 import Input from '../../Components/Input/Input';
 
+// Inline PopUp component
+const PopUp = ({ message, onClose }) => {
+  return (
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <p>{message}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
+
 const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
     const [dob, setDob] = useState('');
@@ -26,6 +37,8 @@ const Signup = () => {
     const [RegNo, setRegNo] = useState('');
     const [isChecked, setIsChecked] = useState(false);
     const [file, setFile] = useState(null);
+    const [showPopUp, setShowPopUp] = useState(false);
+    const [popUpMessage, setPopUpMessage] = useState('');
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
@@ -33,6 +46,16 @@ const Signup = () => {
 
     const handleFileChange = (file) => {
         setFile(file);
+    };
+
+    const handlePincodeChange = (e) => {
+        const value = e.target.value.replace(/\D/g, '').slice(0, 6);
+        setPincode(value);
+    };
+
+    const handleRegNoChange = (e) => {
+        const value = e.target.value.replace(/\D/g, '');
+        setRegNo(value);
     };
 
     const states = [
@@ -72,16 +95,44 @@ const Signup = () => {
         }
     }, [dob]);
 
+    const validateForm = () => {
+        const errors = [];
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!username) errors.push("Username is required");
+        if (!password) errors.push("Password is required");
+        else if (password.length < 8) errors.push("Password must be at least 8 characters long");
+        if (!confirmPassword) errors.push("Confirm Password is required");
+        if (password !== confirmPassword) errors.push("Passwords do not match");
+        if (!name) errors.push("Name is required");
+        if (!gender) errors.push("Gender is required");
+        if (!dob) errors.push("Date of Birth is required");
+        if (!state) errors.push("State is required");
+        if (!city) errors.push("City is required");
+        if (!pincode) errors.push("Pincode is required");
+        else if (pincode.length !== 6) errors.push("Pincode must be exactly 6 digits");
+        if (!email) errors.push("Email is required");
+        else if (!emailRegex.test(email)) errors.push("Invalid email format");
+        if (!phone) errors.push("Phone number is required");
+        if (!degree) errors.push("Degree is required");
+        if (!RegNo) errors.push("Registration Number is required");
+        if (!isChecked) errors.push("You must accept the Terms and Conditions");
+        if (age <= 18) errors.push("You must be older than 18 years to register");
+
+        if (errors.length > 0) {
+            setPopUpMessage(errors.join('\n'));
+            setShowPopUp(true);
+            return false;
+        }
+        return true;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (password !== confirmPassword) {
-            setMessage('Entered password does not match');
+        if (!validateForm()) {
             return;
         }
-        if (age <= 18) {
-            setMessage('You are not a Valid Doctor!!!!');
-            return;
-        }
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('name', name);
@@ -98,9 +149,9 @@ const Signup = () => {
         formData.append('phone', phone);
         formData.append('Degree', degree);
         formData.append('RegistrationNumber', RegNo);
-        console.log("Submitting form:", formData);
+
         try {
-            const response = await axios.post('http://localhost:3000/signup', formData, {
+            const response = await axios.post('https://healsync-nm7z.onrender.com/signup', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -110,9 +161,11 @@ const Signup = () => {
             }
         } catch (error) {
             if (error.response) {
-                setMessage(error.response.data);
+                setPopUpMessage(error.response.data);
+                setShowPopUp(true);
             } else {
-                setMessage('Error occurred');
+                setPopUpMessage('Error occurred');
+                setShowPopUp(true);
             }
         }
     };
@@ -153,6 +206,7 @@ const Signup = () => {
                                 setValue={setPassword}
                                 label="Password"
                                 required
+                                minLength={8}
                             />
                         </div>
                         <div className="input-wrapper span-1">
@@ -162,6 +216,7 @@ const Signup = () => {
                                 setValue={setConfirmPassword}
                                 label="Confirm Password"
                                 required
+                                minLength={8}
                             />
                         </div>
                         <div className="input-wrapper span-dropdown">
@@ -170,7 +225,6 @@ const Signup = () => {
                                 options={genders}
                                 selected={gender}
                                 setSelected={setGender}
-
                                 defaultSelected="Select Gender"
                             />
                         </div>
@@ -189,21 +243,17 @@ const Signup = () => {
                                 value={age}
                                 setValue={setAge}
                                 label="Age"
-                                min={18}
-                                max={100}
+                                min={19}
                                 readOnly
                             />
                         </div>
                         <div className="input-wrapper span-dropdown">
                             <label>State:</label>
-
                             <Dropdown 
                                 options={states}
                                 selected={state}
                                 setSelected={setState}
-
                                 defaultSelected="Select State"
-
                             />
                         </div>
                         <div className="input-wrapper span-1">
@@ -216,12 +266,16 @@ const Signup = () => {
                             />
                         </div>
                         <div className="input-wrapper span-1">
-                            <Input 
-                                type="number"
+                            <label>Pincode:</label>
+                            <input 
+                                type="text"
                                 value={pincode}
-                                setValue={setPincode}
-                                label="Pincode"
+                                onChange={handlePincodeChange}
+                                placeholder="Enter Pincode"
                                 required
+                                maxLength={6}
+                                pattern="\d{6}"
+                                title="Pincode must be exactly 6 digits"
                             />
                         </div>
                         <div className="input-wrapper span-dropdown">
@@ -250,18 +304,21 @@ const Signup = () => {
                             />
                         </div>
                         <div className="input-wrapper span-3">
-                            <Input 
+                            <label>Registration Number:</label>
+                            <input 
                                 type="text"
                                 value={RegNo}
-                                setValue={setRegNo}
-                                label="Registration Number"
+                                onChange={handleRegNoChange}
+                                placeholder="Enter Registration Number"
                                 required
+                                pattern="\d+"
+                                title="Registration Number must be an integer"
                             />
                         </div>
                         <div className="input-wrapper span-3">
+                            <label>Upload PDF:</label>
                             <PDFUpload
                                 onFileSelect={handleFileChange}
-                                required={true}
                             />
                         </div>
                     </div>
@@ -275,8 +332,13 @@ const Signup = () => {
                     </div>
                     <button type="submit">Signup</button>
                 </form>
-                {message && <p className="error-message">{message}</p>}
             </div>
+            {showPopUp && (
+                <PopUp 
+                    message={popUpMessage} 
+                    onClose={() => setShowPopUp(false)} 
+                />
+            )}
         </div>
     );
 };

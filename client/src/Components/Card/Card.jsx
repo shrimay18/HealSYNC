@@ -11,7 +11,7 @@ function Card({ title, description, id, onDelete, onClick }) {
         try {
             const confirmDelete = window.confirm(`Are you sure you want to delete ${title}?`);
             if (confirmDelete) {
-                await axios.delete(`http://localhost:3000/dashboard/delete-hospital/${id}`, {
+                await axios.delete(`https://healsync-nm7z.onrender.com/dashboard/delete-hospital/${id}`, {
                     headers: {
                         ContentType: 'application/json',
                         Authorization: `Bearer ${localStorage.getItem('token')}`

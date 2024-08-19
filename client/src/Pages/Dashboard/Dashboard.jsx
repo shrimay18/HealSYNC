@@ -22,7 +22,7 @@ function Dashboard() {
 
     const getHospitals = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/dashboard/', {
+            const response = await axios.get('https://healsync-nm7z.onrender.com/dashboard/', {
                 headers: {
                     ContentType: 'application/json',
                     Authorization: `Bearer ${localStorage.getItem('token')}`

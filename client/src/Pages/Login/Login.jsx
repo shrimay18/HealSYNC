@@ -15,7 +15,6 @@ function Login() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            console.log("Existing token found, redirecting to dashboard");
             navigate('/dashboard');
         }
     }, [navigate]);
@@ -30,9 +29,8 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Submitting form:", { username, password });
         try {
-            const response = await axios.post('http://localhost:3000/login',
+            const response = await axios.post('https://healsync-nm7z.onrender.com/login',
                 {
                     username: username,
                     password: password
@@ -43,17 +41,15 @@ function Login() {
                     }
                 }
             );
-            console.log("Response:", response.data);
             if (response.data.success) {
-                await login(response.data.token);  // Use the login function from context
-                console.log("Token stored:", localStorage.getItem('token'));
+                await login(response.data.token); 
                 navigate('/dashboard');
             } else {
                 setMessage(response.data.message || 'Login failed');
             }
         } catch (error) {
             console.error('Login error:', error);
-            setMessage(error.response?.data?.message || 'An error occurred during login');
+            setMessage(error.response?.data?.message || 'Please verify your credentials');
         }
     };
 
@@ -84,17 +80,8 @@ function Login() {
                                 required 
                             />
                         </div>
-                        <div className="forgot">
-                            <Link to="/forgot" className="no-underline">
-                                <p>Forgot Password?</p>
-                            </Link>
-                        </div>
                         <div className="button-holder">
                             <button id="lgn-btn" type="submit">Login</button>
-                            <p>Or</p>
-                            <button id="sign-btn" type="button" onClick={googleAuth}>
-                                Sign in using Google
-                            </button>
                         </div>
                     </form>
                     <div className="register">
