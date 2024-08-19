@@ -164,9 +164,6 @@ body {
         width: 100%;
     }
 
-    .addPatientButton {
-        display: none; /* Hide the button on smaller screens */
-    }
 
     .patientDirectory {
         font-size: 1.2rem;
