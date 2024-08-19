@@ -52,7 +52,7 @@
     box-shadow: 0 4px 12px rgba(0, 49, 83, 0.15);
     border-radius: 8px;
     overflow: hidden;
-    z-index: 1000;
+    z-index: 2000;
     min-width: 220px;
     padding: 0.5rem 0;
 }
@@ -102,6 +102,7 @@
 
     .dropdown-menu {
         min-width: 200px;
+        z-index: -1;
     }
 
     .dropdown-item {
