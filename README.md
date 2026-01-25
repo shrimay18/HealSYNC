@@ -44,10 +44,10 @@ HealSYNC is a full-stack web application that digitizes and simplifies healthcar
 ### Frontend
 - **React** (v18.3.1) - UI framework
 - **React Router DOM** (v6.24.1) - Client-side routing
-- **Axios** - HTTP client for API requests
+- **Axios** (v1.7.2) - HTTP client for API requests
 - **TailwindCSS** (v3.4.4) - Utility-first CSS framework
 - **FontAwesome** - Icon library
-- **React Phone Input** - Phone number input component
+- **react-phone-input-2** (v2.15.1) - Phone number input component
 
 ### Backend
 - **Node.js** with **Express.js** (v4.19.2) - Server framework
@@ -156,14 +156,14 @@ HealSYNC/
    cd server
    npm start
    ```
-   The server will run on `http://localhost:3000`
+   The server will run on `http://localhost:3000` (or the port specified in your `.env` file)
 
 2. **Start the frontend (in a new terminal)**
    ```bash
    cd client
    npm start
    ```
-   The React app will run on `http://localhost:3000` (or another port if 3000 is occupied)
+   The React app will typically run on `http://localhost:3001` if the backend is using port 3000
 
 ### Production Deployment
 
