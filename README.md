@@ -142,7 +142,7 @@ HealSYNC/
    
    Create a `.env` file in the `server` directory with the following variables:
    ```env
-   PORT=3000
+   PORT=3000                           # Server port (defaults to 3000 if not specified)
    MONGO_URL=your_mongodb_connection_string
    GOOGLE_CLIENT_ID=your_google_client_id
    GOOGLE_CLIENT_SECRET=your_google_client_secret
@@ -163,7 +163,7 @@ HealSYNC/
    cd client
    npm start
    ```
-   The React app will typically run on `http://localhost:3001` if the backend is using port 3000
+   The React app will run on an available port (typically 3000, or 3001+ if 3000 is occupied)
 
 ### Production Deployment
 
